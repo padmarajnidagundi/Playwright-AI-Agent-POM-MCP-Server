@@ -1,154 +1,203 @@
-# Playwright POM with MCP server
+# Playwright AI Agent POM MCP Server
 
-Compact Playwright demo project that verifies a UI "vibe": animation timing checks + perceptual diffs. This repository is a small, self-contained showcase you can use in interviews or demos to explain motion assertions, artifact generation, and CI workflows that include Windows-friendly commands.
+A compact, self-contained Playwright demo project showcasing motion assertions, perceptual diffs, and CI-friendly E2E testing patterns. Perfect for interviews, demos, and learning test automation best practices.
 
-**What this repo demonstrates**
-- **Motion sampling:** capture requestAnimationFrame timestamps and compute timing gaps to assert animation health.
-- **Perceptual diffs:** pixel-level comparison using `pixelmatch` with baseline image workflow and diff artifacts.
-- **Playwright setup:** `playwright.config.ts` with an embedded `webServer` for the local demo.
-- **CI-friendly:** GitHub Actions workflow that runs tests on both Ubuntu and Windows.
+## What This Repo Demonstrates
 
-**Repository Layout**
-- `demo/` : Demo site served by `tools/dev-server.js` (main demo page: `demo/index.html`).
-- `tests/` : Playwright tests and placeholders. The primary demo tests are `tests/vibe.spec.ts` and `tests/wesendcv.spec.ts` (smoke test for https://wesendcv.com).
-- `tools/` : Utilities used by tests and the demo (`compare.js`, `dev-server.js`).
-- `playwright.config.ts` : Playwright configuration (webServer, baseURL, trace settings).
-- `package.json` : NPM scripts for running tests and small utilities.
-- `.github/workflows/ci.yml` : CI pipeline (Ubuntu + Windows matrix).
+- **Motion sampling:** Capture `requestAnimationFrame` timestamps and compute timing gaps to assert animation health.
+- **Perceptual diffs:** Pixel-level comparison using `pixelmatch` with baseline image workflow and diff artifacts.
+- **Playwright setup:** `playwright.config.ts` with embedded `webServer` for the local demo.
+- **Page Object Model (POM):** Organized test structure with stable selectors and reusable helpers.
+- **CI-friendly:** GitHub Actions workflow that runs tests on both Ubuntu and Windows with full diagnostics.
+- **Negative testing:** Error handling validation (e.g., 404 responses, invalid navigation).
 
-**Key Files (quick reference)**
-- `demo/index.html` : Animated demo UI exposing `window.sampleAnimationFrames(durationMs)`.
-- `tools/compare.js` : Pixelmatch-based CLI comparator — creates baseline if missing and writes `diff.png`.
-- `tests/vibe.spec.ts` : Samples animation frames, asserts timing, captures screenshots, runs perceptual compare.
-- `tests/wesendcv.spec.ts` : Smoke test that validates `https://wesendcv.com` loads and captures a screenshot.
+## Repository Layout
 
-**How to install (Windows PowerShell)**
+```
+Playwright-AI-Agent-POM-MCP-Server/
+├── demo/                          # Demo site served by dev-server.js
+│   ├── index.html                 # Animated UI with window.sampleAnimationFrames()
+│   └── baseline.png               # Visual baseline for perceptual diffs
+├── tests/
+│   ├── pages/                     # Page Objects (future expansion)
+│   ├── data/                      # Test data files (future expansion)
+│   ├── vibe.spec.ts              # Animation timing + perceptual diff test
+│   └── wesendcv.spec.ts          # Smoke + negative tests for https://wesendcv.com
+├── tools/
+│   ├── compare.js                # Pixelmatch-based diff comparator CLI
+│   └── dev-server.js             # Static HTTP server for demo/
+├── .github/workflows/
+│   └── ci.yml                    # GitHub Actions multi-OS pipeline
+├── playwright.config.ts           # Playwright configuration (browsers, timeouts, traces)
+├── package.json                   # NPM scripts and dependencies
+└── README.md                      # This file
+```
+
+## Key Files Reference
+
+| File | Purpose |
+|------|---------|
+| `demo/index.html` | Animated demo UI exposing `window.sampleAnimationFrames(durationMs)` |
+| `tools/compare.js` | CLI comparator — creates baseline if missing, writes `diff.png` |
+| `tests/vibe.spec.ts` | Samples animation frames, asserts timing, captures screenshots, runs perceptual compare |
+| `tests/wesendcv.spec.ts` | Smoke test validates `https://wesendcv.com` loads; negative test validates 404 handling |
+| `playwright.config.ts` | Multi-browser projects, webServer config, trace/screenshot retention on failure |
+
+## Installation
+
+### Windows PowerShell
 ```powershell
-cd C:\2026
-# install deps
+cd C:\Playwright-AI-Agent-POM-MCP-Server
+
+# Install dependencies
 npm install
 
-# install Playwright browsers
-npx playwright install
-OR
+# Install Playwright browsers (with system dependencies on Windows)
 npx playwright install --with-deps
 
-# run full suite (multi-browser per config)
-npm test
+# Verify installation
+npx playwright test --version
 ```
 
-**How to run tests locally**
-- Run full suite (uses `playwright.config.ts` webServer):
+### macOS / Linux (bash/zsh)
+```bash
+cd ~/Playwright-AI-Agent-POM-MCP-Server
+
+npm install
+npx playwright install
+```
+
+## Running Tests
+
+### Full Test Suite
 ```powershell
 npm test
 ```
-- Run a specific test (example):
+Runs all tests across all configured browsers (Chromium, Firefox, WebKit).
+
+### Specific Test
 ```powershell
 npx playwright test tests/wesendcv.spec.ts --project=chromium
 ```
-- Run headed (for debugging):
+
+### Headed Mode (for debugging)
 ```powershell
 npx playwright test tests/vibe.spec.ts --headed --project=chromium
 ```
 
-**Dev server**
-- Start the static demo server manually (useful for manual QA):
+### CI-style Test Run
+```powershell
+npm run test:ci
+```
+Matches the GitHub Actions pipeline configuration.
+
+## Dev Server
+
+Start the demo server for manual testing or local development:
+
 ```powershell
 node tools/dev-server.js
-# open http://127.0.0.1:3000 in a browser
+# Open http://127.0.0.1:3000 in your browser
 ```
 
-**Perceptual diff / baselines workflow**
-- The `tools/compare.js` tool performs perceptual diffs using `pixelmatch` and writes a diff image.
-- On first run, if the baseline (`demo/baseline.png`) does not exist, the tool will copy the current screenshot into the baseline path and exit with success — this makes the first run non-failing so you can approve a baseline image.
-- After a baseline exists, comparisons produce a diff (`artifacts/diff.png` or specified output) and exit non-zero if the percent-difference exceeds the configured threshold.
-- To run compare manually:
+## Perceptual Diff / Baselines Workflow
+
+The `tools/compare.js` tool performs pixel-level diffs using `pixelmatch`.
+
+**First run (baseline creation):**
 ```powershell
 node tools/compare.js demo/baseline.png artifacts/current.png artifacts/diff.png --threshold=0.03
 ```
+- If baseline does not exist, it is created and the tool exits successfully.
+- This allows you to approve the baseline before running assertions.
 
-**CI Notes**
-- The included workflow `.github/workflows/ci.yml` runs `npm ci`, installs Playwright browsers, and executes `npm run test:ci` on both `ubuntu-latest` and `windows-latest`.
-- To ensure deterministic comparisons in CI, commit `demo/baseline.png` to the repo after you’ve approved the visual baseline locally.
+**Subsequent runs (comparison):**
+- Compares `current.png` against `baseline.png`.
+- Writes `diff.png` highlighting pixel differences.
+- Exits non-zero if percent-difference exceeds threshold (default 0.03 = 3%).
 
-**Best Practices & Tips**
-- Keep a committed baseline per target viewport / OS if visual differences are expected across environments.
-- Prefer non-flaky selectors: use `id` or `data-test` attributes.
-- Use traces and screenshots (Playwright artifacts) to triage failures — Playwright is configured to retain traces on failure in `playwright.config.ts`.
-- If you want faster, repeatable test runs, run headless and pin Playwright versions in `package.json`.
+**Best practice:** Commit `demo/baseline.png` to the repo after visual approval.
 
-**How to extend or author new tests**
-1. Add Page Object(s) under `tests/pages/` for any page with repeated logic.
-2. Place test data in `tests/data/` and reference it from specs.
-3. Add a new spec under `tests/` — tests should be isolated and idempotent.
-4. Use `tools/compare.js` for any image-based assertion or call it programmatically by spawning the script in your test.
+## CI/CD Notes
 
-**Common commands**
-- Install deps: ``npm install``
-- Install Playwright browsers: ``npx playwright install --with-deps``
-- Run tests: ``npm test``
-- Run CI-style tests: ``npm run test:ci``
-- Start demo server: ``node tools/dev-server.js``
+The `.github/workflows/ci.yml` pipeline:
+- Runs `npm ci` and `npx playwright install --with-deps`
+- Executes `npm run test:ci` on `ubuntu-latest` and `windows-latest`
+- Uploads test artifacts (screenshots, traces, videos) on failure
+- Ensures cross-platform test reliability
 
-**Troubleshooting**
-- If tests timeout on Windows, increase Playwright timeouts in `playwright.config.ts` or run with `--retries=1` while investigating flakiness.
-- If visual diffs fail unexpectedly, review the saved `artifacts/diff.png` and `artifacts/current.png`, then update the baseline intentionally if the change is approved.
+For deterministic visual diffs in CI, always commit baselines locally after approval.
 
-**License & attribution**
-This demo repository is intended for learning and interview/demo use. Adapt and re-use the ideas and code as you need.
+## Test Coverage
+
+| Test | Type | Purpose |
+|------|------|---------|
+| `vibe.spec.ts` | Positive | Validates animation timing and visual consistency via perceptual diffs |
+| `wesendcv.spec.ts` (smoke) | Positive | Verifies https://wesendcv.com homepage loads with expected content |
+| `wesendcv.spec.ts` (404) | Negative | Validates proper 404 error handling on invalid routes |
+
+## Best Practices & Tips
+
+- **Selectors:** Use stable `id` or `data-test` attributes instead of brittle CSS/XPath.
+- **Artifacts:** Enable traces and screenshots in `playwright.config.ts` for faster triage.
+- **Baselines:** Keep one baseline per viewport/OS if visual differences are expected.
+- **Isolation:** Tests should be independent and idempotent; avoid test-to-test dependencies.
+- **No hard sleeps:** Use Playwright's built-in waits (`waitForSelector`, `waitForNavigation`, etc.).
+- **Negative tests:** Always validate error paths and edge cases alongside happy paths.
+
+## How to Extend
+
+### Add a New Test
+1. Create `tests/myfeature.spec.ts`
+2. Use existing Page Objects from `tests/pages/` or create new ones
+3. Reference test data from `tests/data/` if applicable
+4. Run: `npx playwright test tests/myfeature.spec.ts`
+
+### Add a Page Object
+1. Create `tests/pages/MyPage.ts`
+2. Export a class with locators and action methods
+3. Import and use in your test specs
+
+### Add Test Data
+1. Create `tests/data/mydata.ts`
+2. Export test fixtures (users, products, etc.)
+3. Import in test specs as needed
+
+## Common Commands
+
+```powershell
+# Install
+npm install
+npx playwright install --with-deps
+
+# Test
+npm test                           # Full suite
+npm run test:ci                    # CI-style run
+npx playwright test --headed       # Debug mode
+npx playwright test --debug        # Step through with Inspector
+
+# Dev
+node tools/dev-server.js           # Start demo server
+node tools/compare.js [...]        # Run perceptual diff
+
+# Clean
+npm run clean                      # Remove artifacts (if script exists)
+```
+
+## Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| Tests timeout on Windows | Increase timeouts in `playwright.config.ts` or run with `--retries=1` |
+| Visual diffs fail unexpectedly | Review `artifacts/diff.png` and `artifacts/current.png`, update baseline if change is approved |
+| Flaky selectors | Use `data-test` attributes, increase wait timeouts, avoid `nth-child` selectors |
+| Browser install fails | Run `npx playwright install --with-deps` to include OS-level dependencies |
+| Port 3000 already in use | Modify `dev-server.js` to use a different port |
+
+## License & Attribution
+
+This demo repository is intended for learning, interview prep, and demonstration use. Feel free to adapt and re-use the code, patterns, and architecture as needed for your projects.
 
 ---
-If you want, I can:
-- run `npm install` and execute the tests here and report results,
-- create a small helper to approve/update baselines from the command line,
-- or remove the placeholder spec files fully (delete) if you prefer a cleaner tree.
-# Playwright-AI-Agents — Playwright Test Suite & Generator Guide
 
-This repo contains Playwright tests for the SauceDemo checkout flow and an opinionated Playwright Test Generator (prompt-driven) that scaffolds tests, POMs, helpers, data files, config and a README aligned to our code standards.
-
-Purpose
-- Provide reliable, maintainable E2E tests.
-- Share the generator prompt & patterns so teams can reproduce the same structure and quality.
-- Make onboarding and test creation fast and consistent.
-
-What I changed (short)
-- Updated the repository generator prompt so that when asked to "generate tests" it:
-  - Always scaffolds Page Objects (tests/pages), helpers (tests/utils.ts), data (tests/data), and tests (tests/*.spec.ts).
-  - Produces a CI-friendly playwright.config.ts and package.json with standard scripts.
-  - Updates README.md with exact install/run/auth instructions.
-  - Enforces best-practices: POM, stable selectors (id/data-test), no hard sleeps, parseCurrency helper, diagnostics (screenshots/traces), parallel-first tests.
-  - Never hardcodes secrets and documents env overrides.
-
-Why this matters
-- Consistency: All generated tests follow the same structure and style, making reviews and maintenance easier.
-- Stability: Isolate auth via storageState and use robust selectors and wait strategies to reduce flakiness.
-- Speed: Reuse authenticated storageState to avoid repeated UI logins and shorten test runs.
-- Triage: Built-in artifacts (screenshots, traces) make debugging faster.
-
-Repository structure (key files)
-- tests/
-  - pages/ — Page Objects (InventoryPage, CartPage, CheckoutPage)
-  - data/ — test data (users.ts, products.ts)
-  - utils.ts — helpers (parseCurrency, waits)
-  - *.spec.ts — test specs (happy-path, validation, math)
-- playwright.config.ts — multi-browser projects + diagnostics
-- package.json — scripts: test, test:headed, test:report
-- .github/chatmodes/🎭 generator.chatmode.md — generator prompt (updated)
-- README.md — this file (shareable knowledge)
-
-How to run (macOS / zsh)
-```bash
-# install deps
-npm install
-
-# install Playwright browsers
-npx playwright install
-
-# run full suite (multi-browser per config)
-npm test
-
-# run a single spec
-npx playwright test [math.spec.ts](http://_vscodecontentref_/0)
-
-# run headed for debugging (Chromium)
-npx playwright test [math.spec.ts](http://_vscodecontentref_/1) --headed --project=chromium
+**Questions or feedback?** Open an issue or reach out. Happy testing! 🎭
