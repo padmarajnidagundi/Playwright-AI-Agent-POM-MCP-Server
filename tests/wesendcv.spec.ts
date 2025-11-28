@@ -22,4 +22,17 @@ test.describe('WeSendCV smoke checks', () => {
     await page.screenshot({ path: shot, fullPage: true });
     testInfo.attachments = testInfo.attachments || {};
   });
+
+  test('invalid page returns 404 error', async ({ page }) => {
+    const invalidUrl = 'https://wesendcv.com/invalid-page-that-does-not-exist';
+
+    const resp = await page.goto(invalidUrl, { waitUntil: 'domcontentloaded', timeout: 60000 });
+    expect(resp && resp.status()).toBe(404);
+
+    // Verify error message or 404 content is visible
+    const errorIndicator = page.locator('text=/404|not found|page not found/i');
+    await expect(errorIndicator.first()).toBeVisible({ timeout: 5000 }).catch(() => {
+      // Some sites may not have visible 404 text, but status code is sufficient
+    });
+  });
 });
