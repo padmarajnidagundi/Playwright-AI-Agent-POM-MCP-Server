@@ -311,7 +311,7 @@ MIT License - feel free to use in your projects
 
 ---
 
-**Questions or feedback?** Open an issue or reach out. Happy testing! 🎭
+**Questions or feedback?** Open an issue or reach out. Happy testing! 
 
 
 
@@ -324,11 +324,11 @@ This repository includes example "chatmode" prompts and a small MCP configuratio
 - What it is: Chatmode files are written prompts that guide an AI test agent (examples live under `.github/chatmodes/`). MCP (Model Context Protocol) is a lightweight server integration pattern used by editor/assistant tooling to exchange messages with the local test runner and the repo.
 
 Files to inspect:
-- `.github/chatmodes/` — ready-made chatmode agent prompts (e.g. `🎭 healer.chatmode.md`) for debugging and healing tests.
+- `.github/chatmodes/` — ready-made chatmode agent prompts (e.g. ` healer.chatmode.md`) for debugging and healing tests.
 - `test.chatmode.md` — example test-plan style chat prompt you can use as an input to a chat agent.
 - `.vscode/mcp.json` — a small MCP client configuration that points to a local server command for editor integration.
 
-Quick start (local, minimal):
+Quick start (local, minimal)Ignore below 1,2 and 3 step! because you installed alldependency already.:
 
 1. Install dependencies (if not already):
 
