@@ -312,3 +312,5 @@ MIT License - feel free to use in your projects
 ---
 
 **Questions or feedback?** Open an issue or reach out. Happy testing! 🎭
+
+For Chatmode (AI-driven test assistance) and MCP usage instructions, see `README.chatmode.md` in this repository.
