@@ -1,6 +1,6 @@
-# Playwright AI Agent POM MCP Server
+# Playwright AI Agent POM MCP Server / Ready to use automation page object model framework
 
-A compact, self-contained Playwright demo project showcasing motion assertions, perceptual diffs, and CI-friendly E2E testing patterns. Perfect for interviews, demos, and learning test automation best practices.
+A compact, self-contained Playwright demo project showcasing motion assertions, perceptual diffs, and CI-friendly E2E testing patterns. Perfect for my interviews, demos, and learning test automation best practices. I have added types of testing, and it's ready to use.
 
 ## What This Repo Demonstrates
 
