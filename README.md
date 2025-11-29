@@ -1,5 +1,28 @@
 # Playwright AI Agent POM MCP Server / Ready to use automation page object model framework
 
+## Table of Contents
+- [What This Repo Demonstrates](#what-this-repo-demonstrates)
+- [Repository Layout](#repository-layout)
+- [Key Files Reference](#key-files-reference)
+- [Installation](#installation)
+- [Running Tests](#running-tests)
+- [Dev Server](#dev-server)
+- [Perceptual Diff / Baselines Workflow](#perceptual-diff--baselines-workflow)
+- [CI/CD Notes](#cicd-notes)
+- [Test Coverage](#test-coverage)
+- [Architecture: Page Object Model (POM)](#architecture-page-object-model-pom)
+- [Best Practices & Tips](#best-practices--tips)
+- [How to Extend](#how-to-extend)
+- [Common Commands](#common-commands)
+- [Troubleshooting](#troubleshooting)
+- [License & Attribution](#license--attribution)
+- [Contact](#contact)
+- [Questions or feedback?](#questions-or-feedback)
+
+![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
+![License](https://img.shields.io/badge/license-MIT-blue)
+![NPM Version](https://img.shields.io/badge/npm-v7.0.0-orange)
+
 A compact, self-contained Playwright demo project showcasing motion assertions, perceptual diffs, and CI-friendly E2E testing patterns. Perfect for my interviews, demos, and learning test automation best practices. I have added types of testing, and it's ready to use.
 
 ## What This Repo Demonstrates
@@ -56,7 +79,7 @@ cd C:\Playwright-AI-Agent-POM-MCP-Server
 # Install dependencies
 npm install
 
-# Install Playwright browsers (with system dependencies on Windows)
+# Install Playwright browsers
 npx playwright install --with-deps
 
 # Verify installation
@@ -385,4 +408,26 @@ Troubleshooting & tips
 - Keep sensitive data out of chatmode files. Use placeholders for secrets and provide them via secure environment variables or CI secrets.
 
 This integration pattern is designed to let you combine Playwright's rich diagnostics with AI-driven debugging: use the chatmode prompts as repeatable, documented instructions for the assistant, and use MCP (when available) to let the assistant interact programmatically with tests and the browser.
+
+# Contributing to Playwright AI Agent POM MCP Server
+
+Thank you for considering contributing to this project! Here are some guidelines to help you get started.
+
+## How to Contribute
+
+1. **Fork the repository**: Click on the "Fork" button at the top right of the page.
+2. **Clone your fork**: Use `git clone <your-fork-url>` to clone your fork locally.
+3. **Create a new branch**: Use `git checkout -b <your-branch-name>` to create a new branch for your changes.
+4. **Make your changes**: Implement your changes and commit them with clear messages.
+5. **Push to your fork**: Use `git push origin <your-branch-name>` to push your changes.
+6. **Create a pull request**: Go to the original repository and click on "New Pull Request".
+
+## Code of Conduct
+
+Please adhere to the [Code of Conduct](CODE_OF_CONDUCT.md) in all interactions.
+
+## Questions?
+
+If you have any questions, feel free to open an issue or reach out to the maintainers.
+
 
