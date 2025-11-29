@@ -7,7 +7,7 @@ A compact, self-contained Playwright demo project showcasing motion assertions, 
 - **Motion sampling:** Capture `requestAnimationFrame` timestamps and compute timing gaps to assert animation health.
 - **Perceptual diffs:** Pixel-level comparison using `pixelmatch` with baseline image workflow and diff artifacts.
 - **Playwright setup:** `playwright.config.ts` with embedded `webServer` for the local demo.
-- **Page Object Model (POM):** Organized test structure with stable selectors and reusable helpers.
+- **Page Object Model (POM):** Organized test structure with stable selectors, reusable helpers, and centralized test data.
 - **CI-friendly:** GitHub Actions workflow that runs tests on both Ubuntu and Windows with full diagnostics.
 - **Negative testing:** Error handling validation (e.g., 404 responses, invalid navigation).
 
@@ -19,10 +19,12 @@ Playwright-AI-Agent-POM-MCP-Server/
 │   ├── index.html                 # Animated UI with window.sampleAnimationFrames()
 │   └── baseline.png               # Visual baseline for perceptual diffs
 ├── tests/
-│   ├── pages/                     # Page Objects (future expansion)
-│   ├── data/                      # Test data files (future expansion)
+│   ├── pages/                     # Page Objects
+│   │   └── WeSendCVPage.ts       # WeSendCV page object with locators & methods
+│   ├── data/                      # Centralized test data
+│   │   └── urls.ts               # URL constants
 │   ├── vibe.spec.ts              # Animation timing + perceptual diff test
-│   └── wesendcv.spec.ts          # Smoke + negative tests for https://wesendcv.com
+│   └── wesendcv.spec.ts          # Smoke + negative tests (uses POM + data)
 ├── tools/
 │   ├── compare.js                # Pixelmatch-based diff comparator CLI
 │   └── dev-server.js             # Static HTTP server for demo/
@@ -37,10 +39,12 @@ Playwright-AI-Agent-POM-MCP-Server/
 
 | File | Purpose |
 |------|---------|
-| `demo/index.html` | Animated demo UI exposing `window.sampleAnimationFrames(durationMs)` |
+| `tests/pages/WeSendCVPage.ts` | Page Object for WeSendCV site with locators, navigation, and assertion methods |
+| `tests/data/urls.ts` | Centralized URL constants for WeSendCV and other test targets |
+| `tests/wesendcv.spec.ts` | Test specs using POM + data (smoke & negative tests) |
+| `tests/vibe.spec.ts` | Animation timing + perceptual diff test |
 | `tools/compare.js` | CLI comparator — creates baseline if missing, writes `diff.png` |
-| `tests/vibe.spec.ts` | Samples animation frames, asserts timing, captures screenshots, runs perceptual compare |
-| `tests/wesendcv.spec.ts` | Smoke test validates `https://wesendcv.com` loads; negative test validates 404 handling |
+| `demo/index.html` | Animated demo UI exposing `window.sampleAnimationFrames(durationMs)` |
 | `playwright.config.ts` | Multi-browser projects, webServer config, trace/screenshot retention on failure |
 
 ## Installation
@@ -136,9 +140,58 @@ For deterministic visual diffs in CI, always commit baselines locally after appr
 | `wesendcv.spec.ts` (smoke) | Positive | Verifies https://wesendcv.com homepage loads with expected content |
 | `wesendcv.spec.ts` (404) | Negative | Validates proper 404 error handling on invalid routes |
 
+## Architecture: Page Object Model (POM)
+
+This project follows the **Page Object Model** pattern for maintainable, scalable tests.
+
+### Structure
+- **Page Objects** (`tests/pages/`): Encapsulate selectors, navigation, and page-specific actions
+- **Test Data** (`tests/data/`): Centralized constants (URLs, test users, products, etc.)
+- **Test Specs** (`tests/*.spec.ts`): Use page objects and data, focus on test logic and assertions
+
+### Example: WeSendCV Tests
+
+**Page Object (`tests/pages/WeSendCVPage.ts`):**
+```typescript
+export class WeSendCVPage {
+  readonly url = URLS.wesendcv.base;
+  
+  async gotoHomepage() { /* ... */ }
+  async verifyHomepageLoaded() { /* ... */ }
+  async gotoInvalidPage(path: string) { /* ... */ }
+}
+```
+
+**Test Data (`tests/data/urls.ts`):**
+```typescript
+export const URLS = {
+  wesendcv: {
+    base: 'https://wesendcv.com',
+    invalidPage: '/invalid-page-that-does-not-exist',
+  },
+};
+```
+
+**Test Spec (`tests/wesendcv.spec.ts`):**
+```typescript
+test('homepage loads', async ({ page }) => {
+  const wesendcvPage = new WeSendCVPage(page);
+  const resp = await wesendcvPage.gotoHomepage();
+  expect(resp?.ok()).toBeTruthy();
+});
+```
+
+### Benefits
+- **Isolation:** Tests don't know about selectors or implementation details
+- **Reusability:** Page methods shared across multiple test specs
+- **Maintainability:** Update selectors in one place, all tests benefit
+- **Scalability:** Easy to add new page objects and test data as the suite grows
+
 ## Best Practices & Tips
 
 - **Selectors:** Use stable `id` or `data-test` attributes instead of brittle CSS/XPath.
+- **Page Objects:** Keep POM methods focused on single actions; avoid god-methods.
+- **Test Data:** Extract URLs, credentials, and fixtures into `tests/data/` files.
 - **Artifacts:** Enable traces and screenshots in `playwright.config.ts` for faster triage.
 - **Baselines:** Keep one baseline per viewport/OS if visual differences are expected.
 - **Isolation:** Tests should be independent and idempotent; avoid test-to-test dependencies.
@@ -147,21 +200,60 @@ For deterministic visual diffs in CI, always commit baselines locally after appr
 
 ## How to Extend
 
-### Add a New Test
-1. Create `tests/myfeature.spec.ts`
-2. Use existing Page Objects from `tests/pages/` or create new ones
-3. Reference test data from `tests/data/` if applicable
-4. Run: `npx playwright test tests/myfeature.spec.ts`
-
-### Add a Page Object
+### Add a New Page Object
 1. Create `tests/pages/MyPage.ts`
-2. Export a class with locators and action methods
-3. Import and use in your test specs
+2. Import page data from `tests/data/`
+3. Define locators as class properties
+4. Implement action methods (goto, click, fill, verify, etc.)
+5. Export the class for use in test specs
+
+Example:
+```typescript
+// tests/pages/LoginPage.ts
+import { Page, expect } from '@playwright/test';
+import { URLS } from '../data/urls';
+
+export class LoginPage {
+  constructor(readonly page: Page) {}
+  
+  async gotoLoginPage() {
+    await this.page.goto(URLS.app.login);
+  }
+  
+  async login(username: string, password: string) {
+    await this.page.fill('[data-test="username"]', username);
+    await this.page.fill('[data-test="password"]', password);
+    await this.page.click('[data-test="login-btn"]');
+  }
+}
+```
 
 ### Add Test Data
 1. Create `tests/data/mydata.ts`
-2. Export test fixtures (users, products, etc.)
-3. Import in test specs as needed
+2. Export constants (URLs, users, products, etc.)
+3. Import and use in page objects and test specs
+
+Example:
+```typescript
+// tests/data/users.ts
+export const TEST_USERS = {
+  standard: {
+    username: 'standard_user',
+    password: 'secret_sauce',
+  },
+  admin: {
+    username: 'admin',
+    password: 'admin_pass',
+  },
+};
+```
+
+### Add a New Test
+1. Create `tests/myfeature.spec.ts`
+2. Import page objects and test data
+3. Use `test.beforeEach()` to initialize page objects
+4. Write test cases focusing on workflow and assertions
+5. Run: `npx playwright test tests/myfeature.spec.ts`
 
 ## Common Commands
 
@@ -193,6 +285,7 @@ npm run clean                      # Remove artifacts (if script exists)
 | Flaky selectors | Use `data-test` attributes, increase wait timeouts, avoid `nth-child` selectors |
 | Browser install fails | Run `npx playwright install --with-deps` to include OS-level dependencies |
 | Port 3000 already in use | Modify `dev-server.js` to use a different port |
+| Page Object not found | Ensure import path matches file location (e.g., `./pages/WeSendCVPage`) |
 
 ## License & Attribution
 

@@ -1,38 +1,37 @@
 import { test, expect } from '@playwright/test';
+import { WeSendCVPage } from './pages/WeSendCVPage';
+import { URLS } from './data/urls';
 
 test.describe('WeSendCV smoke checks', () => {
-  test('homepage loads, title and main visible, save screenshot', async ({ page }, testInfo) => {
-    const url = 'https://wesendcv.com';
+  let wesendcvPage: WeSendCVPage;
 
-    const resp = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
-    expect(resp && resp.ok()).toBeTruthy();
-
-    const title = await page.title();
-    expect(title.length).toBeGreaterThan(0);
-
-    // Ensure body/main is visible
-    await expect(page.locator('body')).toBeVisible();
-
-    // Attempt to assert that some main content exists (header/main/h1)
-    const main = page.locator('main, header, [role="main"], h1');
-    await expect(main.first()).toBeVisible();
-
-    // Save a full page screenshot as an artifact
-    const shot = testInfo.outputPath('wesendcv-home.png');
-    await page.screenshot({ path: shot, fullPage: true });
-    testInfo.attachments = testInfo.attachments || {};
+  test.beforeEach(async ({ page }) => {
+    wesendcvPage = new WeSendCVPage(page);
   });
 
-  test('invalid page returns 404 error', async ({ page }) => {
-    const invalidUrl = 'https://wesendcv.com/invalid-page-that-does-not-exist';
+  test('homepage loads, title and main visible, save screenshot', async ({ page }, testInfo) => {
+    // Navigate to homepage
+    const resp = await wesendcvPage.gotoHomepage();
+    expect(resp && resp.ok()).toBeTruthy();
 
-    const resp = await page.goto(invalidUrl, { waitUntil: 'domcontentloaded', timeout: 60000 });
+    // Verify title exists
+    const title = await wesendcvPage.getPageTitle();
+    expect(title.length).toBeGreaterThan(0);
+
+    // Verify homepage content is visible
+    await wesendcvPage.verifyHomepageLoaded();
+
+    // Save screenshot
+    const shot = testInfo.outputPath('wesendcv-home.png');
+    await wesendcvPage.takeScreenshot(shot);
+  });
+
+  test('invalid page returns 404 error', async () => {
+    // Navigate to invalid page
+    const resp = await wesendcvPage.gotoInvalidPage(URLS.wesendcv.invalidPage);
     expect(resp && resp.status()).toBe(404);
 
-    // Verify error message or 404 content is visible
-    const errorIndicator = page.locator('text=/404|not found|page not found/i');
-    await expect(errorIndicator.first()).toBeVisible({ timeout: 5000 }).catch(() => {
-      // Some sites may not have visible 404 text, but status code is sufficient
-    });
+    // Verify 404 error is displayed (graceful fallback)
+    await wesendcvPage.verify404ErrorDisplayed();
   });
 });
