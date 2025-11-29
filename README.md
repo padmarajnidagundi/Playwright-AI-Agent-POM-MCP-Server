@@ -293,4 +293,22 @@ This demo repository is intended for learning, interview prep, and demonstration
 
 ---
 
+## MIT License
+
+MIT License - feel free to use in your projects
+
+## Contact
+
+**Author:** Padmaraj Nidagundi
+
+**Email:** padmaraj.nidagundi@gmail.com
+
+**LinkedIn:** https://www.linkedin.com/in/padmarajn/
+
+**NpmJs:** [Add your NpmJs profile link here]
+
+**GitHub:** https://github.com/padmarajnidagundi/Playwright-AI-Agent-POM-MCP-Server
+
+---
+
 **Questions or feedback?** Open an issue or reach out. Happy testing! 🎭
