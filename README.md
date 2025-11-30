@@ -10,6 +10,7 @@
 - [Perceptual Diff / Baselines Workflow](#perceptual-diff--baselines-workflow)
 - [CI/CD Notes](#cicd-notes)
 - [Test Coverage](#test-coverage)
+- [Types of Tests](#types-of-tests)
 - [Architecture: Page Object Model (POM)](#architecture-page-object-model-pom)
 - [Best Practices & Tips](#best-practices--tips)
 - [How to Extend](#how-to-extend)
@@ -46,6 +47,20 @@ Playwright-AI-Agent-POM-MCP-Server/
 │   │   └── WeSendCVPage.ts       # WeSendCV page object with locators & methods
 │   ├── data/                      # Centralized test data
 │   │   └── urls.ts               # URL constants
+│   ├── unit-tests/                # Unit tests - API & utility functions
+│   │   └── api.spec.ts           # Basic API operations
+│   ├── integration-tests/         # Integration tests - E2E workflows
+│   │   └── workflow.spec.ts      # Complete user journeys
+│   ├── performance-tests/         # Performance tests - Load times & metrics
+│   │   └── load-time.spec.ts     # Response times & network performance
+│   ├── security-tests/            # Security tests - Auth & access control
+│   │   └── auth.spec.ts          # Authentication & authorization checks
+│   ├── validation-tests/          # Validation tests - Input validation
+│   │   └── input-validation.spec.ts # Data integrity & format validation
+│   ├── mock-tests/                # Mock tests - Response stubbing
+│   │   └── api-mocking.spec.ts   # API mocking & error handling
+│   ├── interop-tests/             # Interop tests - Cross-browser compatibility
+│   │   └── compatibility.spec.ts # Feature compatibility across browsers
 │   ├── vibe.spec.ts              # Animation timing + perceptual diff test
 │   └── wesendcv.spec.ts          # Smoke + negative tests (uses POM + data)
 ├── tools/
@@ -157,11 +172,57 @@ For deterministic visual diffs in CI, always commit baselines locally after appr
 
 ## Test Coverage
 
-| Test | Type | Purpose |
-|------|------|---------|
-| `vibe.spec.ts` | Positive | Validates animation timing and visual consistency via perceptual diffs |
-| `wesendcv.spec.ts` (smoke) | Positive | Verifies https://wesendcv.com homepage loads with expected content |
-| `wesendcv.spec.ts` (404) | Negative | Validates proper 404 error handling on invalid routes |
+| Test Category | Type | Purpose | Location |
+|---|---|---|---|
+| Unit Tests | Positive | Test individual functions and utilities in isolation | `tests/unit-tests/` |
+| Integration Tests | Positive | Validate complete end-to-end user workflows | `tests/integration-tests/` |
+| Performance Tests | Positive | Measure response times, load metrics, and resource efficiency | `tests/performance-tests/` |
+| Security Tests | Positive | Validate authentication, authorization, and secure access | `tests/security-tests/` |
+| Validation Tests | Positive | Test input validation, data integrity, and format validation | `tests/validation-tests/` |
+| Mock Tests | Positive & Negative | Test error handling via response mocking and stubbing | `tests/mock-tests/` |
+| Interop Tests | Positive | Verify cross-browser compatibility and feature support | `tests/interop-tests/` |
+| Vibe Test | Positive | Validate animation timing and visual consistency via perceptual diffs | `tests/vibe.spec.ts` |
+| WeSendCV Smoke | Positive | Verify homepage loads with expected content | `tests/wesendcv.spec.ts` |
+| WeSendCV 404 | Negative | Validate proper 404 error handling on invalid routes | `tests/wesendcv.spec.ts` |
+
+## Types of Tests
+
+This repository demonstrates **7 categories of testing** to provide comprehensive quality coverage:
+
+### 1. **Unit Tests** (`tests/unit-tests/`)
+- **Focus:** Individual functions and utilities
+- **Example:** API parsing, email validation, timeout calculations
+- **Run:** `npx playwright test tests/unit-tests/`
+
+### 2. **Integration Tests** (`tests/integration-tests/`)
+- **Focus:** End-to-end workflows across multiple components
+- **Example:** Multi-step navigation, full user journeys
+- **Run:** `npx playwright test tests/integration-tests/`
+
+### 3. **Performance Tests** (`tests/performance-tests/`)
+- **Focus:** Response times, load metrics, network efficiency
+- **Example:** Page load time, First Contentful Paint, resource count
+- **Run:** `npx playwright test tests/performance-tests/`
+
+### 4. **Security Tests** (`tests/security-tests/`)
+- **Focus:** Authentication, authorization, and secure access
+- **Example:** HTTPS enforcement, XSS prevention, header validation
+- **Run:** `npx playwright test tests/security-tests/`
+
+### 5. **Validation Tests** (`tests/validation-tests/`)
+- **Focus:** Input validation, data integrity, format compliance
+- **Example:** Email/phone/URL validation, length constraints, malicious pattern detection
+- **Run:** `npx playwright test tests/validation-tests/`
+
+### 6. **Mock Tests** (`tests/mock-tests/`)
+- **Focus:** Error handling via response mocking and stubbing
+- **Example:** API failures, slow networks, unavailable services, XHR stubbing
+- **Run:** `npx playwright test tests/mock-tests/`
+
+### 7. **Interop Tests** (`tests/interop-tests/`)
+- **Focus:** Cross-browser compatibility and feature support
+- **Example:** CSS Grid support, ES6 features, touch events, viewport preferences
+- **Run:** `npx playwright test tests/interop-tests/`
 
 ## Architecture: Page Object Model (POM)
 
