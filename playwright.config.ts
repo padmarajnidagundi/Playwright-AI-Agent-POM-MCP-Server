@@ -7,7 +7,12 @@ export default defineConfig({
   fullyParallel: true,
   retries: process.env.CI ? 1 : 0,
   workers: process.env.CI ? 2 : undefined,
-  reporter: [['list'], ['html', { open: 'never' }]],
+  reporter: [
+    ['html'],
+    ['json', { outputFile: 'test-results/results.json' }],
+    ['junit', { outputFile: 'junit.xml' }],
+    ['list'],
+  ],
   use: {
     baseURL: 'https://www.saucedemo.com',
     headless: true,

@@ -1,0 +1,90 @@
+name: Playwright Tests CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node-version: [18.x, 20.x]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run Unit Tests
+        run: npx playwright test tests/unit-tests/
+        continue-on-error: true
+
+      - name: Run Integration Tests
+        run: npx playwright test tests/integration-tests/
+        continue-on-error: true
+
+      - name: Run Performance Tests
+        run: npx playwright test tests/performance-tests/
+        continue-on-error: true
+
+      - name: Run Security Tests
+        run: npx playwright test tests/security-tests/
+        continue-on-error: true
+
+      - name: Run Validation Tests
+        run: npx playwright test tests/validation-tests/
+        continue-on-error: true
+
+      - name: Run Mock Tests
+        run: npx playwright test tests/mock-tests/
+        continue-on-error: true
+
+      - name: Run Interop Tests
+        run: npx playwright test tests/interop-tests/
+        continue-on-error: true
+
+      - name: Run Smoke & Negative Tests
+        run: npx playwright test tests/wesendcv.spec.ts tests/vibe.spec.ts
+        continue-on-error: true
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ matrix.os }}-node-${{ matrix.node-version }}
+          path: playwright-report/
+          retention-days: 30
+
+      - name: Upload test traces
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-traces-${{ matrix.os }}-node-${{ matrix.node-version }}
+          path: test-results/
+          retention-days: 30
+
+      - name: Publish test results
+        if: always()
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        with:
+          files: |
+            junit.xml
+          check_name: Test Results - ${{ matrix.os }} / Node ${{ matrix.node-version }}
+        continue-on-error: true

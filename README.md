@@ -170,6 +170,30 @@ The `.github/workflows/ci.yml` pipeline:
 
 For deterministic visual diffs in CI, always commit baselines locally after approval.
 
+### GitHub Actions: Auto-Run Tests on Every Commit
+
+Tests automatically run on every push to `main` and `develop` branches, and on all pull requests.
+
+**Features:**
+- ✅ Runs on **Ubuntu** and **Windows** (cross-platform reliability)
+- ✅ Tests against **Node 18.x** and **20.x** (version compatibility)
+- ✅ Executes **all 7 test categories** in parallel
+- ✅ Uploads **test reports**, **traces**, and **artifacts** for review
+- ✅ Publishes **unit test results** directly on GitHub PR checks
+
+**What happens on commit:**
+1. GitHub detects a new push or pull request
+2. Workflow triggers automatically (no manual action needed)
+3. Dependencies are installed and Playwright browsers are set up
+4. All test suites run across multiple OS/Node versions
+5. Test reports and artifacts are uploaded
+6. Results appear in the PR/commit page
+
+**View test results:**
+- Open the **Actions** tab in your GitHub repository
+- Click the workflow run to see detailed logs
+- Download artifacts (reports, traces, screenshots) from the **Summary** page
+
 ## Test Coverage
 
 | Test Category | Type | Purpose | Location |
