@@ -1,3 +1,11 @@
+---
+name: Manual Testing
+description: Assist with manual test planning and execution.
+examples:
+  - "How do I manually verify login flow?"
+  - "Checklist for UI regression testing"
+---
+
 # Manual Testing Instructions — WeSendCV
 
 ## Overview
