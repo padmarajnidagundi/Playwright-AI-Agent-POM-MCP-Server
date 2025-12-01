@@ -44,4 +44,18 @@ test.describe('Integration Tests - E2E Workflows', () => {
     const links = await page.locator('a').count();
     expect(links).toBeGreaterThan(0);
   });
+
+  test('should handle invalid page navigation gracefully', async ({ page }) => {
+    // Attempt to navigate to non-existent page
+    const response = await wesendcvPage.gotoInvalidPage('/invalid-page-that-does-not-exist');
+    
+    // Verify 404 status code is returned
+    expect(response?.status()).toBe(404);
+
+    // Verify page does not load successfully
+    expect(response?.ok()).toBeFalsy();
+
+    // Verify 404 error indication is present (if page displays it)
+    await wesendcvPage.verify404ErrorDisplayed();
+  });
 });
