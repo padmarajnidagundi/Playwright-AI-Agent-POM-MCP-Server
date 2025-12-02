@@ -67,4 +67,18 @@ test.describe('Interop Tests - Cross-Browser Compatibility', () => {
       expect(viewportMeta).toContain('width=device-width');
     }
   });
+
+  test('negative: invalid path returns error or displays not-found text', async ({ page }) => {
+    // Use a clearly invalid path to verify the site responds with an error
+    const invalidPath = '/invalid-page-that-does-not-exist-for-negative-test';
+    const response = await page.goto(`${URLS.wesendcv.base}${invalidPath}`, { waitUntil: 'domcontentloaded' });
+
+    const status = response?.status() ?? 0;
+
+    // Some sites return a 200 with a custom 404 page; also check for common 404 text
+    const showsNotFoundText = await page.locator('text=/404|not found|page not found/i').first().isVisible().catch(() => false);
+
+    // Assert that the response is an error (>=400) OR the page contains a not-found indicator
+    expect(status >= 400 || showsNotFoundText).toBeTruthy();
+  });
 });

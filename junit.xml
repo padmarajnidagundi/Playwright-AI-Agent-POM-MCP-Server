@@ -1,12 +1,20 @@
-<testsuites id="" name="" tests="3" failures="0" skipped="1" errors="0" time="26.577401">
-<testsuite name="validation-tests\broken-links.spec.ts" timestamp="2025-11-30T16:18:56.867Z" hostname="chromium" tests="3" failures="0" skipped="1" time="36.628" errors="0">
-<testcase name="WeSendCV - Broken Links Validation › should not have broken internal links" classname="validation-tests\broken-links.spec.ts" time="23.144">
-<skipped>
-</skipped>
+<testsuites id="" name="" tests="6" failures="0" skipped="0" errors="0" time="17.632896000000002">
+<testsuite name="interop-tests\compatibility.spec.ts" timestamp="2025-12-02T16:38:17.857Z" hostname="chromium" tests="6" failures="0" skipped="0" time="43.819" errors="0">
+<testcase name="Interop Tests - Cross-Browser Compatibility › should render consistently across browsers" classname="interop-tests\compatibility.spec.ts" time="9.758">
+<system-out>
+<![CDATA[✓ Page rendered correctly in chromium
+]]>
+</system-out>
 </testcase>
-<testcase name="WeSendCV - Broken Links Validation › should have valid homepage" classname="validation-tests\broken-links.spec.ts" time="3.143">
+<testcase name="Interop Tests - Cross-Browser Compatibility › should support CSS Grid layout" classname="interop-tests\compatibility.spec.ts" time="9.72">
 </testcase>
-<testcase name="WeSendCV - Broken Links Validation › should return 404 for invalid paths" classname="validation-tests\broken-links.spec.ts" time="10.341">
+<testcase name="Interop Tests - Cross-Browser Compatibility › should support ES6 features" classname="interop-tests\compatibility.spec.ts" time="10.072">
+</testcase>
+<testcase name="Interop Tests - Cross-Browser Compatibility › should handle touch events gracefully" classname="interop-tests\compatibility.spec.ts" time="7.718">
+</testcase>
+<testcase name="Interop Tests - Cross-Browser Compatibility › should respect user viewport preferences" classname="interop-tests\compatibility.spec.ts" time="2.919">
+</testcase>
+<testcase name="Interop Tests - Cross-Browser Compatibility › negative: invalid path returns error or displays not-found text" classname="interop-tests\compatibility.spec.ts" time="3.632">
 </testcase>
 </testsuite>
 </testsuites>
