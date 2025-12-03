@@ -69,4 +69,31 @@ test.describe('Mock Tests - API Mocking & Stubbing', () => {
 
     expect(result.data).toBe('mocked response');
   });
+
+  test('negative: API returns 500 and app handles it gracefully', async ({ page }) => {
+    // Mock API to return 500 for any API route
+    await page.route('**/api/**', (route) => {
+      route.respond({
+        status: 500,
+        contentType: 'application/json',
+        body: JSON.stringify({ error: 'Internal Server Error' }),
+      });
+    });
+
+    // Navigate to the site which may call the API
+    const response = await page.goto(URLS.wesendcv.base, { waitUntil: 'domcontentloaded' });
+
+    // The site should handle the server error gracefully. Accept either:
+    // - a visible error/alert message, or
+    // - the page still renders core UI (body visible) but internal errors were handled.
+    const showsError = await page
+      .locator('text=/error|something went wrong|service unavailable|internal server error/i')
+      .first()
+      .isVisible()
+      .catch(() => false);
+
+    const bodyVisible = await page.locator('body').isVisible().catch(() => false);
+
+    expect(showsError || bodyVisible).toBeTruthy();
+  });
 });

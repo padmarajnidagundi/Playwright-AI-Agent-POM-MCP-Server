@@ -1,20 +1,6 @@
-<testsuites id="" name="" tests="6" failures="0" skipped="0" errors="0" time="17.632896000000002">
-<testsuite name="interop-tests\compatibility.spec.ts" timestamp="2025-12-02T16:38:17.857Z" hostname="chromium" tests="6" failures="0" skipped="0" time="43.819" errors="0">
-<testcase name="Interop Tests - Cross-Browser Compatibility › should render consistently across browsers" classname="interop-tests\compatibility.spec.ts" time="9.758">
-<system-out>
-<![CDATA[✓ Page rendered correctly in chromium
-]]>
-</system-out>
-</testcase>
-<testcase name="Interop Tests - Cross-Browser Compatibility › should support CSS Grid layout" classname="interop-tests\compatibility.spec.ts" time="9.72">
-</testcase>
-<testcase name="Interop Tests - Cross-Browser Compatibility › should support ES6 features" classname="interop-tests\compatibility.spec.ts" time="10.072">
-</testcase>
-<testcase name="Interop Tests - Cross-Browser Compatibility › should handle touch events gracefully" classname="interop-tests\compatibility.spec.ts" time="7.718">
-</testcase>
-<testcase name="Interop Tests - Cross-Browser Compatibility › should respect user viewport preferences" classname="interop-tests\compatibility.spec.ts" time="2.919">
-</testcase>
-<testcase name="Interop Tests - Cross-Browser Compatibility › negative: invalid path returns error or displays not-found text" classname="interop-tests\compatibility.spec.ts" time="3.632">
+<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="7.300706000000001">
+<testsuite name="mock-tests\api-mocking.spec.ts" timestamp="2025-12-03T15:52:37.354Z" hostname="chromium" tests="1" failures="0" skipped="0" time="4.922" errors="0">
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › negative: API returns 500 and app handles it gracefully" classname="mock-tests\api-mocking.spec.ts" time="4.922">
 </testcase>
 </testsuite>
 </testsuites>
