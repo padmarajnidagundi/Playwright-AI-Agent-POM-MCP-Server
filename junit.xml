@@ -1,12 +1,33 @@
-<testsuites id="" name="" tests="4" failures="0" skipped="0" errors="0" time="7.398608">
-<testsuite name="performance-tests\load-time.spec.ts" timestamp="2025-12-04T11:20:16.027Z" hostname="chromium" tests="4" failures="0" skipped="0" time="18.196" errors="0">
-<testcase name="Performance Tests - Load Time &amp; Metrics › should load homepage within acceptable time" classname="performance-tests\load-time.spec.ts" time="4.992">
-</testcase>
-<testcase name="Performance Tests - Load Time &amp; Metrics › should measure First Contentful Paint (FCP)" classname="performance-tests\load-time.spec.ts" time="4.206">
-</testcase>
-<testcase name="Performance Tests - Load Time &amp; Metrics › should load resources efficiently" classname="performance-tests\load-time.spec.ts" time="5.156">
-</testcase>
-<testcase name="Performance Tests - Load Time &amp; Metrics › negative: should handle page timeout gracefully" classname="performance-tests\load-time.spec.ts" time="3.842">
+<testsuites id="" name="" tests="1" failures="1" skipped="0" errors="0" time="7.931199">
+<testsuite name="security-tests\auth.spec.ts" timestamp="2025-12-04T18:26:56.337Z" hostname="chromium" tests="1" failures="1" skipped="0" time="5.013" errors="0">
+<testcase name="Security Tests - Auth &amp; Access Control › negative: invalid bearer token is rejected" classname="security-tests\auth.spec.ts" time="5.013">
+<failure message="auth.spec.ts:49:7 negative: invalid bearer token is rejected" type="FAILURE">
+<![CDATA[  [chromium] › security-tests\auth.spec.ts:49:7 › Security Tests - Auth & Access Control › negative: invalid bearer token is rejected 
+
+    Error: expect(received).toContain(expected) // indexOf
+
+    Expected value: 200
+    Received array: [401, 403, 301, 302, 0]
+
+      62 |
+      63 |     // Acceptable negative outcomes: unauthorized/forbidden (401/403) or redirect away
+    > 64 |     expect([401, 403, 301, 302, 0]).toContain(status);
+         |                                     ^
+      65 |   });
+      66 | });
+      67 |
+        at C:\Playwright-AI-Agent-POM-MCP-Server\tests\security-tests\auth.spec.ts:64:37
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\security-tests-auth-Securi-463d0-id-bearer-token-is-rejected-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\security-tests-auth-Securi-463d0-id-bearer-token-is-rejected-chromium\test-failed-1.png]]
+]]>
+</system-out>
 </testcase>
 </testsuite>
 </testsuites>
