@@ -1,6 +1,12 @@
-<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="7.300706000000001">
-<testsuite name="mock-tests\api-mocking.spec.ts" timestamp="2025-12-03T15:52:37.354Z" hostname="chromium" tests="1" failures="0" skipped="0" time="4.922" errors="0">
-<testcase name="Mock Tests - API Mocking &amp; Stubbing › negative: API returns 500 and app handles it gracefully" classname="mock-tests\api-mocking.spec.ts" time="4.922">
+<testsuites id="" name="" tests="4" failures="0" skipped="0" errors="0" time="7.398608">
+<testsuite name="performance-tests\load-time.spec.ts" timestamp="2025-12-04T11:20:16.027Z" hostname="chromium" tests="4" failures="0" skipped="0" time="18.196" errors="0">
+<testcase name="Performance Tests - Load Time &amp; Metrics › should load homepage within acceptable time" classname="performance-tests\load-time.spec.ts" time="4.992">
+</testcase>
+<testcase name="Performance Tests - Load Time &amp; Metrics › should measure First Contentful Paint (FCP)" classname="performance-tests\load-time.spec.ts" time="4.206">
+</testcase>
+<testcase name="Performance Tests - Load Time &amp; Metrics › should load resources efficiently" classname="performance-tests\load-time.spec.ts" time="5.156">
+</testcase>
+<testcase name="Performance Tests - Load Time &amp; Metrics › negative: should handle page timeout gracefully" classname="performance-tests\load-time.spec.ts" time="3.842">
 </testcase>
 </testsuite>
 </testsuites>
