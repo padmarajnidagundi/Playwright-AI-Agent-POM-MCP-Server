@@ -24,4 +24,9 @@ test.describe('Unit Tests - API Operations', () => {
     expect(calculateTimeout(3, 5000)).toBe(20000);
     expect(calculateTimeout(0, 5000)).toBe(5000);
   });
+
+  test('negative: invalid URL throws', () => {
+    // Creating a URL with an invalid string should throw a TypeError
+    expect(() => new URL('not-a-valid-url')).toThrow();
+  });
 });
