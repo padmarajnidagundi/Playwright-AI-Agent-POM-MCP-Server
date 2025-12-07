@@ -1,4 +1,4 @@
-# Playwright AI Agent using Page Object Model (POM) architecture with MCP Server integration for automated web testing - Ready to use
+# Playwright AI Agent using Page Object Model (POM) architecture with MCP Server integration, chatmode prompts to feed (LLM, API, MCP) for automated web testing - Ready to use
 
 ## Table of Contents
 - [What This Repo Demonstrates](#what-this-repo-demonstrates)
