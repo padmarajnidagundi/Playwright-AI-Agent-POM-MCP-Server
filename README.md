@@ -423,76 +423,53 @@ MIT License - feel free to use in your projects
 
 
 
-# Learn How to use the Chatmode & MCP (Model Context Protocol) with my repo.
+## Using Chatmode prompts and the MCP flow
 
-## For Chatmode (AI-driven test assistance) and MCP usage instructions, see below.
+This repository includes ready-made chatmode prompts under `.github/chatmodes/` (for example `healer.chatmode.md`, `planner.chatmode.md`). These are structured, human-authored prompts you give to an LLM (remote or local) to drive test planning, debugging, and automated repair.
 
-This repository includes example "chatmode" prompts and a small MCP configuration so you can use conversational agents to help debug, plan, and heal Playwright tests.
+Two common ways to use chatmode prompts:
 
-- What it is: Chatmode files are written prompts that guide an AI test agent (examples live under `.github/chatmodes/`). MCP (Model Context Protocol) is a lightweight server integration pattern used by editor/assistant tooling to exchange messages with the local test runner and the repo.
+- Manual / hosted LLM (fast):
+  - Copy the contents of a chatmode file and paste it into a hosted LLM chat UI (OpenAI Chat, Claude, etc.), or send it programmatically to the provider API. This is ideal for one-off guidance and quick suggestions.
+  - Example (PowerShell + OpenAI):
+    ```powershell
+    $env:OPENAI_API_KEY = "sk_..."
+    $prompt = Get-Content .github/chatmodes/healer.chatmode.md -Raw
+    curl -s https://api.openai.com/v1/chat/completions `
+      -H "Authorization: Bearer $env:OPENAI_API_KEY" `
+      -H "Content-Type: application/json" `
+      -d (@{ model = "gpt-4o-mini" ; messages = @(@{ role = "user"; content = $prompt }) } | ConvertTo-Json)
+    ```
 
-Files to inspect:
-- `.github/chatmodes/` — ready-made chatmode agent prompts (e.g. ` healer.chatmode.md`) for debugging and healing tests.
-- `test.chatmode.md` — example test-plan style chat prompt you can use as an input to a chat agent.
-- `.vscode/mcp.json` — a small MCP client configuration that points to a local server command for editor integration.
+- Programmatic / integrated (MCP or local agent):
+  - For automation (test-healing, snapshots, programmatic edits) run a small local agent that reads chatmode markdown and forwards it to an LLM or a local LLM host. When combined with Playwright's MCP server (`npx playwright run-test-mcp-server`) the agent can request traces, screenshots and run tests programmatically.
+  - The repo includes an example MCP configuration used by editor integrations (`.vscode/mcp.json`). If your Playwright CLI lacks `run-test-mcp-server`, update Playwright or add an npm script: `npm set-script mcp:start "npx playwright run-test-mcp-server"`.
 
-Quick start (local, minimal)Ignore below 1,2 and 3 step! because you installed alldependency already.:
+Quick scaffold (recommended)
 
-1. Install dependencies (if not already):
+1. Add a tiny local agent `tools/ai-server.js` that accepts a `prompt` and calls your LLM endpoint (OpenAI or a local LLM host). Keep API keys in env vars only.
 
-```powershell
-cd C:\Playwright-AI-Agent-POM-MCP-Server
-npm install
-npx playwright install --with-deps
+2. Add an npm script in `package.json`:
+```json
+"scripts": {
+  "ai:start": "node --experimental-fetch tools/ai-server.js"
+}
 ```
 
-2. Start any local demo server you want to exercise (optional):
-
+3. Start the dev server, MCP server and agent when you want automated assistance:
 ```powershell
-# serve the demo site used by visual tests
-node tools/dev-server.js
-```
-
-3. Start the Playwright MCP server (used by some editor/assistant integrations):
-
-```powershell
-# this matches the command in .vscode/mcp.json
+node tools/dev-server.js        # optional demo site
 npx playwright run-test-mcp-server
+npm run ai:start
 ```
 
-Note: `package.json` in this repo contains standard Playwright scripts but may not define an explicit `run-test-mcp-server` script. The `npx` invocation above relies on Playwright's CLI. If you prefer an npm script, add one locally, for example:
+Security & best practices
 
-```powershell
-npm set-script mcp:start "npx playwright run-test-mcp-server"
-```
+- Never commit API keys. Use environment variables or CI secrets.
+- Limit the agent's network exposure (bind to `localhost`) and protect it with local auth if needed.
+- For local LLMs (Ollama, text-generation-webui, HF Inference on premise), point the agent to the local host endpoint instead of a public API.
 
-Using chatmodes with an assistant or editor
-
-- Paste `test.chatmode.md` into your LLM chat session as the plan, or open the `.github/chatmodes/*` file in an editor that exposes it to your assistant.
-- With the MCP server running, some VS Code extensions (or local agents) can attach to the Playwright process to collect snapshots, run a failing test in debug mode, and return actionable fixes.
-
-Example debugging workflow
-
-1. Run tests to reproduce the failure:
-
-```powershell
-npx playwright test tests/wesendcv.spec.ts --project=chromium
-```
-
-2. Open the relevant chatmode prompt (e.g. `🎭 healer.chatmode.md`) in your assistant or editor and attach it to the running MCP session. The assistant will:
-- Run or debug failing tests
-- Capture page snapshots and console/network logs
-- Suggest selector fixes or code changes
-
-3. Apply suggested fixes locally, re-run tests, and iterate.
-
-Troubleshooting & tips
-
-- If `npx playwright run-test-mcp-server` isn't available, ensure your `@playwright/test` is a recent version and that Playwright CLI exposes the command for your release. Upgrading Playwright may add this capability.
-- If your editor doesn't auto-detect `.vscode/mcp.json`, you can still use chatmode files by copying their contents into any LLM chat session or by using a local agent that accepts markdown prompts.
-- Keep sensitive data out of chatmode files. Use placeholders for secrets and provide them via secure environment variables or CI secrets.
-
-This integration pattern is designed to let you combine Playwright's rich diagnostics with AI-driven debugging: use the chatmode prompts as repeatable, documented instructions for the assistant, and use MCP (when available) to let the assistant interact programmatically with tests and the browser.
+If you want, I can scaffold `tools/ai-server.js` and the `ai:start` script for you, and add a short example that posts a chatmode file to the agent. Tell me whether you prefer a hosted provider (OpenAI/Anthropic) or a local LLM host and I'll create the scaffold.
 
 # Contributing to Playwright AI Agent POM MCP Server
 
