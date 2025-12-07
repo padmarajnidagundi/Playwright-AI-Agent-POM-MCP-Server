@@ -27,7 +27,10 @@
 
 This is my a compact, self-contained Playwright demo project showcasing motion assertions, perceptual diffs, and CI-friendly E2E testing patterns. Perfect for my interviews, demos, and learning test automation best practices. I have added types of testing, and it's ready to use.
 
-
+<center>
+    <a
+        href="https://ibb.co/mFRDJLFY"><img src="https://i.ibb.co/mFRDJLFY/Padmaraj-nidagundi-Playwright-AI-Agent-POM-MCP-Server.jpg" alt="Padmaraj-nidagundi-Playwright-AI-Agent-POM-MCP-Server" border="0"></a>
+</center>
 
 ## What This Repo Demonstrates
 
