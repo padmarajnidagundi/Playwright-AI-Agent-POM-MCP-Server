@@ -20,20 +20,10 @@
 - [Contact](#contact)
 - [Questions or feedback?](#questions-or-feedback)
 
-![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
-![License](https://img.shields.io/badge/license-MIT-blue)
-![NPM Version](https://img.shields.io/badge/npm-v7.0.0-orange)
-
-A compact, self-contained Playwright demo project showcasing motion assertions, perceptual diffs, and CI-friendly E2E testing patterns. Perfect for my interviews, demos, and learning test automation best practices. I have added types of testing, and it's ready to use.
-
-## What This Repo Demonstrates
-
-- **Motion sampling:** Capture `requestAnimationFrame` timestamps and compute timing gaps to assert animation health.
-- **Perceptual diffs:** Pixel-level comparison using `pixelmatch` with baseline image workflow and diff artifacts.
-- **Playwright setup:** `playwright.config.ts` with embedded `webServer` for the local demo.
-- **Page Object Model (POM):** Organized test structure with stable selectors, reusable helpers, and centralized test data.
-- **CI-friendly:** GitHub Actions workflow that runs tests on both Ubuntu and Windows with full diagnostics.
-- **Negative testing:** Error handling validation (e.g., 404 responses, invalid navigation).
+<!-- Preview image: place your preview screenshot at demo/preview.png or update path -->
+<p align="center">
+  <img src="demo/preview.png" alt="Project preview" style="max-width:100%;height:auto;" />
+</p>
 
 ## Repository Layout
 
