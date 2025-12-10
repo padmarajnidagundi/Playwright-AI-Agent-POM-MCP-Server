@@ -29,4 +29,10 @@ test.describe('Unit Tests - API Operations', () => {
     // Creating a URL with an invalid string should throw a TypeError
     expect(() => new URL('not-a-valid-url')).toThrow();
   });
+
+  test('negative: should reject malformed JSON response', () => {
+    const parseJSON = (data: string) => JSON.parse(data);
+    expect(() => parseJSON('{ invalid json }')).toThrow(SyntaxError);
+    expect(() => parseJSON('null')).not.toThrow();
+  });
 });
