@@ -6,14 +6,14 @@ export class WeSendCVPage {
   readonly url = URLS.wesendcv.base;
   readonly baseUrl = URLS.wesendcv.base;
 
-  // Locators
-  readonly bodyElement = this.page.locator('body');
-  readonly mainContent = this.page.locator('main, header, [role="main"], h1');
-  readonly errorIndicator = this.page.locator('text=/404|not found|page not found/i');
-
   constructor(page: Page) {
     this.page = page;
   }
+
+  // Locators
+  get bodyElement() { return this.page.locator('body'); }
+  get mainContent() { return this.page.locator('main, header, [role="main"], h1'); }
+  get errorIndicator() { return this.page.locator('text=/404|not found|page not found/i'); }
 
   /**
    * Navigate to the homepage
