@@ -1,58 +1,33 @@
-<testsuites id="" name="" tests="1" failures="1" skipped="0" errors="0" time="9.415713">
-<testsuite name="accessibility\a11y.spec.ts" timestamp="2025-12-12T14:12:11.733Z" hostname="chromium" tests="1" failures="1" skipped="0" time="7.485" errors="0">
-<testcase name="WeSendCV page should have no detectable a11y violations" classname="accessibility\a11y.spec.ts" time="7.485">
-<failure message="a11y.spec.ts:5:5 WeSendCV page should have no detectable a11y violations" type="FAILURE">
-<![CDATA[  [chromium] › accessibility\a11y.spec.ts:5:5 › WeSendCV page should have no detectable a11y violations 
+<testsuites id="" name="" tests="1" failures="1" skipped="0" errors="0" time="6.101136">
+<testsuite name="network-resilience\offline.spec.ts" timestamp="2025-12-13T08:26:45.737Z" hostname="chromium" tests="1" failures="1" skipped="0" time="1.738" errors="0">
+<testcase name="page handles offline/network failure gracefully" classname="network-resilience\offline.spec.ts" time="1.738">
+<failure message="offline.spec.ts:4:5 page handles offline/network failure gracefully" type="FAILURE">
+<![CDATA[  [chromium] › network-resilience\offline.spec.ts:4:5 › page handles offline/network failure gracefully 
 
-    AssertionError: 4 accessibility violations were detected
-        at testResultDependsOnViolations (C:\Playwright-AI-Agent-POM-MCP-Server\node_modules\axe-playwright\dist\utils.js:16:26)
-        at C:\Playwright-AI-Agent-POM-MCP-Server\node_modules\axe-playwright\dist\index.js:143:51
-        at fulfilled (C:\Playwright-AI-Agent-POM-MCP-Server\node_modules\axe-playwright\dist\index.js:28:58)
+    Error: expect(received).toContain(expected) // indexOf
+
+    Expected substring: "net::ERR_ABORTED"
+    Received string:    "page.goto: net::ERR_FAILED at https://wesendcv.com/
+    Call log:
+      - navigating to \"https://wesendcv.com/\", waiting until \"domcontentloaded\"
+    "
+
+      15 |   } catch (error) {
+      16 |     // Navigation failed, which is expected in offline mode
+    > 17 |     expect(error.message).toContain('net::ERR_ABORTED' || 'failed');
+         |                           ^
+      18 |   }
+      19 | });
+        at C:\Playwright-AI-Agent-POM-MCP-Server\tests\network-resilience\offline.spec.ts:17:27
 
     attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    ..\test-results\accessibility-a11y-WeSendC-8729c--detectable-a11y-violations-chromium\test-failed-1.png
+    ..\test-results\network-resilience-offline-724e5--network-failure-gracefully-chromium\test-failed-1.png
     ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Error Context: ..\test-results\accessibility-a11y-WeSendC-8729c--detectable-a11y-violations-chromium\error-context.md
 ]]>
 </failure>
 <system-out>
-<![CDATA[┌─────────┬─────────────────┬────────────┬────────────────────────────────────────────────────────┬───────┐
-│ (index) │ id              │ impact     │ description                                            │ nodes │
-├─────────┼─────────────────┼────────────┼────────────────────────────────────────────────────────┼───────┤
-│ 0       │ [32m'empty-heading'[39m │ [32m'minor'[39m    │ [32m'Ensure headings have discernible text'[39m                │ [33m2[39m     │
-│ 1       │ [32m'heading-order'[39m │ [32m'moderate'[39m │ [32m'Ensure the order of headings is semantically correct'[39m │ [33m2[39m     │
-│ 2       │ [32m'link-name'[39m     │ [32m'serious'[39m  │ [32m'Ensure links have discernible text'[39m                   │ [33m9[39m     │
-│ 3       │ [32m'region'[39m        │ [32m'moderate'[39m │ [32m'Ensure all page content is contained by landmarks'[39m    │ [33m7[39m     │
-└─────────┴─────────────────┴────────────┴────────────────────────────────────────────────────────┴───────┘
-┌─────────┬──────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬────────────┐
-│ (index) │ target                                                                                                           │ html                                                                                                                                                                                                                          │ violations │
-├─────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────────────────┼───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┼────────────┤
-│ 0       │ [32m'["h1[itemprop=\\"headline\\"]"]'[39m                                                                                │ [32m'<h1 class="entry-title" itemprop="headline"></h1>'[39m                                                                                                                                                                           │ [32m'[0]'[39m      │
-│ 1       │ [32m'[".elementor-element-7e9bac8 > .elementor-widget-container > h1:nth-child(1)"]'[39m                                 │ [32m'<h1 class="elementor-heading-title elementor-size-default"></h1>'[39m                                                                                                                                                            │ [32m'[0]'[39m      │
-│ 2       │ [32m'[".elementor-element-2d2060c > .elementor-widget-container > h6"]'[39m                                              │ [32m`<h6 class="elementor-heading-title elementor-size-default">We Send Your Resume to Local Job Agencies and Websites When You're Searching for a Job.</h6>`[39m                                                                     │ [32m'[1]'[39m      │
-│ 3       │ [32m'[".elementor-element-e5e2d79 > .elementor-widget-container > h6"]'[39m                                              │ [32m`<h6 class="elementor-heading-title elementor-size-default">Get more people to see your resume using WeSendCV's advanced technology and delivery network — targeted postings, agency outreach and recruiter visibility.</h6>`[39m │ [32m'[1]'[39m      │
-│ 4       │ [32m'[".rt-img-holder.tpg-el-image-wrap.has-no-thumbnail > .tpg-post-link[data-id=\\"3083\\"][target=\\"_self\\"]"]'[39m │ [32m'<a data-id="3083" href="https://wesendcv.com/construction-jobs-with-visa-sponsorship-in-europe/" class="tpg-post-link" target="_self">\t\t\n\t\t</a>'[39m                                                                        │ [32m'[2]'[39m      │
-│ 5       │ [32m'[".rt-img-holder.tpg-el-image-wrap.has-no-thumbnail > .tpg-post-link[data-id=\\"3077\\"][target=\\"_self\\"]"]'[39m │ [32m'<a data-id="3077" href="https://wesendcv.com/barber-jobs-in-europe-with-visa-sponsorship-and-accommodation/" class="tpg-post-link" target="_self">\t\t\n\t\t</a>'[39m                                                            │ [32m'[2]'[39m      │
-│ 6       │ [32m'[".rt-img-holder.tpg-el-image-wrap.has-no-thumbnail > .tpg-post-link[data-id=\\"3070\\"][target=\\"_self\\"]"]'[39m │ [32m'<a data-id="3070" href="https://wesendcv.com/government-jobs-2026/" class="tpg-post-link" target="_self">\t\t\n\t\t</a>'[39m                                                                                                     │ [32m'[2]'[39m      │
-│ 7       │ [32m'[".rt-img-holder.tpg-el-image-wrap.has-no-thumbnail > .tpg-post-link[data-id=\\"3065\\"][target=\\"_self\\"]"]'[39m │ [32m'<a data-id="3065" href="https://wesendcv.com/carpenter-jobs-in-europe-with-visa-sponsorship-and-accommodation/" class="tpg-post-link" target="_self">\t\t\n\t\t</a>'[39m                                                         │ [32m'[2]'[39m      │
-│ 8       │ [32m'[".rt-img-holder.tpg-el-image-wrap.has-no-thumbnail > .tpg-post-link[data-id=\\"3062\\"][target=\\"_self\\"]"]'[39m │ [32m'<a data-id="3062" href="https://wesendcv.com/nurse-job-in-europe-with-visa-sponsorship-and-accommodation/" class="tpg-post-link" target="_self">\t\t\n\t\t</a>'[39m                                                              │ [32m'[2]'[39m      │
-│ 9       │ [32m'[".rt-img-holder.tpg-el-image-wrap.has-no-thumbnail > .tpg-post-link[data-id=\\"3058\\"][target=\\"_self\\"]"]'[39m │ [32m'<a data-id="3058" href="https://wesendcv.com/plumber-job-in-europe-with-visa-sponsorship-and-accommodation/" class="tpg-post-link" target="_self">\t\t\n\t\t</a>'[39m                                                            │ [32m'[2]'[39m      │
-│ 10      │ [32m'[".rt-img-holder.tpg-el-image-wrap.has-no-thumbnail > .tpg-post-link[data-id=\\"3054\\"][target=\\"_self\\"]"]'[39m │ [32m'<a data-id="3054" href="https://wesendcv.com/electrician-job-in-europe-with-visa-sponsorship-and-accommodation/" class="tpg-post-link" target="_self">\t\t\n\t\t</a>'[39m                                                        │ [32m'[2]'[39m      │
-│ 11      │ [32m'[".rt-img-holder.tpg-el-image-wrap.has-no-thumbnail > .tpg-post-link[data-id=\\"3051\\"][target=\\"_self\\"]"]'[39m │ [32m'<a data-id="3051" href="https://wesendcv.com/truck-driver-job-in-europe-with-visa-sponsorship-and-accommodation/" class="tpg-post-link" target="_self">\t\t\n\t\t</a>'[39m                                                       │ [32m'[2]'[39m      │
-│ 12      │ [32m'[".rt-img-holder.tpg-el-image-wrap.has-no-thumbnail > .tpg-post-link[data-id=\\"3038\\"][target=\\"_self\\"]"]'[39m │ [32m'<a data-id="3038" href="https://wesendcv.com/painter-job-in-europe-with-visa-sponsorship-and-accommodation/" class="tpg-post-link" target="_self">\t\t\n\t\t</a>'[39m                                                            │ [32m'[2]'[39m      │
-│ 13      │ [32m'[".elementor-element-6245a4e"]'[39m                                                                                 │ [32m'<div class="elementor-element elementor-element-6245a4e e-con-full e-flex e-con e-child" data-id="6245a4e" data-element_type="container">'[39m                                                                                   │ [32m'[3]'[39m      │
-│ 14      │ [32m'[".elementor-social-icon-facebook > .elementor-screen-only"]'[39m                                                   │ [32m'<span class="elementor-screen-only">Facebook</span>'[39m                                                                                                                                                                         │ [32m'[3]'[39m      │
-│ 15      │ [32m'[".elementor-social-icon-twitter > .elementor-screen-only"]'[39m                                                    │ [32m'<span class="elementor-screen-only">Twitter</span>'[39m                                                                                                                                                                          │ [32m'[3]'[39m      │
-│ 16      │ [32m'[".elementor-social-icon-youtube > .elementor-screen-only"]'[39m                                                    │ [32m'<span class="elementor-screen-only">Youtube</span>'[39m                                                                                                                                                                          │ [32m'[3]'[39m      │
-│ 17      │ [32m'[".elementor-element-70821a5"]'[39m                                                                                 │ [32m'<div class="elementor-element elementor-element-70821a5 e-con-full e-flex e-con e-child" data-id="70821a5" data-element_type="container">'[39m                                                                                   │ [32m'[3]'[39m      │
-│ 18      │ [32m'[".elementor-element-5979ffd"]'[39m                                                                                 │ [32m'<div class="elementor-element elementor-element-5979ffd elementor-widget elementor-widget-text-editor" data-id="5979ffd" data-element_type="widget" data-widget_type="text-editor.default">'[39m                                 │ [32m'[3]'[39m      │
-│ 19      │ [32m'[".elementor-element-f244bcd"]'[39m                                                                                 │ [32m'<div class="elementor-element elementor-element-f244bcd e-con-full e-flex e-con e-child" data-id="f244bcd" data-element_type="container">'[39m                                                                                   │ [32m'[3]'[39m      │
-└─────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴────────────┘
-
-[[ATTACHMENT|test-results\accessibility-a11y-WeSendC-8729c--detectable-a11y-violations-chromium\test-failed-1.png]]
-
-[[ATTACHMENT|test-results\accessibility-a11y-WeSendC-8729c--detectable-a11y-violations-chromium\error-context.md]]
+<![CDATA[
+[[ATTACHMENT|test-results\network-resilience-offline-724e5--network-failure-gracefully-chromium\test-failed-1.png]]
 ]]>
 </system-out>
 </testcase>
