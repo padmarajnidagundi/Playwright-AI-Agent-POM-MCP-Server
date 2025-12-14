@@ -9,6 +9,7 @@
     "auth:generate": "node ./scripts/generate-auth.js"
   },
   "devDependencies": {
+    "@pact-foundation/pact": "^16.0.2",
     "@playwright/test": "^1.35.0",
     "@types/node": "^24.10.1",
     "axe-playwright": "^2.2.2"

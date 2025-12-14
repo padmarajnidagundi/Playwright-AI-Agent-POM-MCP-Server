@@ -1,35 +1,6 @@
-<testsuites id="" name="" tests="1" failures="1" skipped="0" errors="0" time="6.101136">
-<testsuite name="network-resilience\offline.spec.ts" timestamp="2025-12-13T08:26:45.737Z" hostname="chromium" tests="1" failures="1" skipped="0" time="1.738" errors="0">
-<testcase name="page handles offline/network failure gracefully" classname="network-resilience\offline.spec.ts" time="1.738">
-<failure message="offline.spec.ts:4:5 page handles offline/network failure gracefully" type="FAILURE">
-<![CDATA[  [chromium] › network-resilience\offline.spec.ts:4:5 › page handles offline/network failure gracefully 
-
-    Error: expect(received).toContain(expected) // indexOf
-
-    Expected substring: "net::ERR_ABORTED"
-    Received string:    "page.goto: net::ERR_FAILED at https://wesendcv.com/
-    Call log:
-      - navigating to \"https://wesendcv.com/\", waiting until \"domcontentloaded\"
-    "
-
-      15 |   } catch (error) {
-      16 |     // Navigation failed, which is expected in offline mode
-    > 17 |     expect(error.message).toContain('net::ERR_ABORTED' || 'failed');
-         |                           ^
-      18 |   }
-      19 | });
-        at C:\Playwright-AI-Agent-POM-MCP-Server\tests\network-resilience\offline.spec.ts:17:27
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    ..\test-results\network-resilience-offline-724e5--network-failure-gracefully-chromium\test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-]]>
-</failure>
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\network-resilience-offline-724e5--network-failure-gracefully-chromium\test-failed-1.png]]
-]]>
-</system-out>
+<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="2.7992980000000003">
+<testsuite name="network-resilience\offline.spec.ts" timestamp="2025-12-13T08:29:35.391Z" hostname="chromium" tests="1" failures="0" skipped="0" time="0.839" errors="0">
+<testcase name="page handles offline/network failure gracefully" classname="network-resilience\offline.spec.ts" time="0.839">
 </testcase>
 </testsuite>
 </testsuites>
