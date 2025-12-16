@@ -1,6 +1,37 @@
-<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="2.7992980000000003">
-<testsuite name="network-resilience\offline.spec.ts" timestamp="2025-12-13T08:29:35.391Z" hostname="chromium" tests="1" failures="0" skipped="0" time="0.839" errors="0">
-<testcase name="page handles offline/network failure gracefully" classname="network-resilience\offline.spec.ts" time="0.839">
+<testsuites id="" name="" tests="1" failures="1" skipped="0" errors="0" time="8.338487">
+<testsuite name="i18n-tests\i18n.spec.ts" timestamp="2025-12-16T15:58:10.606Z" hostname="chromium" tests="1" failures="1" skipped="0" time="5.844" errors="0">
+<testcase name="WeSendCV page has correct language attributes and basic translations" classname="i18n-tests\i18n.spec.ts" time="5.844">
+<failure message="i18n.spec.ts:4:5 WeSendCV page has correct language attributes and basic translations" type="FAILURE">
+<![CDATA[  [chromium] › i18n-tests\i18n.spec.ts:4:5 › WeSendCV page has correct language attributes and basic translations 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "en"
+    Received: "en-US"
+
+       8 |   // Check that the document has a lang attribute (e.g., 'en' for English)
+       9 |   const lang = await page.getAttribute('html', 'lang');
+    > 10 |   expect(lang).toBe('en'); // Assuming English; adjust if site supports other langs
+         |                ^
+      11 |
+      12 |   // Verify some key text is present (basic translation check)
+      13 |   await expect(page.locator('text=/We Send Your Resume/i')).toBeVisible();
+        at C:\Playwright-AI-Agent-POM-MCP-Server\tests\i18n-tests\i18n.spec.ts:10:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\i18n-tests-i18n-WeSendCV-p-aa085-utes-and-basic-translations-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\test-results\i18n-tests-i18n-WeSendCV-p-aa085-utes-and-basic-translations-chromium\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\i18n-tests-i18n-WeSendCV-p-aa085-utes-and-basic-translations-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\i18n-tests-i18n-WeSendCV-p-aa085-utes-and-basic-translations-chromium\error-context.md]]
+]]>
+</system-out>
 </testcase>
 </testsuite>
 </testsuites>
