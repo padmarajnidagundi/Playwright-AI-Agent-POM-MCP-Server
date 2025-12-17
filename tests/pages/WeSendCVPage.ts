@@ -47,6 +47,13 @@ export class WeSendCVPage {
   }
 
   /**
+   * Click on the first job link
+   */
+  async clickFirstJobLink() {
+    await this.page.locator('.tpg-post-link').first().click();
+  }
+
+  /**
    * Get page title
    */
   async getPageTitle(): Promise<string> {
