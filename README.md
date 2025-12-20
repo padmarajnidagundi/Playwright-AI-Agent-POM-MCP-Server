@@ -52,7 +52,8 @@ Playwright-AI-Agent-POM-MCP-Server/
 │   ├── pages/                     # Page Objects
 │   │   └── WeSendCVPage.ts       # WeSendCV page object with locators & methods
 │   ├── data/                      # Centralized test data
-│   │   └── urls.ts               # URL constants
+│   │   ├── urls.ts                # URL constants
+│   │   └── users.ts               # User test data
 │   ├── unit-tests/                # Unit tests - API & utility functions
 │   │   └── api.spec.ts           # Basic API operations
 │   ├── integration-tests/         # Integration tests - E2E workflows
@@ -62,11 +63,28 @@ Playwright-AI-Agent-POM-MCP-Server/
 │   ├── security-tests/            # Security tests - Auth & access control
 │   │   └── auth.spec.ts          # Authentication & authorization checks
 │   ├── validation-tests/          # Validation tests - Input validation
-│   │   └── input-validation.spec.ts # Data integrity & format validation
+│   │   ├── broken-links.spec.ts  # Broken link detection
+│   │   ├── input-validation.spec.ts # Data integrity & format validation
+│   │   └── invalid-route.spec.ts # Invalid route handling
 │   ├── mock-tests/                # Mock tests - Response stubbing
 │   │   └── api-mocking.spec.ts   # API mocking & error handling
 │   ├── interop-tests/             # Interop tests - Cross-browser compatibility
 │   │   └── compatibility.spec.ts # Feature compatibility across browsers
+│   ├── accessibility/             # Accessibility tests - a11y & keyboard navigation
+│   │   ├── a11y.spec.ts          # Axe accessibility checks
+│   │   └── keyboard.spec.ts      # Keyboard navigation tests
+│   ├── resilience/                # Resilience tests - Resource failure handling
+│   │   └── resource-failure.spec.ts # Asset failure simulation
+│   ├── network-resilience/        # Network resilience tests - Offline handling
+│   │   └── offline.spec.ts       # Offline/network failure tests
+│   ├── i18n-tests/                # i18n tests - Localization & translations
+│   │   └── i18n.spec.ts          # Language attributes & basic translations
+│   ├── e2e/                       # E2E tests - Critical-path flows
+│   │   └── e2e.spec.ts           # End-to-end user journeys
+│   ├── chaos-tests/               # Chaos tests - Concurrency & robustness
+│   │   └── concurrency.spec.ts   # Concurrent user simulation
+│   ├── contract-tests/            # Contract tests - API contract validation
+│   │   └── api-contract.spec.ts  # API contract checks
 │   ├── vibe.spec.ts              # Animation timing + perceptual diff test
 │   └── wesendcv.spec.ts          # Smoke + negative tests (uses POM + data)
 ├── tools/
@@ -183,7 +201,7 @@ Tests automatically run on every push to `main` and `develop` branches, and on a
 **Features:**
 - ✅ Runs on **Ubuntu** and **Windows** (cross-platform reliability)
 - ✅ Tests against **Node 18.x** and **20.x** (version compatibility)
-- ✅ Executes **all 7 test categories** in parallel
+- ✅ Executes **all test categories** in parallel
 - ✅ Uploads **test reports**, **traces**, and **artifacts** for review
 - ✅ Publishes **unit test results** directly on GitHub PR checks
 
@@ -211,13 +229,20 @@ Tests automatically run on every push to `main` and `develop` branches, and on a
 | Validation Tests | Positive | Test input validation, data integrity, and format validation | `tests/validation-tests/` |
 | Mock Tests | Positive & Negative | Test error handling via response mocking and stubbing | `tests/mock-tests/` |
 | Interop Tests | Positive | Verify cross-browser compatibility and feature support | `tests/interop-tests/` |
+| Accessibility Tests | Positive | Catch ARIA/contrast/keyboard issues | `tests/accessibility/` |
+| Resilience Tests | Positive & Negative | Simulate failed/slow responses and verify UI error states | `tests/resilience/` |
+| Network-resilience Tests | Negative | Simulate offline/network failure and verify graceful handling | `tests/network-resilience/` |
+| i18n Tests | Positive | Verify translations, RTL layouts, and pluralization | `tests/i18n-tests/` |
+| E2E Tests | Positive | Full user journeys (signup, purchase, upload) using POM | `tests/e2e/` |
+| Chaos Tests | Positive | Simulate concurrent users or DB failures for robustness | `tests/chaos-tests/` |
+| Contract Tests | Positive | Ensure frontend/backend API compatibility | `tests/contract-tests/` |
 | Vibe Test | Positive | Validate animation timing and visual consistency via perceptual diffs | `tests/vibe.spec.ts` |
 | WeSendCV Smoke | Positive | Verify homepage loads with expected content | `tests/wesendcv.spec.ts` |
 | WeSendCV 404 | Negative | Validate proper 404 error handling on invalid routes | `tests/wesendcv.spec.ts` |
 
 ## Types of Tests
 
-This repository demonstrates **7 categories of testing** to provide comprehensive quality coverage:
+This repository demonstrates **13 categories of testing** to provide comprehensive quality coverage:
 
 ### 1. **Unit Tests** (`tests/unit-tests/`)
 - **Focus:** Individual functions and utilities
@@ -253,6 +278,36 @@ This repository demonstrates **7 categories of testing** to provide comprehensiv
 - **Focus:** Cross-browser compatibility and feature support
 - **Example:** CSS Grid support, ES6 features, touch events, viewport preferences
 - **Run:** `npx playwright test tests/interop-tests/`
+
+### 8. **Accessibility Tests** (`tests/accessibility/`)
+- **Focus:** ARIA, contrast, keyboard navigation, and screen reader support
+- **Example:** Axe accessibility checks, keyboard-only navigation, focus order
+- **Run:** `npx playwright test tests/accessibility/`
+
+### 9. **Resilience Tests** (`tests/resilience/`)
+- **Focus:** Handling of resource failures and degraded conditions
+- **Example:** Asset loading failures, partial outages, error state UI
+- **Run:** `npx playwright test tests/resilience/`
+
+### 10. **Network-resilience Tests** (`tests/network-resilience/`)
+- **Focus:** Offline and network failure scenarios
+- **Example:** No internet, slow connections, connection drops
+- **Run:** `npx playwright test tests/network-resilience/`
+
+### 11. **i18n Tests** (`tests/i18n-tests/`)
+- **Focus:** Localization, translations, and international support
+- **Example:** Language attributes, RTL layouts, pluralization
+- **Run:** `npx playwright test tests/i18n-tests/`
+
+### 12. **E2E Tests** (`tests/e2e/`)
+- **Focus:** Critical-path user journeys and full workflows
+- **Example:** Signup, purchase, upload flows using POM
+- **Run:** `npx playwright test tests/e2e/`
+
+### 13. **Chaos Tests** (`tests/chaos-tests/`)
+- **Focus:** Concurrency, race conditions, and system robustness
+- **Example:** Multiple users, DB failures, random delays
+- **Run:** `npx playwright test tests/chaos-tests/`
 
 ## Architecture: Page Object Model (POM)
 
