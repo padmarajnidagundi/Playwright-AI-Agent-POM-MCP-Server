@@ -1,54 +1,6 @@
-<testsuites id="" name="" tests="1" failures="1" skipped="0" errors="0" time="18.869122">
-<testsuite name="e2e\e2e.spec.ts" timestamp="2025-12-17T21:09:58.458Z" hostname="chromium" tests="1" failures="1" skipped="0" time="16.035" errors="0">
-<testcase name="critical path: homepage to job page" classname="e2e\e2e.spec.ts" time="16.035">
-<failure message="e2e.spec.ts:4:5 critical path: homepage to job page" type="FAILURE">
-<![CDATA[  [chromium] › e2e\e2e.spec.ts:4:5 › critical path: homepage to job page ───────────────────────────
-
-    TimeoutError: locator.click: Timeout 10000ms exceeded.
-    Call log:
-      - waiting for locator('.tpg-post-link').first()
-        - locator resolved to <a data-id="3083" target="_self" class="tpg-post-link" href="https://wesendcv.com/construction-jobs-with-visa-sponsorship-in-europe/">⇆⇆↵⇆⇆</a>
-      - attempting click action
-        2 × waiting for element to be visible, enabled and stable
-          - element is not visible
-        - retrying click action
-        - waiting 20ms
-        2 × waiting for element to be visible, enabled and stable
-          - element is not visible
-        - retrying click action
-          - waiting 100ms
-        19 × waiting for element to be visible, enabled and stable
-           - element is not visible
-         - retrying click action
-           - waiting 500ms
-
-
-       at pages\WeSendCVPage.ts:53
-
-      51 |    */
-      52 |   async clickFirstJobLink() {
-    > 53 |     await this.page.locator('.tpg-post-link').first().click();
-         |                                                       ^
-      54 |   }
-      55 |
-      56 |   /**
-        at WeSendCVPage.clickFirstJobLink (C:\Playwright-AI-Agent-POM-MCP-Server\tests\pages\WeSendCVPage.ts:53:55)
-        at C:\Playwright-AI-Agent-POM-MCP-Server\tests\e2e\e2e.spec.ts:10:16
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    ..\test-results\e2e-e2e-critical-path-homepage-to-job-page-chromium\test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Error Context: ..\test-results\e2e-e2e-critical-path-homepage-to-job-page-chromium\error-context.md
-]]>
-</failure>
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\e2e-e2e-critical-path-homepage-to-job-page-chromium\test-failed-1.png]]
-
-[[ATTACHMENT|test-results\e2e-e2e-critical-path-homepage-to-job-page-chromium\error-context.md]]
-]]>
-</system-out>
+<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="9.737748000000002">
+<testsuite name="chaos-tests\concurrency.spec.ts" timestamp="2025-12-20T13:59:54.164Z" hostname="chromium" tests="1" failures="0" skipped="0" time="7.135" errors="0">
+<testcase name="simulate concurrent users accessing homepage" classname="chaos-tests\concurrency.spec.ts" time="7.135">
 </testcase>
 </testsuite>
 </testsuites>
