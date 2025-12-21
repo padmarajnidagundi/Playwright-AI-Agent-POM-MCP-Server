@@ -41,6 +41,23 @@ This is my a compact, self-contained Playwright demo project showcasing motion a
 - **CI-friendly:** GitHub Actions workflow that runs tests on both Ubuntu and Windows with full diagnostics.
 - **Negative testing:** Error handling validation (e.g., 404 responses, invalid navigation).
 
+## Tech Stack and Libraries
+
+| Category          | Technology/Library     | Version      | Purpose                                                                 |
+|-------------------|-------------------------|--------------|-------------------------------------------------------------------------|
+| Language          | TypeScript             | -            | Used for test files, configuration, and utilities                       |
+| Runtime           | Node.js                | 18.x or 20.x | As specified in CI                                                      |
+| Testing Framework | Playwright             | -            | For end-to-end and unit testing                                         |
+| Build Tool        | npm                    | -            | For dependency management and scripts                                   |
+| Library           | @playwright/test       | ^1.35.0      | Main Playwright testing library for browser automation and assertions  |
+| Library           | @pact-foundation/pact  | ^16.0.2      | For contract testing (API consumer-provider agreements)                |
+| Library           | @types/node            | ^24.10.1     | TypeScript type definitions for Node.js                                |
+| Library           | axe-playwright         | ^2.2.2       | Accessibility testing integration with Axe                             |
+| CI/CD             | GitHub Actions         | -            | Configured for cross-platform testing on Ubuntu and Windows            |
+| Visual Diffing    | Pixelmatch             | -            | Custom tools for pixel-level comparison                                |
+| MCP/Chatmode      | -                      | -            | Integration hints for AI-assisted debugging                            |
+| Configuration     | Playwright config      | -            | For multi-browser support (Chromium, Firefox, WebKit)                  |
+
 ## Repository Layout
 
 ```
