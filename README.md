@@ -491,7 +491,7 @@ MIT License - feel free to use in your projects
 
 **LinkedIn:** https://www.linkedin.com/in/padmarajn/
 
-**NpmJs:** [Add your NpmJs profile link here]
+**NpmJs:** [I will add here soon]
 
 **GitHub:** https://github.com/padmarajnidagundi/Playwright-AI-Agent-POM-MCP-Server
 
