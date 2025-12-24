@@ -1,6 +1,10 @@
-<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="9.737748000000002">
-<testsuite name="chaos-tests\concurrency.spec.ts" timestamp="2025-12-20T13:59:54.164Z" hostname="chromium" tests="1" failures="0" skipped="0" time="7.135" errors="0">
-<testcase name="simulate concurrent users accessing homepage" classname="chaos-tests\concurrency.spec.ts" time="7.135">
+<testsuites id="" name="" tests="3" failures="0" skipped="0" errors="0" time="12.49932699999999">
+<testsuite name="ping-tests\ping.spec.ts" timestamp="2025-12-24T09:00:07.879Z" hostname="chromium" tests="3" failures="0" skipped="0" time="23.632" errors="0">
+<testcase name="Ping Tests - Endpoint Availability › should ping base URL successfully" classname="ping-tests\ping.spec.ts" time="7.199">
+</testcase>
+<testcase name="Ping Tests - Endpoint Availability › should ping homepage endpoint" classname="ping-tests\ping.spec.ts" time="7.271">
+</testcase>
+<testcase name="Ping Tests - Endpoint Availability › negative: invalid endpoint should return 404" classname="ping-tests\ping.spec.ts" time="9.162">
 </testcase>
 </testsuite>
 </testsuites>
