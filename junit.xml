@@ -1,6 +1,8 @@
-<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="14.247981">
-<testsuite name="response-code-tests\response-code.spec.ts" timestamp="2025-12-25T14:17:56.731Z" hostname="chromium" tests="1" failures="0" skipped="0" time="10.112" errors="0">
-<testcase name="Response Code Tests › homepage returns 200 OK" classname="response-code-tests\response-code.spec.ts" time="10.112">
+<testsuites id="" name="" tests="2" failures="0" skipped="0" errors="0" time="3.119183">
+<testsuite name="contract-tests\api-response-compare.spec.ts" timestamp="2025-12-27T15:52:23.386Z" hostname="chromium" tests="2" failures="0" skipped="0" time="2.794" errors="0">
+<testcase name="API Response Compare Tests › should fetch and validate WordPress posts API response" classname="contract-tests\api-response-compare.spec.ts" time="1.228">
+</testcase>
+<testcase name="API Response Compare Tests › negative: should handle invalid API endpoint" classname="contract-tests\api-response-compare.spec.ts" time="1.566">
 </testcase>
 </testsuite>
 </testsuites>
