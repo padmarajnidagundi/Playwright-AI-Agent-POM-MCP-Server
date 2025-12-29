@@ -505,6 +505,8 @@ MIT License - feel free to use in your projects
 
 Chatmode prompts are text prompts (instructions + context) you feed to an LLM (remote or local). They can be used manually (paste into a chat UI) or programmatically (via an API or an MCP-connected local agent). Below are concise usage patterns and quick steps for both approaches.
 
+In your chat mode folder, make a filename .md file and add your requirements to generate the auto test. You're providing the exact context for your tests.
+
 This repository includes ready-made chatmode prompts under `.github/chatmodes/` (for example `healer.chatmode.md`, `planner.chatmode.md`). These are structured, human-authored prompts you give to an LLM (remote or local) to drive test planning, debugging, and automated repair.
 
 Two common ways to use chatmode prompts:
