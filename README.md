@@ -509,6 +509,24 @@ In your chat mode folder, make a filename .md file and add your requirements to 
 
 This repository includes ready-made chatmode prompts under `.github/chatmodes/` (for example `healer.chatmode.md`, `planner.chatmode.md`). These are structured, human-authored prompts you give to an LLM (remote or local) to drive test planning, debugging, and automated repair.
 
+**One short example of a chatmode prompt file you could place in .github/chatmodes/ to drive auto test generation:**
+
+## Goal
+Generate automated tests for the given codebase.
+
+## Context
+- Language: TypeScript
+- Test framework: Jest
+- Focus on edge cases and error handling
+- Do not mock business logic unless required
+
+## Instructions
+1. Analyze the provided source files.
+2. Identify critical paths and failure scenarios.
+3. Generate clear, maintainable Jest test cases.
+4. Output only test code, no explanations.
+
+
 Two common ways to use chatmode prompts:
 
 - Manual / hosted LLM (fast):
