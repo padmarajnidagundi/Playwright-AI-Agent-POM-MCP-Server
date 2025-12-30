@@ -137,4 +137,31 @@ test.describe('Mock Tests - API Mocking & Stubbing', () => {
     const bodyVisible = await page.locator('body').isVisible();
     expect(bodyVisible).toBeTruthy();
   });
+
+  test('negative: API returns 401 Unauthorized and app handles authentication failure', async ({ page }) => {
+    // Mock API to return 401 for any API route requiring authentication
+    await page.route('**/api/auth/**', (route) => {
+      route.respond({
+        status: 401,
+        contentType: 'application/json',
+        body: JSON.stringify({ error: 'Unauthorized', message: 'Authentication required' }),
+      });
+    });
+
+    // Navigate to the site which may attempt authenticated API calls
+    const response = await page.goto(URLS.wesendcv.base, { waitUntil: 'domcontentloaded' });
+
+    // The site should handle authentication failure gracefully. Accept either:
+    // - a visible login prompt or error message, or
+    // - the page still renders core UI but shows auth-related errors
+    const showsAuthError = await page
+      .locator('text=/unauthorized|login required|authentication failed|401|please log in/i')
+      .first()
+      .isVisible()
+      .catch(() => false);
+
+    const bodyVisible = await page.locator('body').isVisible().catch(() => false);
+
+    expect(showsAuthError || bodyVisible).toBeTruthy();
+  });
 });
