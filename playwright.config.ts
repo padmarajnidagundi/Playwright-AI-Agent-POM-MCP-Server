@@ -19,6 +19,7 @@ export default defineConfig({
     actionTimeout: 10_000,
     screenshot: 'only-on-failure',
     trace: 'on-first-retry',
+    retries: 1,
     // storageState: 'auth.user.json', // optional, documented in README
   },
   projects: [
