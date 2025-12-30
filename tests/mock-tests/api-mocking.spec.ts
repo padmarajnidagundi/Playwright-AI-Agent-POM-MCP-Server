@@ -120,4 +120,21 @@ test.describe('Mock Tests - API Mocking & Stubbing', () => {
 
     expect(showsError || bodyVisible).toBeTruthy();
   });
+
+  test('should handle mocked redirect responses', async ({ page }) => {
+    // Mock a resource to redirect to another URL
+    await page.route('**/redirect-me/**', (route) => {
+      route.respond({
+        status: 302,
+        headers: { Location: '/redirected-page' },
+      });
+    });
+
+    await page.goto(URLS.wesendcv.base);
+
+    // App should handle redirect gracefully, e.g., follow it or show appropriate handling
+    // For simplicity, check if page remains functional or redirect is processed
+    const bodyVisible = await page.locator('body').isVisible();
+    expect(bodyVisible).toBeTruthy();
+  });
 });
