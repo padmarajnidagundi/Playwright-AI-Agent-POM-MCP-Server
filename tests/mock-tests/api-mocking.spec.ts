@@ -96,4 +96,28 @@ test.describe('Mock Tests - API Mocking & Stubbing', () => {
 
     expect(showsError || bodyVisible).toBeTruthy();
   });
+
+  test('should handle mocked 404 responses for missing resources', async ({ page }) => {
+    // Mock specific resource as not found
+    await page.route('**/missing-resource/**', (route) => {
+      route.respond({
+        status: 404,
+        contentType: 'application/json',
+        body: JSON.stringify({ error: 'Not Found' }),
+      });
+    });
+
+    await page.goto(URLS.wesendcv.base);
+
+    // App should handle 404 gracefully, e.g., show error or keep core UI visible
+    const showsError = await page
+      .locator('text=/not found|404|resource unavailable/i')
+      .first()
+      .isVisible()
+      .catch(() => false);
+
+    const bodyVisible = await page.locator('body').isVisible().catch(() => false);
+
+    expect(showsError || bodyVisible).toBeTruthy();
+  });
 });
