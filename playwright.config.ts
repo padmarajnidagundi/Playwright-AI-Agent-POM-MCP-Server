@@ -14,7 +14,7 @@ export default defineConfig({
     ['list'],
   ],
   use: {
-    baseURL: 'https://www.saucedemo.com',
+    baseURL: 'https://www.wesendcv.com',
     headless: true,
     actionTimeout: 10_000,
     screenshot: 'only-on-failure',
