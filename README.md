@@ -102,6 +102,7 @@ Playwright-AI-Agent-POM-MCP-Server/
 │   │   └── concurrency.spec.ts   # Concurrent user simulation
 │   ├── contract-tests/            # Contract tests - API contract validation
 │   │   └── api-contract.spec.ts  # API contract checks
+│   ├── mobile.spec.ts             # Mobile testing example with device emulation
 │   ├── vibe.spec.ts              # Animation timing + perceptual diff test
 │   └── wesendcv.spec.ts          # Smoke + negative tests (uses POM + data)
 ├── tools/
@@ -121,6 +122,7 @@ Playwright-AI-Agent-POM-MCP-Server/
 | `tests/pages/WeSendCVPage.ts` | Page Object for WeSendCV site with locators, navigation, and assertion methods |
 | `tests/data/urls.ts` | Centralized URL constants for WeSendCV and other test targets |
 | `tests/wesendcv.spec.ts` | Test specs using POM + data (smoke & negative tests) |
+| `tests/mobile.spec.ts` | Mobile testing example with device emulation |
 | `tests/vibe.spec.ts` | Animation timing + perceptual diff test |
 | `tools/compare.js` | CLI comparator — creates baseline if missing, writes `diff.png` |
 | `demo/index.html` | Animated demo UI exposing `window.sampleAnimationFrames(durationMs)` |
@@ -156,7 +158,7 @@ npx playwright install
 ```powershell
 npm test
 ```
-Runs all tests across all configured browsers (Chromium, Firefox, WebKit).
+Runs all tests across all configured browsers (Chromium, Firefox, WebKit, Mobile Chrome, Mobile Safari).
 
 ### Specific Test
 ```powershell
@@ -166,6 +168,18 @@ npx playwright test tests/wesendcv.spec.ts --project=chromium
 ### Headed Mode (for debugging)
 ```powershell
 npx playwright test tests/vibe.spec.ts --headed --project=chromium
+```
+
+### Mobile Tests
+```powershell
+# Test on Mobile Chrome (Pixel 5 emulation)
+npx playwright test tests/mobile.spec.ts --project="Mobile Chrome"
+
+# Test on Mobile Safari (iPhone 12 emulation)  
+npx playwright test tests/mobile.spec.ts --project="Mobile Safari"
+
+# Run mobile tests on all mobile projects
+npx playwright test tests/mobile.spec.ts --project="Mobile Chrome" --project="Mobile Safari"
 ```
 
 ### CI-style Test Run
