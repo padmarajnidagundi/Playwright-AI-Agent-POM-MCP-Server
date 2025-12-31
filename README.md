@@ -7,6 +7,7 @@
 - [Key Files Reference](#key-files-reference)
 - [Installation](#installation)
 - [Running Tests](#running-tests)
+- [Mobile Testing](#mobile-testing)
 - [Dev Server](#dev-server)
 - [Perceptual Diff / Baselines Workflow](#perceptual-diff--baselines-workflow)
 - [CI/CD Notes](#cicd-notes)
@@ -170,7 +171,14 @@ npx playwright test tests/wesendcv.spec.ts --project=chromium
 npx playwright test tests/vibe.spec.ts --headed --project=chromium
 ```
 
-### Mobile Tests
+### CI-style Test Run
+```powershell
+npm run test:ci
+```
+Matches the GitHub Actions pipeline configuration.
+
+## Mobile Testing
+
 ```powershell
 # Test on Mobile Chrome (Pixel 5 emulation)
 npx playwright test tests/mobile.spec.ts --project="Mobile Chrome"
@@ -181,12 +189,6 @@ npx playwright test tests/mobile.spec.ts --project="Mobile Safari"
 # Run mobile tests on all mobile projects
 npx playwright test tests/mobile.spec.ts --project="Mobile Chrome" --project="Mobile Safari"
 ```
-
-### CI-style Test Run
-```powershell
-npm run test:ci
-```
-Matches the GitHub Actions pipeline configuration.
 
 ## Dev Server
 
