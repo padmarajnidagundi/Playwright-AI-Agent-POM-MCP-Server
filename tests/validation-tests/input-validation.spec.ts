@@ -17,7 +17,8 @@ test.describe('Validation Tests - Input Validation', () => {
         return false;
       }
     },
-    length: (text: string, min: number, max: number) => text.length >= min && text.length <= max,
+    length: (text: string, min: number, max: number) =>
+      text.length >= min && text.length <= max,
   };
 
   test('should validate email addresses correctly', () => {
@@ -45,9 +46,9 @@ test.describe('Validation Tests - Input Validation', () => {
   });
 
   test('should reject malicious input patterns', () => {
-    const isSafe = (input: string) => !/[<>\"\'`]/g.test(input);
+    const isSafe = (input: string) => !/[<>"'`]/g.test(input);
     expect(isSafe('normal text')).toBeTruthy();
     expect(isSafe('<script>alert("xss")</script>')).toBeFalsy();
-    expect(isSafe('test\'s data')).toBeFalsy();
+    expect(isSafe("test's data")).toBeFalsy();
   });
 });

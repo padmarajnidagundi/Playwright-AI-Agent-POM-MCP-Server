@@ -50,13 +50,15 @@ test.describe('Security Tests - Auth & Access Control', () => {
     // Use the API/request client to simulate an authenticated request with an invalid token
     const badToken = 'Bearer invalid.token.value';
 
-    const apiResponse = await page.request.get(`${URLS.wesendcv.base}/admin`, {
-      headers: {
-        Authorization: badToken,
-      },
-      // short timeout for negative check
-      timeout: 5000,
-    }).catch(() => null);
+    const apiResponse = await page.request
+      .get(`${URLS.wesendcv.base}/admin`, {
+        headers: {
+          Authorization: badToken,
+        },
+        // short timeout for negative check
+        timeout: 5000,
+      })
+      .catch(() => null);
 
     const status = apiResponse?.status() ?? 0;
 
@@ -66,11 +68,17 @@ test.describe('Security Tests - Auth & Access Control', () => {
     } else if (status === 200) {
       // If the server responds 200 for the admin endpoint with an invalid token,
       // ensure the response body does not expose admin-specific content.
-      const bodyText = apiResponse ? await apiResponse.text().catch(() => '') : '';
-      expect(bodyText).not.toMatch(/\b(admin|dashboard|manage users|user list|administrator)\b/i);
+      const bodyText = apiResponse
+        ? await apiResponse.text().catch(() => '')
+        : '';
+      expect(bodyText).not.toMatch(
+        /\b(admin|dashboard|manage users|user list|administrator)\b/i
+      );
     } else {
       // Any other status is unexpected for the negative test
-      throw new Error(`Unexpected status code ${status} for invalid token test`);
+      throw new Error(
+        `Unexpected status code ${status} for invalid token test`
+      );
     }
   });
 });

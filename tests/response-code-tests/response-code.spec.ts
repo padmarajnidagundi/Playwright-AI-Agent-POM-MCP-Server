@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
 import { WeSendCVPage } from '../pages/WeSendCVPage';
-import { URLS } from '../data/urls';
 
 test.describe('Response Code Tests', () => {
   let wesendcvPage: WeSendCVPage;

@@ -7,7 +7,9 @@ import { URLS } from '../data/urls';
  */
 
 test.describe('API Response Compare Tests', () => {
-  test('should fetch and validate WordPress posts API response', async ({ request }) => {
+  test('should fetch and validate WordPress posts API response', async ({
+    request,
+  }) => {
     const response = await request.get(URLS.wesendcv.api.posts);
     expect(response.status()).toBe(200);
 

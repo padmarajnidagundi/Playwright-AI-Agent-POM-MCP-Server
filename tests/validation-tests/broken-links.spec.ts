@@ -1,10 +1,14 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 import { URLS } from '../data/urls';
 
 test.describe('WeSendCV - Broken Links Validation', () => {
   const baseURL = URLS.wesendcv.base;
   const visitedLinks = new Set<string>();
-  const brokenLinks: Array<{ url: string; statusCode: number; context: string }> = [];
+  const brokenLinks: Array<{
+    url: string;
+    statusCode: number;
+    context: string;
+  }> = [];
   const externalLinks: Array<{ url: string; statusCode: number }> = [];
 
   /**
@@ -34,7 +38,7 @@ test.describe('WeSendCV - Broken Links Validation', () => {
   /**
    * Extract all links from current page
    */
-  async function extractLinks(page: any): Promise<string[]> {
+  async function extractLinks(page: Page): Promise<string[]> {
     const links = await page.locator('a[href]').all();
     const hrefs: string[] = [];
 
@@ -51,7 +55,9 @@ test.describe('WeSendCV - Broken Links Validation', () => {
         ) {
           // Convert relative URLs to absolute
           const absoluteUrl =
-            href.startsWith('http') || href.startsWith('//') ? href : `${baseURL}${href}`;
+            href.startsWith('http') || href.startsWith('//')
+              ? href
+              : `${baseURL}${href}`;
           hrefs.push(absoluteUrl);
         }
       }
@@ -63,12 +69,14 @@ test.describe('WeSendCV - Broken Links Validation', () => {
    * Check link status via HEAD or GET request
    */
   async function checkLinkStatus(
-    page: any,
+    page: Page,
     url: string
   ): Promise<{ statusCode: number; valid: boolean }> {
     try {
       // Try HEAD request first (faster)
-      let response = await page.request.head(url, { timeout: 10000 }).catch(() => null);
+      let response = await page.request
+        .head(url, { timeout: 10000 })
+        .catch(() => null);
 
       // If HEAD fails, try GET
       if (!response || response.status() === 405) {
@@ -97,7 +105,10 @@ test.describe('WeSendCV - Broken Links Validation', () => {
       crawledPages.add(normalized);
 
       try {
-        await page.goto(currentPage, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await page.goto(currentPage, {
+          waitUntil: 'domcontentloaded',
+          timeout: 30000,
+        });
         const links = await extractLinks(page);
 
         for (const link of links) {
@@ -146,7 +157,9 @@ test.describe('WeSendCV - Broken Links Validation', () => {
     if (brokenLinks.length > 0) {
       console.log(`\n🔴 Broken Links Found:`);
       brokenLinks.forEach(({ url, statusCode, context }) => {
-        console.log(`   • ${url} (Status: ${statusCode}) - Found on: ${context}`);
+        console.log(
+          `   • ${url} (Status: ${statusCode}) - Found on: ${context}`
+        );
       });
     }
 

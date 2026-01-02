@@ -2,7 +2,9 @@ import { test } from '@playwright/test';
 import { injectAxe, checkA11y } from 'axe-playwright';
 import { WeSendCVPage } from '../pages/WeSendCVPage';
 
-test('WeSendCV page should have no detectable a11y violations', async ({ page }) => {
+test('WeSendCV page should have no detectable a11y violations', async ({
+  page,
+}) => {
   const weSend = new WeSendCVPage(page);
   await weSend.gotoHomepage();
 
