@@ -1,5 +1,5 @@
 
-# Playwright AI Agent: Advanced E2E Testing with Page Object Model (POM), MCP Server Integration, and AI-Assisted Debugging for Web and Mobile Applications
+# Playwright AI Agent - Advanced E2E Testing with Page Object Model (POM), MCP Server Integration, and AI-Assisted Debugging for Web and Mobile Applications
 
 ## Comprehensive Guide to Automated Testing with Playwright, AI Agents, and MCP Server
 
