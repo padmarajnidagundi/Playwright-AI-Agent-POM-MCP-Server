@@ -41,6 +41,7 @@ As a seasoned test automation engineer with over 5 years of experience in softwa
 - [License & Attribution](#license--attribution)
 - [About the Author](#about-the-author)
 - [Contact & Support](#contact--support)
+- [Frequently Asked Questions (FAQ)](#frequently-asked-questions-faq)
 - [Questions or Feedback?](#questions-or-feedback)
 
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
@@ -640,6 +641,63 @@ Thank you for considering contributing to this project! Here are some guidelines
 ## Code of Conduct
 
 Please adhere to the [Code of Conduct](CODE_OF_CONDUCT.md) in all interactions.
+
+## Frequently Asked Questions (FAQ)
+
+### What is Playwright?
+Playwright is a modern, open-source automation framework for end-to-end testing of web applications. It supports multiple browsers (Chromium, Firefox, WebKit) and provides powerful APIs for interacting with web pages, handling network requests, and validating UI behavior.
+
+### How does the AI Agent work in this repository?
+The AI Agent integrates with MCP (Model Context Protocol) servers to enable AI-assisted debugging and test generation. It uses chatmode prompts to communicate with LLMs, allowing programmatic assistance in identifying issues, generating test cases, and optimizing test suites.
+
+### What is the Page Object Model (POM)?
+The Page Object Model is a design pattern that creates an object repository for web UI elements. In this repo, page objects (e.g., `WeSendCVPage.ts`) encapsulate selectors, actions, and assertions, making tests more maintainable and reducing code duplication.
+
+### How do I set up the MCP Server?
+To enable MCP integration:
+1. Ensure Playwright CLI supports `run-test-mcp-server` (update if needed).
+2. Run `npx playwright run-test-mcp-server` in the background.
+3. Use chatmode prompts from `.github/chatmodes/` to interact with the AI agent for debugging and test generation.
+
+### How do I run the tests?
+- Full suite: `npm test`
+- Specific test: `npx playwright test tests/wesendcv.spec.ts --project=chromium`
+- Headed mode: Add `--headed` for visual debugging
+- CI mode: `npm run test:ci`
+
+### What are the 13 test categories in this repository?
+1. **Unit Tests**: Isolate individual functions.
+2. **Integration Tests**: Validate multi-component workflows.
+3. **Performance Tests**: Measure load times and metrics.
+4. **Security Tests**: Check authentication and access.
+5. **Validation Tests**: Ensure input integrity.
+6. **Mock Tests**: Simulate failures via stubbing.
+7. **Interop Tests**: Verify cross-browser compatibility.
+8. **Accessibility Tests**: Audit ARIA and keyboard navigation.
+9. **Resilience Tests**: Handle resource failures.
+10. **Network-resilience Tests**: Simulate offline scenarios.
+11. **i18n Tests**: Test localization and translations.
+12. **E2E Tests**: Full user journeys.
+13. **Chaos Tests**: Concurrency and robustness.
+
+### How do I contribute to this repository?
+1. Fork the repo.
+2. Create a feature branch.
+3. Make changes and commit.
+4. Push and create a pull request.
+5. Follow the Code of Conduct.
+
+### Why are my tests failing on Windows?
+Common issues: Increase timeouts in `playwright.config.ts`, use stable selectors, or run with `--retries=1`. Ensure Playwright browsers are installed with `npx playwright install --with-deps`.
+
+### Can I use this for mobile testing?
+Yes! The repo includes mobile projects (e.g., "Mobile Chrome", "Mobile Safari") for emulating devices. Run tests with `--project="Mobile Chrome"`.
+
+### How do I update visual baselines?
+Run `node tools/compare.js demo/baseline.png artifacts/current.png artifacts/diff.png --threshold=0.03`. If changes are approved, commit the new `demo/baseline.png`.
+
+### Is this repository production-ready?
+Yes, it's designed for production use with CI/CD integration, comprehensive test coverage, and best practices. Adapt the patterns to your needs.
 
 ## Questions?
 
