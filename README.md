@@ -1,5 +1,5 @@
 
-# Playwright AI Agent: Advanced E2E Testing with Page Object Model (POM), MCP Server Integration, and AI-Assisted Debugging for Web and Mobile Applications
+# Playwright AI Agent - Advanced E2E Testing with Page Object Model (POM), MCP Server Integration, and AI-Assisted Debugging for Web and Mobile Applications
 
 ## Comprehensive Guide to Automated Testing with Playwright, AI Agents, and MCP Server
 
@@ -527,7 +527,7 @@ MIT License - feel free to use in your projects
 
 ## About the Author
 
-**Padmaraj Nidagundi** is a seasoned Quality Assurance Engineer with over 5 years of experience in software testing and automation. Specializing in end-to-end testing frameworks, he has expertise in Playwright, Selenium, and modern testing methodologies. Padmaraj has contributed to open-source projects and is passionate about improving software quality through innovative testing solutions.
+**Padmaraj Nidagundi** is a seasoned Quality Assurance Engineer with many years of experience in software testing and automation. Specializing in end-to-end testing frameworks, he has expertise in Playwright, Selenium, and modern testing methodologies. Padmaraj has contributed to open-source projects and is passionate about improving software quality through innovative testing solutions.
 
 His work focuses on:
 - Developing scalable test automation frameworks
