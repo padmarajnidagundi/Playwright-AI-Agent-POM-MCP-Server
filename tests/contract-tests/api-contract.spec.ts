@@ -36,7 +36,9 @@ test('API contract test for user data endpoint', async ({ page }) => {
   });
 
   // Make the request using Playwright's API testing
-  const response = await page.request.get(`${pact.mockService.baseUrl}/api/user/123`);
+  const response = await page.request.get(
+    `${pact.mockService.baseUrl}/api/user/123`
+  );
   expect(response.status()).toBe(200);
   const data = await response.json();
   expect(data).toEqual({

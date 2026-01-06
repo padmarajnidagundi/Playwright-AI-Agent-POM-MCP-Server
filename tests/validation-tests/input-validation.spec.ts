@@ -17,7 +17,8 @@ test.describe('Validation Tests - Input Validation', () => {
         return false;
       }
     },
-    length: (text: string, min: number, max: number) => text.length >= min && text.length <= max,
+    length: (text: string, min: number, max: number) =>
+      text.length >= min && text.length <= max,
   };
 
   test('should validate email addresses correctly', () => {

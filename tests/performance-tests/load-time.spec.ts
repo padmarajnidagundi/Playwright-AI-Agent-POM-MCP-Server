@@ -10,7 +10,9 @@ test.describe('Performance Tests - Load Time & Metrics', () => {
   test('should load homepage within acceptable time', async ({ page }) => {
     const startTime = Date.now();
 
-    const response = await page.goto(URLS.wesendcv.base, { waitUntil: 'networkidle' });
+    const response = await page.goto(URLS.wesendcv.base, {
+      waitUntil: 'networkidle',
+    });
 
     const loadTime = Date.now() - startTime;
 
@@ -24,9 +26,13 @@ test.describe('Performance Tests - Load Time & Metrics', () => {
 
     // Get performance metrics
     const metrics = await page.evaluate(() => {
-      const navTiming = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+      const navTiming = performance.getEntriesByType(
+        'navigation'
+      )[0] as PerformanceNavigationTiming;
       return {
-        domContentLoaded: navTiming.domContentLoadedEventEnd - navTiming.domContentLoadedEventStart,
+        domContentLoaded:
+          navTiming.domContentLoadedEventEnd -
+          navTiming.domContentLoadedEventStart,
         loadComplete: navTiming.loadEventEnd - navTiming.loadEventStart,
       };
     });
@@ -60,16 +66,24 @@ test.describe('Performance Tests - Load Time & Metrics', () => {
 
     try {
       // Try to navigate with a short timeout
-      await page.goto(URLS.wesendcv.base, { waitUntil: 'domcontentloaded', timeout: 3000 }).catch(() => {
-        // Expected to timeout or partially load
-      });
+      await page
+        .goto(URLS.wesendcv.base, {
+          waitUntil: 'domcontentloaded',
+          timeout: 3000,
+        })
+        .catch(() => {
+          // Expected to timeout or partially load
+        });
     } catch (error) {
       // Timeout is expected in this scenario
       expect(error).toBeDefined();
     }
 
     // Assert that the page does NOT crash and body is accessible (even if incomplete)
-    const bodyExists = await page.locator('body').isVisible().catch(() => false);
+    const bodyExists = await page
+      .locator('body')
+      .isVisible()
+      .catch(() => false);
     expect(bodyExists || true).toBeTruthy(); // Page resilient to timeout scenarios
   });
 });

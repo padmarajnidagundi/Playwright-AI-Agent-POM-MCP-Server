@@ -11,9 +11,15 @@ export class WeSendCVPage {
   }
 
   // Locators
-  get bodyElement() { return this.page.locator('body'); }
-  get mainContent() { return this.page.locator('main, header, [role="main"], h1'); }
-  get errorIndicator() { return this.page.locator('text=/404|not found|page not found/i'); }
+  get bodyElement() {
+    return this.page.locator('body');
+  }
+  get mainContent() {
+    return this.page.locator('main, header, [role="main"], h1');
+  }
+  get errorIndicator() {
+    return this.page.locator('text=/404|not found|page not found/i');
+  }
 
   /**
    * Navigate to the homepage
@@ -71,8 +77,10 @@ export class WeSendCVPage {
    * Verify 404 error is displayed
    */
   async verify404ErrorDisplayed() {
-    await expect(this.errorIndicator.first()).toBeVisible({ timeout: 5000 }).catch(() => {
-      // Some sites may not have visible 404 text, but status code check is sufficient
-    });
+    await expect(this.errorIndicator.first())
+      .toBeVisible({ timeout: 5000 })
+      .catch(() => {
+        // Some sites may not have visible 404 text, but status code check is sufficient
+      });
   }
 }

@@ -5,7 +5,10 @@ export function parseCurrency(text: string) {
   return parseFloat(cleaned || '0');
 }
 
-export async function waitForNavigationIfNeeded(page, action: () => Promise<void>) {
+export async function waitForNavigationIfNeeded(
+  page,
+  action: () => Promise<void>
+) {
   // use Playwright built-in waitWhen navigation may or may not occur
   await Promise.all([action(), page.waitForLoadState('load')]);
 }

@@ -10,7 +10,7 @@ test('simulate concurrent users accessing homepage', async ({ browser }) => {
   ]);
 
   // Create pages for each context
-  const pages = await Promise.all(contexts.map(ctx => ctx.newPage()));
+  const pages = await Promise.all(contexts.map((ctx) => ctx.newPage()));
 
   // Simulate concurrent navigation
   const navigations = pages.map(async (page) => {
@@ -22,8 +22,8 @@ test('simulate concurrent users accessing homepage', async ({ browser }) => {
 
   // Wait for all to complete
   const titles = await Promise.all(navigations);
-  titles.forEach(title => expect(title).toContain('WeSendCV'));
+  titles.forEach((title) => expect(title).toContain('WeSendCV'));
 
   // Clean up
-  await Promise.all(contexts.map(ctx => ctx.close()));
+  await Promise.all(contexts.map((ctx) => ctx.close()));
 });

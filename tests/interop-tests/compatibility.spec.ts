@@ -7,7 +7,10 @@ import { URLS } from '../data/urls';
  */
 
 test.describe('Interop Tests - Cross-Browser Compatibility', () => {
-  test('should render consistently across browsers', async ({ page, browserName }) => {
+  test('should render consistently across browsers', async ({
+    page,
+    browserName,
+  }) => {
     await page.goto(URLS.wesendcv.base);
 
     // Verify core elements render in all browsers
@@ -61,22 +64,32 @@ test.describe('Interop Tests - Cross-Browser Compatibility', () => {
     await page.goto(URLS.wesendcv.base);
 
     // Check viewport meta tag
-    const viewportMeta = await page.locator('meta[name="viewport"]').getAttribute('content');
+    const viewportMeta = await page
+      .locator('meta[name="viewport"]')
+      .getAttribute('content');
 
     if (viewportMeta) {
       expect(viewportMeta).toContain('width=device-width');
     }
   });
 
-  test('negative: invalid path returns error or displays not-found text', async ({ page }) => {
+  test('negative: invalid path returns error or displays not-found text', async ({
+    page,
+  }) => {
     // Use a clearly invalid path to verify the site responds with an error
     const invalidPath = '/invalid-page-that-does-not-exist-for-negative-test';
-    const response = await page.goto(`${URLS.wesendcv.base}${invalidPath}`, { waitUntil: 'domcontentloaded' });
+    const response = await page.goto(`${URLS.wesendcv.base}${invalidPath}`, {
+      waitUntil: 'domcontentloaded',
+    });
 
     const status = response?.status() ?? 0;
 
     // Some sites return a 200 with a custom 404 page; also check for common 404 text
-    const showsNotFoundText = await page.locator('text=/404|not found|page not found/i').first().isVisible().catch(() => false);
+    const showsNotFoundText = await page
+      .locator('text=/404|not found|page not found/i')
+      .first()
+      .isVisible()
+      .catch(() => false);
 
     // Assert that the response is an error (>=400) OR the page contains a not-found indicator
     expect(status >= 400 || showsNotFoundText).toBeTruthy();

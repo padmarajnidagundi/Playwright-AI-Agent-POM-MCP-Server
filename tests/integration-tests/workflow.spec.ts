@@ -47,8 +47,10 @@ test.describe('Integration Tests - E2E Workflows', () => {
 
   test('should handle invalid page navigation gracefully', async () => {
     // Attempt to navigate to non-existent page
-    const response = await wesendcvPage.gotoInvalidPage('/invalid-page-that-does-not-exist');
-    
+    const response = await wesendcvPage.gotoInvalidPage(
+      '/invalid-page-that-does-not-exist'
+    );
+
     // Verify 404 status code is returned
     expect(response?.status()).toBe(404);
 

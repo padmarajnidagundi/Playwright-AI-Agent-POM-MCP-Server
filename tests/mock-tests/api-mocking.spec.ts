@@ -14,7 +14,9 @@ test.describe('Mock Tests - API Mocking & Stubbing', () => {
     });
 
     // Navigate to page that may call APIs
-    const response = await page.goto(URLS.wesendcv.base, { waitUntil: 'domcontentloaded' });
+    const response = await page.goto(URLS.wesendcv.base, {
+      waitUntil: 'domcontentloaded',
+    });
 
     // Page should still load even if APIs fail
     expect(response?.ok()).toBeTruthy();
@@ -36,7 +38,9 @@ test.describe('Mock Tests - API Mocking & Stubbing', () => {
     expect(loadTime).toBeGreaterThan(1000);
   });
 
-  test('should handle mocked unavailable service gracefully', async ({ page }) => {
+  test('should handle mocked unavailable service gracefully', async ({
+    page,
+  }) => {
     // Mock external resource as unavailable
     await page.route('**/external/**', (route) => {
       route.respond({
@@ -70,7 +74,9 @@ test.describe('Mock Tests - API Mocking & Stubbing', () => {
     expect(result.data).toBe('mocked response');
   });
 
-  test('negative: API returns 500 and app handles it gracefully', async ({ page }) => {
+  test('negative: API returns 500 and app handles it gracefully', async ({
+    page,
+  }) => {
     // Mock API to return 500 for any API route
     await page.route('**/api/**', (route) => {
       route.respond({
@@ -87,17 +93,24 @@ test.describe('Mock Tests - API Mocking & Stubbing', () => {
     // - a visible error/alert message, or
     // - the page still renders core UI (body visible) but internal errors were handled.
     const showsError = await page
-      .locator('text=/error|something went wrong|service unavailable|internal server error/i')
+      .locator(
+        'text=/error|something went wrong|service unavailable|internal server error/i'
+      )
       .first()
       .isVisible()
       .catch(() => false);
 
-    const bodyVisible = await page.locator('body').isVisible().catch(() => false);
+    const bodyVisible = await page
+      .locator('body')
+      .isVisible()
+      .catch(() => false);
 
     expect(showsError || bodyVisible).toBeTruthy();
   });
 
-  test('should handle mocked 404 responses for missing resources', async ({ page }) => {
+  test('should handle mocked 404 responses for missing resources', async ({
+    page,
+  }) => {
     // Mock specific resource as not found
     await page.route('**/missing-resource/**', (route) => {
       route.respond({
@@ -116,7 +129,10 @@ test.describe('Mock Tests - API Mocking & Stubbing', () => {
       .isVisible()
       .catch(() => false);
 
-    const bodyVisible = await page.locator('body').isVisible().catch(() => false);
+    const bodyVisible = await page
+      .locator('body')
+      .isVisible()
+      .catch(() => false);
 
     expect(showsError || bodyVisible).toBeTruthy();
   });
@@ -138,13 +154,18 @@ test.describe('Mock Tests - API Mocking & Stubbing', () => {
     expect(bodyVisible).toBeTruthy();
   });
 
-  test('negative: API returns 401 Unauthorized and app handles authentication failure', async ({ page }) => {
+  test('negative: API returns 401 Unauthorized and app handles authentication failure', async ({
+    page,
+  }) => {
     // Mock API to return 401 for any API route requiring authentication
     await page.route('**/api/auth/**', (route) => {
       route.respond({
         status: 401,
         contentType: 'application/json',
-        body: JSON.stringify({ error: 'Unauthorized', message: 'Authentication required' }),
+        body: JSON.stringify({
+          error: 'Unauthorized',
+          message: 'Authentication required',
+        }),
       });
     });
 
@@ -155,12 +176,17 @@ test.describe('Mock Tests - API Mocking & Stubbing', () => {
     // - a visible login prompt or error message, or
     // - the page still renders core UI but shows auth-related errors
     const showsAuthError = await page
-      .locator('text=/unauthorized|login required|authentication failed|401|please log in/i')
+      .locator(
+        'text=/unauthorized|login required|authentication failed|401|please log in/i'
+      )
       .first()
       .isVisible()
       .catch(() => false);
 
-    const bodyVisible = await page.locator('body').isVisible().catch(() => false);
+    const bodyVisible = await page
+      .locator('body')
+      .isVisible()
+      .catch(() => false);
 
     expect(showsAuthError || bodyVisible).toBeTruthy();
   });

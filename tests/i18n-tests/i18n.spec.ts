@@ -1,7 +1,9 @@
 import { test, expect } from '@playwright/test';
 import { WeSendCVPage } from '../pages/WeSendCVPage';
 
-test('WeSendCV page has correct language attributes and basic translations', async ({ page }) => {
+test('WeSendCV page has correct language attributes and basic translations', async ({
+  page,
+}) => {
   const weSend = new WeSendCVPage(page);
   await weSend.gotoHomepage();
 
