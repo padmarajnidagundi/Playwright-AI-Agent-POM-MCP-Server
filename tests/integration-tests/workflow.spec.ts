@@ -33,7 +33,7 @@ test.describe('Integration Tests - E2E Workflows', () => {
   test('should handle multi-step navigation workflow', async ({ page }) => {
     // Step 1: Load homepage
     await wesendcvPage.gotoHomepage();
-    let currentUrl = page.url();
+    const currentUrl = page.url();
     expect(currentUrl).toContain('wesendcv.com');
 
     // Step 2: Verify content presence
@@ -45,7 +45,7 @@ test.describe('Integration Tests - E2E Workflows', () => {
     expect(links).toBeGreaterThan(0);
   });
 
-  test('should handle invalid page navigation gracefully', async ({ page }) => {
+  test('should handle invalid page navigation gracefully', async () => {
     // Attempt to navigate to non-existent page
     const response = await wesendcvPage.gotoInvalidPage('/invalid-page-that-does-not-exist');
     

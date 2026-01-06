@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 import { URLS } from '../data/urls';
 
 test.describe('WeSendCV - Broken Links Validation', () => {
@@ -34,7 +34,7 @@ test.describe('WeSendCV - Broken Links Validation', () => {
   /**
    * Extract all links from current page
    */
-  async function extractLinks(page: any): Promise<string[]> {
+  async function extractLinks(page: Page): Promise<string[]> {
     const links = await page.locator('a[href]').all();
     const hrefs: string[] = [];
 
@@ -63,7 +63,7 @@ test.describe('WeSendCV - Broken Links Validation', () => {
    * Check link status via HEAD or GET request
    */
   async function checkLinkStatus(
-    page: any,
+    page: Page,
     url: string
   ): Promise<{ statusCode: number; valid: boolean }> {
     try {

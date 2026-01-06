@@ -47,8 +47,8 @@ test.describe('Interop Tests - Cross-Browser Compatibility', () => {
   test('should handle touch events gracefully', async ({ page }) => {
     await page.goto(URLS.wesendcv.base);
 
-    // Check if touch events are supported
-    const touchSupport = await page.evaluate(() => {
+    // Check if touch events are supported (but don't assert on it)
+    await page.evaluate(() => {
       return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     });
 

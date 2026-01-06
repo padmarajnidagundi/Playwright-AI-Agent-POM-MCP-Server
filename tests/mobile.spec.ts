@@ -8,7 +8,7 @@ test.describe('Mobile testing example', () => {
     wesendcvPage = new WeSendCVPage(page);
   });
 
-  test('homepage loads on mobile', async ({ page }) => {
+  test('homepage loads on mobile', async () => {
     // Navigate to homepage
     const resp = await wesendcvPage.gotoHomepage();
     expect(resp && resp.ok()).toBeTruthy();

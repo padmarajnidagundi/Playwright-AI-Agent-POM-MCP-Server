@@ -9,7 +9,7 @@ test.describe('WeSendCV smoke checks', () => {
     wesendcvPage = new WeSendCVPage(page);
   });
 
-  test('homepage loads, title and main visible, save screenshot', async ({ page }, testInfo) => {
+  test('homepage loads, title and main visible, save screenshot', async (_, testInfo) => {
     // Navigate to homepage
     const resp = await wesendcvPage.gotoHomepage();
     expect(resp && resp.ok()).toBeTruthy();

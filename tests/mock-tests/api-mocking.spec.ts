@@ -81,7 +81,7 @@ test.describe('Mock Tests - API Mocking & Stubbing', () => {
     });
 
     // Navigate to the site which may call the API
-    const response = await page.goto(URLS.wesendcv.base, { waitUntil: 'domcontentloaded' });
+    await page.goto(URLS.wesendcv.base, { waitUntil: 'domcontentloaded' });
 
     // The site should handle the server error gracefully. Accept either:
     // - a visible error/alert message, or
@@ -149,7 +149,7 @@ test.describe('Mock Tests - API Mocking & Stubbing', () => {
     });
 
     // Navigate to the site which may attempt authenticated API calls
-    const response = await page.goto(URLS.wesendcv.base, { waitUntil: 'domcontentloaded' });
+    await page.goto(URLS.wesendcv.base, { waitUntil: 'domcontentloaded' });
 
     // The site should handle authentication failure gracefully. Accept either:
     // - a visible login prompt or error message, or

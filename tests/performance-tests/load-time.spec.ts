@@ -37,12 +37,9 @@ test.describe('Performance Tests - Load Time & Metrics', () => {
 
   test('should load resources efficiently', async ({ page }) => {
     let resourceCount = 0;
-    let totalSize = 0;
 
-    page.on('response', (response) => {
+    page.on('response', () => {
       resourceCount++;
-      // Simulate size tracking (actual size would be from headers)
-      totalSize += 1024; // Placeholder
     });
 
     await page.goto(URLS.wesendcv.base, { waitUntil: 'networkidle' });
