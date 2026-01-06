@@ -1,6 +1,56 @@
-<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="10.352073">
-<testsuite name="mobile.spec.ts" timestamp="2025-12-31T11:58:06.081Z" hostname="chromium" tests="1" failures="0" skipped="0" time="6.423" errors="0">
-<testcase name="Mobile testing example › homepage loads on mobile" classname="mobile.spec.ts" time="6.423">
+<testsuites id="" name="" tests="2" failures="1" skipped="0" errors="0" time="17.799284">
+<testsuite name="e2e\e2e.spec.ts" timestamp="2026-01-06T15:27:49.351Z" hostname="chromium" tests="2" failures="1" skipped="0" time="29.034" errors="0">
+<testcase name="critical path: homepage to job page" classname="e2e\e2e.spec.ts" time="15.468">
+<failure message="e2e.spec.ts:4:5 critical path: homepage to job page" type="FAILURE">
+<![CDATA[  [chromium] › e2e\e2e.spec.ts:4:5 › critical path: homepage to job page ───────────────────────────
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('.tpg-post-link').first()
+        - locator resolved to <a data-id="3083" target="_self" class="tpg-post-link" href="https://wesendcv.com/construction-jobs-with-visa-sponsorship-in-europe/">⇆⇆↵⇆⇆</a>
+      - attempting click action
+        2 × waiting for element to be visible, enabled and stable
+          - element is not visible
+        - retrying click action
+        - waiting 20ms
+        2 × waiting for element to be visible, enabled and stable
+          - element is not visible
+        - retrying click action
+          - waiting 100ms
+        19 × waiting for element to be visible, enabled and stable
+           - element is not visible
+         - retrying click action
+           - waiting 500ms
+
+
+       at pages\WeSendCVPage.ts:53
+
+      51 |    */
+      52 |   async clickFirstJobLink() {
+    > 53 |     await this.page.locator('.tpg-post-link').first().click();
+         |                                                       ^
+      54 |   }
+      55 |
+      56 |   /**
+        at WeSendCVPage.clickFirstJobLink (C:\Playwright-AI-Agent-POM-MCP-Server\tests\pages\WeSendCVPage.ts:53:55)
+        at C:\Playwright-AI-Agent-POM-MCP-Server\tests\e2e\e2e.spec.ts:10:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\e2e-e2e-critical-path-homepage-to-job-page-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\test-results\e2e-e2e-critical-path-homepage-to-job-page-chromium\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\e2e-e2e-critical-path-homepage-to-job-page-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\e2e-e2e-critical-path-homepage-to-job-page-chromium\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="404 error handling" classname="e2e\e2e.spec.ts" time="13.566">
 </testcase>
 </testsuite>
 </testsuites>

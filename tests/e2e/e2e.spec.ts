@@ -13,3 +13,9 @@ test('critical path: homepage to job page', async ({ page }) => {
   await expect(page.locator('h1')).toBeVisible();
   await expect(page.locator('text=/job|position/i')).toBeVisible();
 });
+
+test('404 error handling', async ({ page }) => {
+  const weSend = new WeSendCVPage(page);
+  await weSend.gotoInvalidPage('/non-existent-page');
+  await weSend.verify404ErrorDisplayed();
+});
