@@ -18,4 +18,9 @@ test.describe('Response Code Tests', () => {
     const resp = await wesendcvPage.gotoInvalidPage(URLS.wesendcv.invalidPage);
     expect(resp?.status()).toBe(404);
   });
+
+  test('API posts endpoint returns 200 OK', async ({ request }) => {
+    const resp = await request.get(URLS.wesendcv.api.posts);
+    expect(resp.status()).toBe(200);
+  });
 });
