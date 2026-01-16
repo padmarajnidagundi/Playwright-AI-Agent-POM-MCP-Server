@@ -1,0 +1,1 @@
+// Focus on the first focusable element (assuming there's a link or button)
