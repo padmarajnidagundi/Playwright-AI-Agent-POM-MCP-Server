@@ -129,8 +129,17 @@ Playwright-AI-Agent-POM-MCP-Server/
 ├── tools/
 │   ├── compare.js                # Pixelmatch-based diff comparator CLI
 │   └── dev-server.js             # Static HTTP server for demo/
-├── .github/workflows/
-│   └── ci.yml                    # GitHub Actions multi-OS pipeline
+├── .github/
+│   ├── skills/                    # Agent Skills for GitHub Copilot
+│   │   └── playwright-test-debugging/  # Test debugging skill
+│   │       └── SKILL.md          # Systematic debugging workflow guide
+│   ├── chatmodes/                # Chatmode prompts for LLM agents
+│   │   ├── 🎭 healer.chatmode.md
+│   │   ├── 🎭 planner.chatmode.md
+│   │   └── ...
+│   ├── copilot-instructions.md   # Repository-wide Copilot instructions
+│   └── workflows/
+│       └── ci.yml                # GitHub Actions multi-OS pipeline
 ├── playwright.config.ts           # Playwright configuration (browsers, timeouts, traces)
 ├── package.json                   # NPM scripts and dependencies
 └── README.md                      # This file
@@ -702,6 +711,109 @@ Security & best practices
 - For local LLMs (Ollama, text-generation-webui, HF Inference on premise), point the agent to the local host endpoint instead of a public API.
 
 If you want, I can scaffold `tools/ai-server.js` and the `ai:start` script for you, and add a short example that posts a chatmode file to the agent. Tell me whether you prefer a hosted provider (OpenAI/Anthropic) or a local LLM host and I'll create the scaffold.
+
+---
+
+## Agent Skills — Automated Test Debugging with GitHub Copilot
+
+### What are Agent Skills?
+
+**Agent Skills** are specialized instruction sets that teach GitHub Copilot and other AI coding assistants how to perform repository-specific tasks. They follow an [open standard](https://github.com/agentskills/agentskills) and work with:
+- ✅ GitHub Copilot coding agent
+- ✅ GitHub Copilot CLI
+- ✅ VS Code agent mode (stable support coming soon)
+
+When you ask Copilot a question or request help, it automatically loads relevant skills based on context, giving it deep knowledge of your project's patterns and workflows.
+
+### Available Skills in This Repository
+
+#### 🎭 `playwright-test-debugging`
+**Location:** `.github/skills/playwright-test-debugging/SKILL.md`
+
+A comprehensive guide for debugging failing Playwright tests using this repository's Page Object Model architecture.
+
+**What it teaches Copilot:**
+- 7-step systematic debugging workflow (gather results → identify failure → reproduce → fix → verify)
+- Repository-specific patterns (POM structure, test data centralization, visual diff workflow)
+- Failure type identification (selectors, timing, visual regression, network, accessibility)
+- Artifact analysis (test-results, traces, screenshots, error-context.md)
+- PowerShell commands for local reproduction
+- Anti-patterns to avoid (no hard sleeps, no raw selectors in tests, etc.)
+
+**When Copilot uses this skill:**
+- When you ask to debug a failing test
+- When investigating test failures or analyzing test results
+- When working with error reports or CI failures
+- When fixing flaky tests or test timeouts
+
+**Example interactions:**
+```
+You: "The wesendcv test is failing with a timeout"
+Copilot: [loads playwright-test-debugging skill]
+         "Let me check the test results and reproduce this locally..."
+         
+You: "Debug the accessibility test failures in CI"
+Copilot: [uses the skill's guidance to check error-context.md, 
+         analyze axe violations, and suggest fixes]
+```
+
+### How Skills Work
+
+1. **Automatic activation:** Copilot detects when a skill is relevant based on your prompt
+2. **Context injection:** The `SKILL.md` file is loaded into Copilot's context
+3. **Guided execution:** Copilot follows the skill's instructions, examples, and best practices
+4. **Tool usage:** Skills can reference scripts, examples, or resources in the skill directory
+
+### Creating Custom Skills
+
+Add your own project-specific skills to extend Copilot's capabilities:
+
+**1. Create a skill directory:**
+```powershell
+mkdir .github/skills/your-skill-name
+```
+
+**2. Create `SKILL.md` with YAML frontmatter:**
+```markdown
+---
+name: your-skill-name
+description: Brief description of what this skill does and when to use it
+---
+
+# Skill Instructions
+
+Your detailed instructions, examples, and guidelines here...
+```
+
+**3. Add supporting resources (optional):**
+- Scripts for automation
+- Example files or templates
+- Configuration snippets
+
+**Example skill ideas for this repo:**
+- `visual-regression-workflow` — Guide for baseline image management
+- `mobile-test-creation` — Patterns for adding mobile device tests
+- `page-object-scaffolding` — Template for creating new page objects
+- `ci-failure-analysis` — Debugging GitHub Actions workflow failures
+- `performance-test-optimization` — Guide for load time improvements
+
+### Skills vs Chatmodes vs Custom Instructions
+
+| Feature | Purpose | Location | When to Use |
+|---------|---------|----------|-------------|
+| **Agent Skills** | Specialized, contextual instructions loaded when relevant | `.github/skills/` | Complex workflows, debugging guides, repository-specific patterns |
+| **Custom Instructions** | Global rules applied to almost every interaction | `.github/copilot-instructions.md` | Coding standards, architecture rules, project conventions |
+| **Chatmodes** | Structured prompts for specific agent personas or workflows | `.github/chatmodes/` | Role-based agents (healer, planner, generator), one-off automation |
+
+**Best practice:** Use skills for detailed, step-by-step guidance that Copilot should access when relevant. Use custom instructions for simple rules that apply broadly.
+
+### Learn More
+
+- 📖 [GitHub Agent Skills Documentation](https://docs.github.com/en/copilot/concepts/agents/about-agent-skills)
+- 🌟 [Community Skills Collection](https://github.com/github/awesome-copilot)
+- 🛠️ [Anthropic Skills Repository](https://github.com/anthropics/skills)
+
+---
 
 # Contributing to Playwright AI Agent POM MCP Server
 
