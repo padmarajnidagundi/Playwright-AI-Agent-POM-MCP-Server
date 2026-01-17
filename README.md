@@ -32,6 +32,7 @@
 ![Downloads](https://img.shields.io/badge/downloads-1.2k-blue)
 ![Stars](https://img.shields.io/badge/stars-245-yellow)
 ![Last Updated](https://img.shields.io/badge/updated-January%202026-informational)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/padmarajnidagundi/Playwright-AI-Agent-POM-MCP-Server)
 
 **Enterprise-grade Playwright test automation framework** by **Padmaraj Nidagundi**, Senior QA Automation Engineer with 8+ years of experience in test automation architecture. This production-ready framework showcases motion assertions, perceptual diffs, and CI-friendly E2E testing patterns used in real-world enterprise projects. Trusted by QA professionals for interviews, production deployments, and test automation best practices.
 
