@@ -256,6 +256,44 @@ The `.github/workflows/ci.yml` pipeline:
 
 For deterministic visual diffs in CI, always commit baselines locally after approval.
 
+### DevSecOps & Security Automation
+
+**Security Testing Integration:**
+- Static analysis (SAST) with ESLint security plugins and `npm audit` in CI
+- Dependabot enabled for automated dependency updates and vulnerability alerts
+- Secrets scanning in CI using truffleHog and GitHub secret scanning
+
+**Security Test Categories:**
+- Security-focused Playwright tests in `tests/security-tests/` (e.g., XSS, CSRF, auth)
+- Contract tests in `tests/contract-tests/` include negative cases for auth and input validation
+
+**CI/CD Enhancements:**
+- `.github/workflows/ci.yml` includes jobs for security audit and secrets scanning:
+```yaml
+  security-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: npm install
+      - name: Run npm audit
+        run: npm audit --audit-level=high
+
+  secrets-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scan for secrets
+        uses: trufflesecurity/trufflehog@v3.56.3
+```
+
+**Sample Security Test:**
+See `tests/security-tests/xss.spec.ts` for an XSS prevention test example.
+
+**Security Policy:**
+- Vulnerabilities should be reported privately (see SECURITY.md)
+- No hardcoded secrets or credentials in the repository
+
 ### GitHub Actions: Auto-Run Tests on Every Commit
 
 Tests automatically run on every push to `main` and `develop` branches, and on all pull requests.

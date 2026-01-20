@@ -38,6 +38,22 @@ jobs:
 
       - name: Run Integration Tests
         run: npx playwright test tests/integration-tests/
+
+  security-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: npm install
+      - name: Run npm audit
+        run: npm audit --audit-level=high
+
+  secrets-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scan for secrets
+        uses: trufflesecurity/trufflehog@v3.56.3
         continue-on-error: true
 
       - name: Run Performance Tests

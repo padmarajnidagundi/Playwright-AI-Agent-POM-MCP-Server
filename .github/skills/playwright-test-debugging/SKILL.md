@@ -31,10 +31,41 @@ When debugging failing Playwright tests in this repository, follow this systemat
 - Check if baseline images in `demo/baseline.png` need updating
 - Verify threshold settings in the comparison (default 0.03)
 
+
 **Network/API Issues:**
 - Check mock configurations in `tests/mock-tests/`
 - Verify API contracts in `tests/contract-tests/`
 - Use `page.waitForResponse()` to ensure API calls complete
+
+## DevSecOps Guidance
+
+**Security Testing Integration:**
+- Run static analysis (SAST) with ESLint security plugins and `npm audit` in CI
+- Enable Dependabot for dependency updates and vulnerability alerts
+- Add secrets scanning (GitHub secret scanning or truffleHog) to CI
+
+**Security Test Categories:**
+- Add security-focused Playwright tests in `tests/security-tests/` (e.g., XSS, CSRF, auth)
+- Extend contract tests in `tests/contract-tests/` with negative cases for auth and input validation
+
+**CI/CD Enhancements:**
+- Update `.github/workflows/ci.yml` to include jobs for SAST, dependency audit, secrets scanning, and security tests
+
+**Documentation:**
+- Add a `SECURITY.md` at repo root for vulnerability reporting
+- Document security checks and test locations in `README.md`
+
+**Example CI Addition:**
+```yaml
+	security-audit:
+		runs-on: ubuntu-latest
+		steps:
+			- uses: actions/checkout@v4
+			- name: Install dependencies
+				run: npm install
+			- name: Run npm audit
+				run: npm audit --audit-level=high
+```
 
 **Page Object Issues:**
 - Verify page object methods in `tests/pages/` follow single-purpose pattern
