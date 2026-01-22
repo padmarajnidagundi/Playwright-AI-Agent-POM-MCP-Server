@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { URLS } from '../data/urls';
+import { WeSendCVPage } from '../pages/WeSendCVPage';
 
 /**
  * Performance Tests: Response Times & Load Metrics
@@ -7,83 +7,57 @@ import { URLS } from '../data/urls';
  */
 
 test.describe('Performance Tests - Load Time & Metrics', () => {
-  test('should load homepage within acceptable time', async ({ page }) => {
+  let wesendcvPage: WeSendCVPage;
+
+  test.beforeEach(async ({ page }) => {
+    wesendcvPage = new WeSendCVPage(page);
+  });
+
+  test('should load homepage within acceptable time', async () => {
     const startTime = Date.now();
-
-    const response = await page.goto(URLS.wesendcv.base, {
-      waitUntil: 'networkidle',
-    });
-
+    const response = await wesendcvPage.gotoHomepage();
     const loadTime = Date.now() - startTime;
-
-    // Assert load time is under 5 seconds
     expect(loadTime).toBeLessThan(5000);
     expect(response?.ok()).toBeTruthy();
   });
 
-  test('should measure First Contentful Paint (FCP)', async ({ page }) => {
-    await page.goto(URLS.wesendcv.base);
-
-    // Get performance metrics
-    const metrics = await page.evaluate(() => {
-      const navTiming = performance.getEntriesByType(
-        'navigation'
-      )[0] as PerformanceNavigationTiming;
+  test('should measure First Contentful Paint (FCP)', async () => {
+    await wesendcvPage.gotoHomepage();
+    const metrics = await wesendcvPage.page.evaluate(() => {
+      const navTiming = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
       return {
-        domContentLoaded:
-          navTiming.domContentLoadedEventEnd -
-          navTiming.domContentLoadedEventStart,
+        domContentLoaded: navTiming.domContentLoadedEventEnd - navTiming.domContentLoadedEventStart,
         loadComplete: navTiming.loadEventEnd - navTiming.loadEventStart,
       };
     });
-
     expect(metrics.domContentLoaded).toBeLessThan(3000);
     expect(metrics.loadComplete).toBeLessThan(5000);
   });
 
-  test('should load resources efficiently', async ({ page }) => {
+  test('should load resources efficiently', async () => {
     let resourceCount = 0;
-
-    page.on('response', () => {
+    wesendcvPage.page.on('response', () => {
       resourceCount++;
     });
-
-    await page.goto(URLS.wesendcv.base, { waitUntil: 'networkidle' });
-
+    await wesendcvPage.gotoHomepage();
     expect(resourceCount).toBeGreaterThan(0);
     expect(resourceCount).toBeLessThan(100); // Reasonable resource limit
   });
 
-  test('negative: should handle page timeout gracefully', async ({ page }) => {
-    // Simulate extremely slow network by delaying all CSS/JS resources
-    await page.route('**/*.{css,js}', async (route) => {
-      // Artificial 8 second delay to simulate timeout
+  test('negative: should handle page timeout gracefully', async () => {
+    await wesendcvPage.page.route('**/*.{css,js}', async (route) => {
       await new Promise((resolve) => setTimeout(resolve, 8000));
-      await route.continue().catch(() => {
-        // If timeout occurs, continue gracefully
-      });
+      await route.continue().catch(() => {});
     });
-
     try {
-      // Try to navigate with a short timeout
-      await page
-        .goto(URLS.wesendcv.base, {
-          waitUntil: 'domcontentloaded',
-          timeout: 3000,
-        })
-        .catch(() => {
-          // Expected to timeout or partially load
-        });
+      await wesendcvPage.page.goto(wesendcvPage.url, {
+        waitUntil: 'domcontentloaded',
+        timeout: 3000,
+      }).catch(() => {});
     } catch (error) {
-      // Timeout is expected in this scenario
       expect(error).toBeDefined();
     }
-
-    // Assert that the page does NOT crash and body is accessible (even if incomplete)
-    const bodyExists = await page
-      .locator('body')
-      .isVisible()
-      .catch(() => false);
-    expect(bodyExists || true).toBeTruthy(); // Page resilient to timeout scenarios
+    const bodyExists = await wesendcvPage.bodyElement.isVisible().catch(() => false);
+    expect(bodyExists || true).toBeTruthy();
   });
 });
