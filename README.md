@@ -184,21 +184,38 @@ npx playwright install
 
 ## Running Tests
 
-### Full Test Suite
+### Run All Tests
 ```powershell
 npm test
 ```
-Runs all tests across all configured browsers (Chromium, Firefox, WebKit, Mobile Chrome, Mobile Safari).
+Runs the full suite across all configured browsers (Chromium, Firefox, WebKit, Mobile Chrome, Mobile Safari).
 
-### Specific Test
+### Run a Specific Test File
 ```powershell
-npx playwright test tests/wesendcv.spec.ts --project=chromium
+npx playwright test tests/wesendcv.spec.ts
 ```
 
-### Headed Mode (for debugging)
+### Run by Category/Folder
+```powershell
+npx playwright test tests/performance-tests/
+npx playwright test tests/security-tests/
+```
+
+### Run in Headed Mode (for debugging)
 ```powershell
 npx playwright test tests/vibe.spec.ts --headed --project=chromium
 ```
+
+### Run with Debugger/Inspector
+```powershell
+npx playwright test --debug
+```
+
+### Run with MCP/Chatmode Integration
+```powershell
+npx playwright run-test-mcp-server
+```
+Enables programmatic test healing and chatmode flows (see chatmode section).
 
 ### CI-style Test Run
 ```powershell
