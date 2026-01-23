@@ -682,73 +682,42 @@ For detailed changelog, see [CHANGELOG.md](CHANGELOG.md) (coming soon)
 
 ## Using Chatmode prompts and the MCP flow
 
-Chatmode prompts are text prompts (instructions + context) you feed to an LLM (remote or local). They can be used manually (paste into a chat UI) or programmatically (via an API or an MCP-connected local agent). Below are concise usage patterns and quick steps for both approaches.
 
-In your chat mode folder, make a filename .md file and add your requirements to generate the auto test. You're providing the exact context for your tests.
+Chatmode prompts are markdown files in `.github/chatmodes/` that provide structured instructions for LLMs or agents to automate test planning, debugging, and repair.
 
-This repository includes ready-made chatmode prompts under `.github/chatmodes/` (for example `healer.chatmode.md`, `planner.chatmode.md`). These are structured, human-authored prompts you give to an LLM (remote or local) to drive test planning, debugging, and automated repair.
+**Available chatmodes:**
+- `healer.chatmode.md` — Automated test healing and repair
+- `planner.chatmode.md` — Test planning and scenario generation
+- `generator.chatmode.md` — Test code generation
+- `api-testing.chatmode.md` — API contract and integration test focus
+- `manualtesting.chatmode.md` — Manual/step-by-step test guidance
 
-**One short example of a chatmode prompt file you could place in .github/chatmodes/ to drive auto test generation:**
+**How to use chatmode prompts:**
 
-## Goal
-Generate automated tests for the given codebase.
+1. **Manual (hosted LLM):**
+   - Copy the contents of a chatmode file and paste into your LLM chat UI (OpenAI, Claude, etc.), or send via API.
+   - Example (PowerShell + OpenAI):
+     ```powershell
+     $env:OPENAI_API_KEY = "sk_..."
+     $prompt = Get-Content .github/chatmodes/healer.chatmode.md -Raw
+     curl -s https://api.openai.com/v1/chat/completions `
+       -H "Authorization: Bearer $env:OPENAI_API_KEY" `
+       -H "Content-Type: application/json" `
+       -d (@{ model = "gpt-4o-mini" ; messages = @(@{ role = "user"; content = $prompt }) } | ConvertTo-Json)
+     ```
 
-## Context
-- Language: TypeScript
-- Test framework: Jest
-- Focus on edge cases and error handling
-- Do not mock business logic unless required
+2. **Programmatic (MCP/local agent):**
+   - Use Playwright's MCP server (`npx playwright run-test-mcp-server`) to enable programmatic test healing, debugging, and automation via chatmode prompts.
+   - The repo provides `.vscode/mcp.json` for editor/agent integration. If `run-test-mcp-server` is missing, update Playwright or add an npm script:
+     ```powershell
+     npm set-script mcp:start "npx playwright run-test-mcp-server"
+     ```
 
-## Instructions
-1. Analyze the provided source files.
-2. Identify critical paths and failure scenarios.
-3. Generate clear, maintainable Jest test cases.
-4. Output only test code, no explanations.
+**Best practices:**
+- Never commit API keys; use environment variables or CI secrets.
+- Limit agent exposure to localhost; use local LLM endpoints for privacy.
 
-
-Two common ways to use chatmode prompts:
-
-- Manual / hosted LLM (fast):
-  - Copy the contents of a chatmode file and paste it into a hosted LLM chat UI (OpenAI Chat, Claude, etc.), or send it programmatically to the provider API. This is ideal for one-off guidance and quick suggestions.
-  - Example (PowerShell + OpenAI):
-    ```powershell
-    $env:OPENAI_API_KEY = "sk_..."
-    $prompt = Get-Content .github/chatmodes/healer.chatmode.md -Raw
-    curl -s https://api.openai.com/v1/chat/completions `
-      -H "Authorization: Bearer $env:OPENAI_API_KEY" `
-      -H "Content-Type: application/json" `
-      -d (@{ model = "gpt-4o-mini" ; messages = @(@{ role = "user"; content = $prompt }) } | ConvertTo-Json)
-    ```
-
-- Programmatic / integrated (MCP or local agent):
-  - For automation (test-healing, snapshots, programmatic edits) run a small local agent that reads chatmode markdown and forwards it to an LLM or a local LLM host. When combined with Playwright's MCP server (`npx playwright run-test-mcp-server`) the agent can request traces, screenshots and run tests programmatically.
-  - The repo includes an example MCP configuration used by editor integrations (`.vscode/mcp.json`). If your Playwright CLI lacks `run-test-mcp-server`, update Playwright or add an npm script: `npm set-script mcp:start "npx playwright run-test-mcp-server"`.
-
-Quick scaffold (recommended)
-
-1. Add a tiny local agent `tools/ai-server.js` that accepts a `prompt` and calls your LLM endpoint (OpenAI or a local LLM host). Keep API keys in env vars only.
-
-2. Add an npm script in `package.json`:
-```json
-"scripts": {
-  "ai:start": "node --experimental-fetch tools/ai-server.js"
-}
-```
-
-3. Start the dev server, MCP server and agent when you want automated assistance:
-```powershell
-node tools/dev-server.js        # optional demo site
-npx playwright run-test-mcp-server
-npm run ai:start
-```
-
-Security & best practices
-
-- Never commit API keys. Use environment variables or CI secrets.
-- Limit the agent's network exposure (bind to `localhost`) and protect it with local auth if needed.
-- For local LLMs (Ollama, text-generation-webui, HF Inference on premise), point the agent to the local host endpoint instead of a public API.
-
-If you want, I can scaffold `tools/ai-server.js` and the `ai:start` script for you, and add a short example that posts a chatmode file to the agent. Tell me whether you prefer a hosted provider (OpenAI/Anthropic) or a local LLM host and I'll create the scaffold.
+For advanced automation, you can scaffold a local agent (see repo instructions) to forward chatmode prompts to your LLM endpoint and integrate with MCP for full programmatic test repair and debugging.
 
 ---
 
