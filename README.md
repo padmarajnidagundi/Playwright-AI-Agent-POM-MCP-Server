@@ -159,6 +159,42 @@ Playwright-AI-Agent-POM-MCP-Server/
 | `playwright.config.ts` | Multi-browser projects, webServer config, trace/screenshot retention on failure |
 
 ## Installation
+## Playwright CLI Usage and Skills Installation
+
+This repository supports advanced automation and skill-based workflows using the Playwright CLI. The CLI can be used for browser automation, test debugging, and loading custom skills for Copilot or agent workflows.
+
+### Install Playwright CLI
+
+It is recommended to install the official Playwright CLI globally:
+
+```powershell
+npm install -g @playwright/cli
+```
+
+### Using the CLI
+
+You can use the CLI for browser automation, page interaction, and more:
+
+```powershell
+# Open a browser
+playwright open https://example.com
+# Take a screenshot
+playwright screenshot page.png
+# Run a test
+playwright test tests/wesendcv.spec.ts
+```
+
+### Installing Agent Skills
+
+To enable Copilot or agent workflows with repository-specific skills, use the following command:
+
+```powershell
+playwright install --skills
+```
+
+This will load all skills found in `.github/skills/` and make them available for Copilot and agent-based debugging or automation. For more information on skills, see the [Agent Skills](#agent-skills--automated-test-debugging-with-github-copilot) section below.
+
+> **Note:** If you see a deprecation warning for `playwright-cli`, always prefer `@playwright/cli` for the latest features and compatibility.
 
 ### Windows PowerShell
 ```powershell
