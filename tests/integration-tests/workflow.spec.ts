@@ -60,4 +60,21 @@ test.describe('Integration Tests - E2E Workflows', () => {
     // Verify 404 error indication is present (if page displays it)
     await wesendcvPage.verify404ErrorDisplayed();
   });
+
+    test('should complete login workflow', async ({ page }) => {
+      // Navigate to homepage
+      await wesendcvPage.gotoHomepage();
+
+      // Click login button
+      await wesendcvPage.clickLoginButton();
+
+      // Fill login form
+      await wesendcvPage.fillLoginForm('testuser', 'testpassword');
+
+      // Submit login form
+      await wesendcvPage.submitLoginForm();
+
+      // Verify login success
+      await wesendcvPage.verifyLoginSuccess();
+    });
 });
