@@ -6,6 +6,7 @@
 - [Repository Layout](#repository-layout)
 - [Key Files Reference](#key-files-reference)
 - [Installation](#installation)
+- [Docker](#docker)
 - [Running Tests](#running-tests)
 - [Mobile Testing](#mobile-testing)
 - [Dev Server](#dev-server)
@@ -216,6 +217,41 @@ cd ~/Playwright-AI-Agent-POM-MCP-Server
 
 npm install
 npx playwright install
+```
+
+## Docker
+
+This repository includes first-class Docker support for running Playwright tests in a consistent containerized environment.
+
+### Files Added
+- `Dockerfile` — Playwright-ready image that installs dependencies and runs `npm test`
+- `.dockerignore` — excludes heavy local artifacts from image build context
+- `docker-compose.yml` — one-command test execution with persisted reports
+
+### Build and Run with Docker
+
+```powershell
+# Build image
+docker build -t playwright-ai-agent-tests:local .
+
+# Run all tests
+docker run --rm -it playwright-ai-agent-tests:local
+
+# Persist reports locally
+docker run --rm -it `
+  -v ${PWD}/playwright-report:/app/playwright-report `
+  -v ${PWD}/test-results:/app/test-results `
+  playwright-ai-agent-tests:local
+```
+
+### Run with Docker Compose
+
+```powershell
+# Build and run tests
+docker compose up --build
+
+# Clean up containers after run
+docker compose down
 ```
 
 ## Running Tests

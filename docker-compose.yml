@@ -1,0 +1,14 @@
+services:
+  playwright-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: playwright-ai-agent-tests:local
+    working_dir: /app
+    command: npm test
+    shm_size: 1gb
+    environment:
+      CI: "1"
+    volumes:
+      - ./playwright-report:/app/playwright-report
+      - ./test-results:/app/test-results
