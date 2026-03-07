@@ -1,60 +1,60 @@
-<testsuites id="" name="" tests="1" failures="1" skipped="0" errors="0" time="7.420014999999999">
-<testsuite name="accessibility\a11y.spec.ts" timestamp="2026-01-14T16:01:10.229Z" hostname="chromium" tests="1" failures="1" skipped="0" time="4.604" errors="0">
-<testcase name="WeSendCV page should have no detectable a11y violations" classname="accessibility\a11y.spec.ts" time="4.604">
-<failure message="a11y.spec.ts:5:5 WeSendCV page should have no detectable a11y violations" type="FAILURE">
-<![CDATA[  [chromium] › accessibility\a11y.spec.ts:5:5 › WeSendCV page should have no detectable a11y violations 
+<testsuites id="" name="" tests="4" failures="1" skipped="0" errors="0" time="29.795008000000003">
+<testsuite name="wesendcv.spec.ts" timestamp="2026-03-07T14:24:16.831Z" hostname="chromium" tests="4" failures="1" skipped="0" time="25.937" errors="0">
+<testcase name="WeSendCV smoke checks › homepage loads, title and main visible, save screenshot" classname="wesendcv.spec.ts" time="4.527">
+</testcase>
+<testcase name="WeSendCV smoke checks › invalid page returns 404 error" classname="wesendcv.spec.ts" time="7.639">
+</testcase>
+<testcase name="WeSendCV smoke checks › can click first job link and navigate to job details" classname="wesendcv.spec.ts" time="11.584">
+<failure message="wesendcv.spec.ts:37:7 can click first job link and navigate to job details" type="FAILURE">
+<![CDATA[  [chromium] › wesendcv.spec.ts:37:7 › WeSendCV smoke checks › can click first job link and navigate to job details 
 
-    AssertionError: 4 accessibility violations were detected
-        at testResultDependsOnViolations (C:\Playwright-AI-Agent-POM-MCP-Server\node_modules\axe-playwright\dist\utils.js:16:26)
-        at C:\Playwright-AI-Agent-POM-MCP-Server\node_modules\axe-playwright\dist\index.js:143:51
-        at fulfilled (C:\Playwright-AI-Agent-POM-MCP-Server\node_modules\axe-playwright\dist\index.js:28:58)
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('.tpg-post-link').first()
+        - locator resolved to <a data-id="3254" target="_self" class="tpg-post-link" href="https://wesendcv.com/jobs-in-foreign-countries-for-indian-freshers/">⇆⇆↵⇆⇆</a>
+      - attempting click action
+        2 × waiting for element to be visible, enabled and stable
+          - element is not visible
+        - retrying click action
+        - waiting 20ms
+        2 × waiting for element to be visible, enabled and stable
+          - element is not visible
+        - retrying click action
+          - waiting 100ms
+        19 × waiting for element to be visible, enabled and stable
+           - element is not visible
+         - retrying click action
+           - waiting 500ms
+
+
+       at pages\WeSendCVPage.ts:59
+
+      57 |    */
+      58 |   async clickFirstJobLink() {
+    > 59 |     await this.page.locator('.tpg-post-link').first().click();
+         |                                                       ^
+      60 |   }
+      61 |
+      62 |   /**
+        at WeSendCVPage.clickFirstJobLink (C:\Playwright-AI-Agent-POM-MCP-Server\tests\pages\WeSendCVPage.ts:59:55)
+        at C:\Playwright-AI-Agent-POM-MCP-Server\tests\wesendcv.spec.ts:43:24
 
     attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    ..\test-results\accessibility-a11y-WeSendC-8729c--detectable-a11y-violations-chromium\test-failed-1.png
+    ..\test-results\wesendcv-WeSendCV-smoke-ch-7d7e1-and-navigate-to-job-details-chromium\test-failed-1.png
     ────────────────────────────────────────────────────────────────────────────────────────────────
 
-    Error Context: ..\test-results\accessibility-a11y-WeSendC-8729c--detectable-a11y-violations-chromium\error-context.md
+    Error Context: ..\test-results\wesendcv-WeSendCV-smoke-ch-7d7e1-and-navigate-to-job-details-chromium\error-context.md
 ]]>
 </failure>
 <system-out>
-<![CDATA[┌─────────┬─────────────────┬────────────┬────────────────────────────────────────────────────────┬───────┐
-│ (index) │ id              │ impact     │ description                                            │ nodes │
-├─────────┼─────────────────┼────────────┼────────────────────────────────────────────────────────┼───────┤
-│ 0       │ [32m'empty-heading'[39m │ [32m'minor'[39m    │ [32m'Ensure headings have discernible text'[39m                │ [33m2[39m     │
-│ 1       │ [32m'heading-order'[39m │ [32m'moderate'[39m │ [32m'Ensure the order of headings is semantically correct'[39m │ [33m2[39m     │
-│ 2       │ [32m'link-name'[39m     │ [32m'serious'[39m  │ [32m'Ensure links have discernible text'[39m                   │ [33m9[39m     │
-│ 3       │ [32m'region'[39m        │ [32m'moderate'[39m │ [32m'Ensure all page content is contained by landmarks'[39m    │ [33m7[39m     │
-└─────────┴─────────────────┴────────────┴────────────────────────────────────────────────────────┴───────┘
-┌─────────┬──────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬────────────┐
-│ (index) │ target                                                                                                           │ html                                                                                                                                                                                                                          │ violations │
-├─────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────────────────┼───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┼────────────┤
-│ 0       │ [32m'["h1[itemprop=\\"headline\\"]"]'[39m                                                                                │ [32m'<h1 class="entry-title" itemprop="headline"></h1>'[39m                                                                                                                                                                           │ [32m'[0]'[39m      │
-│ 1       │ [32m'[".elementor-element-7e9bac8 > .elementor-widget-container > h1:nth-child(1)"]'[39m                                 │ [32m'<h1 class="elementor-heading-title elementor-size-default"></h1>'[39m                                                                                                                                                            │ [32m'[0]'[39m      │
-│ 2       │ [32m'[".elementor-element-2d2060c > .elementor-widget-container > h6"]'[39m                                              │ [32m`<h6 class="elementor-heading-title elementor-size-default">We Send Your Resume to Local Job Agencies and Websites When You're Searching for a Job.</h6>`[39m                                                                     │ [32m'[1]'[39m      │
-│ 3       │ [32m'[".elementor-element-e5e2d79 > .elementor-widget-container > h6"]'[39m                                              │ [32m`<h6 class="elementor-heading-title elementor-size-default">Get more people to see your resume using WeSendCV's advanced technology and delivery network — targeted postings, agency outreach and recruiter visibility.</h6>`[39m │ [32m'[1]'[39m      │
-│ 4       │ [32m'[".rt-img-holder.tpg-el-image-wrap.has-no-thumbnail > .tpg-post-link[data-id=\\"3083\\"][target=\\"_self\\"]"]'[39m │ [32m'<a data-id="3083" href="https://wesendcv.com/construction-jobs-with-visa-sponsorship-in-europe/" class="tpg-post-link" target="_self">\t\t\n\t\t</a>'[39m                                                                        │ [32m'[2]'[39m      │
-│ 5       │ [32m'[".rt-img-holder.tpg-el-image-wrap.has-no-thumbnail > .tpg-post-link[data-id=\\"3077\\"][target=\\"_self\\"]"]'[39m │ [32m'<a data-id="3077" href="https://wesendcv.com/barber-jobs-in-europe-with-visa-sponsorship-and-accommodation/" class="tpg-post-link" target="_self">\t\t\n\t\t</a>'[39m                                                            │ [32m'[2]'[39m      │
-│ 6       │ [32m'[".rt-img-holder.tpg-el-image-wrap.has-no-thumbnail > .tpg-post-link[data-id=\\"3070\\"][target=\\"_self\\"]"]'[39m │ [32m'<a data-id="3070" href="https://wesendcv.com/government-jobs-2026/" class="tpg-post-link" target="_self">\t\t\n\t\t</a>'[39m                                                                                                     │ [32m'[2]'[39m      │
-│ 7       │ [32m'[".rt-img-holder.tpg-el-image-wrap.has-no-thumbnail > .tpg-post-link[data-id=\\"3065\\"][target=\\"_self\\"]"]'[39m │ [32m'<a data-id="3065" href="https://wesendcv.com/carpenter-jobs-in-europe-with-visa-sponsorship-and-accommodation/" class="tpg-post-link" target="_self">\t\t\n\t\t</a>'[39m                                                         │ [32m'[2]'[39m      │
-│ 8       │ [32m'[".rt-img-holder.tpg-el-image-wrap.has-no-thumbnail > .tpg-post-link[data-id=\\"3062\\"][target=\\"_self\\"]"]'[39m │ [32m'<a data-id="3062" href="https://wesendcv.com/nurse-job-in-europe-with-visa-sponsorship-and-accommodation/" class="tpg-post-link" target="_self">\t\t\n\t\t</a>'[39m                                                              │ [32m'[2]'[39m      │
-│ 9       │ [32m'[".rt-img-holder.tpg-el-image-wrap.has-no-thumbnail > .tpg-post-link[data-id=\\"3058\\"][target=\\"_self\\"]"]'[39m │ [32m'<a data-id="3058" href="https://wesendcv.com/plumber-job-in-europe-with-visa-sponsorship-and-accommodation/" class="tpg-post-link" target="_self">\t\t\n\t\t</a>'[39m                                                            │ [32m'[2]'[39m      │
-│ 10      │ [32m'[".rt-img-holder.tpg-el-image-wrap.has-no-thumbnail > .tpg-post-link[data-id=\\"3054\\"][target=\\"_self\\"]"]'[39m │ [32m'<a data-id="3054" href="https://wesendcv.com/electrician-job-in-europe-with-visa-sponsorship-and-accommodation/" class="tpg-post-link" target="_self">\t\t\n\t\t</a>'[39m                                                        │ [32m'[2]'[39m      │
-│ 11      │ [32m'[".rt-img-holder.tpg-el-image-wrap.has-no-thumbnail > .tpg-post-link[data-id=\\"3051\\"][target=\\"_self\\"]"]'[39m │ [32m'<a data-id="3051" href="https://wesendcv.com/truck-driver-job-in-europe-with-visa-sponsorship-and-accommodation/" class="tpg-post-link" target="_self">\t\t\n\t\t</a>'[39m                                                       │ [32m'[2]'[39m      │
-│ 12      │ [32m'[".rt-img-holder.tpg-el-image-wrap.has-no-thumbnail > .tpg-post-link[data-id=\\"3038\\"][target=\\"_self\\"]"]'[39m │ [32m'<a data-id="3038" href="https://wesendcv.com/painter-job-in-europe-with-visa-sponsorship-and-accommodation/" class="tpg-post-link" target="_self">\t\t\n\t\t</a>'[39m                                                            │ [32m'[2]'[39m      │
-│ 13      │ [32m'[".elementor-element-6245a4e"]'[39m                                                                                 │ [32m'<div class="elementor-element elementor-element-6245a4e e-con-full e-flex e-con e-child" data-id="6245a4e" data-element_type="container">'[39m                                                                                   │ [32m'[3]'[39m      │
-│ 14      │ [32m'[".elementor-social-icon-facebook > .elementor-screen-only"]'[39m                                                   │ [32m'<span class="elementor-screen-only">Facebook</span>'[39m                                                                                                                                                                         │ [32m'[3]'[39m      │
-│ 15      │ [32m'[".elementor-social-icon-twitter > .elementor-screen-only"]'[39m                                                    │ [32m'<span class="elementor-screen-only">Twitter</span>'[39m                                                                                                                                                                          │ [32m'[3]'[39m      │
-│ 16      │ [32m'[".elementor-social-icon-youtube > .elementor-screen-only"]'[39m                                                    │ [32m'<span class="elementor-screen-only">Youtube</span>'[39m                                                                                                                                                                          │ [32m'[3]'[39m      │
-│ 17      │ [32m'[".elementor-element-70821a5"]'[39m                                                                                 │ [32m'<div class="elementor-element elementor-element-70821a5 e-con-full e-flex e-con e-child" data-id="70821a5" data-element_type="container">'[39m                                                                                   │ [32m'[3]'[39m      │
-│ 18      │ [32m'[".elementor-element-5979ffd"]'[39m                                                                                 │ [32m'<div class="elementor-element elementor-element-5979ffd elementor-widget elementor-widget-text-editor" data-id="5979ffd" data-element_type="widget" data-widget_type="text-editor.default">'[39m                                 │ [32m'[3]'[39m      │
-│ 19      │ [32m'[".elementor-element-f244bcd"]'[39m                                                                                 │ [32m'<div class="elementor-element elementor-element-f244bcd e-con-full e-flex e-con e-child" data-id="f244bcd" data-element_type="container">'[39m                                                                                   │ [32m'[3]'[39m      │
-└─────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴────────────┘
+<![CDATA[
+[[ATTACHMENT|test-results\wesendcv-WeSendCV-smoke-ch-7d7e1-and-navigate-to-job-details-chromium\test-failed-1.png]]
 
-[[ATTACHMENT|test-results\accessibility-a11y-WeSendC-8729c--detectable-a11y-violations-chromium\test-failed-1.png]]
-
-[[ATTACHMENT|test-results\accessibility-a11y-WeSendC-8729c--detectable-a11y-violations-chromium\error-context.md]]
+[[ATTACHMENT|test-results\wesendcv-WeSendCV-smoke-ch-7d7e1-and-navigate-to-job-details-chromium\error-context.md]]
 ]]>
 </system-out>
+</testcase>
+<testcase name="WeSendCV smoke checks › homepage URL matches configured home URL" classname="wesendcv.spec.ts" time="2.187">
 </testcase>
 </testsuite>
 </testsuites>

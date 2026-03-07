@@ -9,7 +9,7 @@ test.describe('WeSendCV smoke checks', () => {
     wesendcvPage = new WeSendCVPage(page);
   });
 
-  test('homepage loads, title and main visible, save screenshot', async (_, testInfo) => {
+  test('homepage loads, title and main visible, save screenshot', async ({}, testInfo) => {
     // Navigate to homepage
     const resp = await wesendcvPage.gotoHomepage();
     expect(resp && resp.ok()).toBeTruthy();
@@ -47,5 +47,14 @@ test.describe('WeSendCV smoke checks', () => {
 
     // Optionally, check that the main content is still visible
     await wesendcvPage.verifyHomepageLoaded();
+  });
+
+  test('homepage URL matches configured home URL', async () => {
+    // Navigate to homepage
+    const resp = await wesendcvPage.gotoHomepage();
+    expect(resp && resp.ok()).toBeTruthy();
+
+    // Verify canonical homepage URL
+    await expect(wesendcvPage.page).toHaveURL(URLS.wesendcv.home);
   });
 });
