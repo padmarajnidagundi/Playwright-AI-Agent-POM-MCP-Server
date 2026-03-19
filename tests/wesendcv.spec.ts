@@ -57,4 +57,13 @@ test.describe('WeSendCV smoke checks', () => {
     // Verify canonical homepage URL
     await expect(wesendcvPage.page).toHaveURL(URLS.wesendcv.home);
   });
+
+  test('homepage shows at least one job listing link', async () => {
+    // Navigate to homepage
+    const resp = await wesendcvPage.gotoHomepage();
+    expect(resp && resp.ok()).toBeTruthy();
+
+    // Verify a job listing entry is present and visible
+    await wesendcvPage.verifyFirstJobLinkVisible();
+  });
 });

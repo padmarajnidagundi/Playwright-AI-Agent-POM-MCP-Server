@@ -20,6 +20,9 @@ export class WeSendCVPage {
   get errorIndicator() {
     return this.page.locator('text=/404|not found|page not found/i');
   }
+  get firstJobLink() {
+    return this.page.locator('.tpg-post-link').first();
+  }
 
   /**
    * Navigate to the homepage
@@ -56,7 +59,14 @@ export class WeSendCVPage {
    * Click on the first job link
    */
   async clickFirstJobLink() {
-    await this.page.locator('.tpg-post-link').first().click();
+    await this.firstJobLink.click();
+  }
+
+  /**
+   * Verify the first job link is visible on homepage
+   */
+  async verifyFirstJobLinkVisible() {
+    await expect(this.firstJobLink).toBeVisible();
   }
 
   /**
