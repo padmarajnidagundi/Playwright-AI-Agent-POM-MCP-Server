@@ -1,60 +1,6 @@
-<testsuites id="" name="" tests="4" failures="1" skipped="0" errors="0" time="29.795008000000003">
-<testsuite name="wesendcv.spec.ts" timestamp="2026-03-07T14:24:16.831Z" hostname="chromium" tests="4" failures="1" skipped="0" time="25.937" errors="0">
-<testcase name="WeSendCV smoke checks › homepage loads, title and main visible, save screenshot" classname="wesendcv.spec.ts" time="4.527">
-</testcase>
-<testcase name="WeSendCV smoke checks › invalid page returns 404 error" classname="wesendcv.spec.ts" time="7.639">
-</testcase>
-<testcase name="WeSendCV smoke checks › can click first job link and navigate to job details" classname="wesendcv.spec.ts" time="11.584">
-<failure message="wesendcv.spec.ts:37:7 can click first job link and navigate to job details" type="FAILURE">
-<![CDATA[  [chromium] › wesendcv.spec.ts:37:7 › WeSendCV smoke checks › can click first job link and navigate to job details 
-
-    TimeoutError: locator.click: Timeout 10000ms exceeded.
-    Call log:
-      - waiting for locator('.tpg-post-link').first()
-        - locator resolved to <a data-id="3254" target="_self" class="tpg-post-link" href="https://wesendcv.com/jobs-in-foreign-countries-for-indian-freshers/">⇆⇆↵⇆⇆</a>
-      - attempting click action
-        2 × waiting for element to be visible, enabled and stable
-          - element is not visible
-        - retrying click action
-        - waiting 20ms
-        2 × waiting for element to be visible, enabled and stable
-          - element is not visible
-        - retrying click action
-          - waiting 100ms
-        19 × waiting for element to be visible, enabled and stable
-           - element is not visible
-         - retrying click action
-           - waiting 500ms
-
-
-       at pages\WeSendCVPage.ts:59
-
-      57 |    */
-      58 |   async clickFirstJobLink() {
-    > 59 |     await this.page.locator('.tpg-post-link').first().click();
-         |                                                       ^
-      60 |   }
-      61 |
-      62 |   /**
-        at WeSendCVPage.clickFirstJobLink (C:\Playwright-AI-Agent-POM-MCP-Server\tests\pages\WeSendCVPage.ts:59:55)
-        at C:\Playwright-AI-Agent-POM-MCP-Server\tests\wesendcv.spec.ts:43:24
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    ..\test-results\wesendcv-WeSendCV-smoke-ch-7d7e1-and-navigate-to-job-details-chromium\test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Error Context: ..\test-results\wesendcv-WeSendCV-smoke-ch-7d7e1-and-navigate-to-job-details-chromium\error-context.md
-]]>
-</failure>
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\wesendcv-WeSendCV-smoke-ch-7d7e1-and-navigate-to-job-details-chromium\test-failed-1.png]]
-
-[[ATTACHMENT|test-results\wesendcv-WeSendCV-smoke-ch-7d7e1-and-navigate-to-job-details-chromium\error-context.md]]
-]]>
-</system-out>
-</testcase>
-<testcase name="WeSendCV smoke checks › homepage URL matches configured home URL" classname="wesendcv.spec.ts" time="2.187">
+<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="5.301207999999984">
+<testsuite name="wesendcv.spec.ts" timestamp="2026-03-19T18:15:58.252Z" hostname="chromium" tests="1" failures="0" skipped="0" time="2.571" errors="0">
+<testcase name="WeSendCV smoke checks › homepage contains at least one job listing link" classname="wesendcv.spec.ts" time="2.571">
 </testcase>
 </testsuite>
 </testsuites>

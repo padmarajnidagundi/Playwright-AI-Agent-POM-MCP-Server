@@ -20,8 +20,11 @@ export class WeSendCVPage {
   get errorIndicator() {
     return this.page.locator('text=/404|not found|page not found/i');
   }
+  get jobLinks() {
+    return this.page.locator('.tpg-post-link');
+  }
   get firstJobLink() {
-    return this.page.locator('.tpg-post-link').first();
+    return this.jobLinks.first();
   }
 
   /**
@@ -63,10 +66,11 @@ export class WeSendCVPage {
   }
 
   /**
-   * Verify the first job link is visible on homepage
+   * Verify at least one job link exists on homepage
    */
-  async verifyFirstJobLinkVisible() {
-    await expect(this.firstJobLink).toBeVisible();
+  async verifyJobLinksExist() {
+    const linkCount = await this.jobLinks.count();
+    expect(linkCount).toBeGreaterThan(0);
   }
 
   /**

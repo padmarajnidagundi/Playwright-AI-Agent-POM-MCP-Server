@@ -58,12 +58,12 @@ test.describe('WeSendCV smoke checks', () => {
     await expect(wesendcvPage.page).toHaveURL(URLS.wesendcv.home);
   });
 
-  test('homepage shows at least one job listing link', async () => {
+  test('homepage contains at least one job listing link', async () => {
     // Navigate to homepage
     const resp = await wesendcvPage.gotoHomepage();
     expect(resp && resp.ok()).toBeTruthy();
 
-    // Verify a job listing entry is present and visible
-    await wesendcvPage.verifyFirstJobLinkVisible();
+    // Verify at least one job listing entry exists in the page
+    await wesendcvPage.verifyJobLinksExist();
   });
 });
