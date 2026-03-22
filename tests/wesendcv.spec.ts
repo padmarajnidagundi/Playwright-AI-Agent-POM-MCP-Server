@@ -66,4 +66,18 @@ test.describe('WeSendCV smoke checks', () => {
     // Verify at least one job listing entry exists in the page
     await wesendcvPage.verifyJobLinksExist();
   });
+
+  test('first job listing link has a usable href', async () => {
+    // Navigate to homepage
+    const resp = await wesendcvPage.gotoHomepage();
+    expect(resp && resp.ok()).toBeTruthy();
+
+    // Ensure job links exist before checking first link attributes
+    await wesendcvPage.verifyJobLinksExist();
+
+    // Verify first link href is present and not a placeholder
+    const href = await wesendcvPage.firstJobLink.getAttribute('href');
+    expect(href).toBeTruthy();
+    expect(href).not.toBe('#');
+  });
 });
