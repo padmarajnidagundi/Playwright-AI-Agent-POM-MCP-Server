@@ -1,6 +1,6 @@
-<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="5.301207999999984">
-<testsuite name="wesendcv.spec.ts" timestamp="2026-03-19T18:15:58.252Z" hostname="chromium" tests="1" failures="0" skipped="0" time="2.571" errors="0">
-<testcase name="WeSendCV smoke checks › homepage contains at least one job listing link" classname="wesendcv.spec.ts" time="2.571">
+<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="6.99727">
+<testsuite name="wesendcv.spec.ts" timestamp="2026-03-25T17:40:09.147Z" hostname="chromium" tests="1" failures="0" skipped="0" time="3.803" errors="0">
+<testcase name="WeSendCV smoke checks › homepage title contains the WeSendCV brand name" classname="wesendcv.spec.ts" time="3.803">
 </testcase>
 </testsuite>
 </testsuites>

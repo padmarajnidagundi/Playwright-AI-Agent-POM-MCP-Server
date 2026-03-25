@@ -80,4 +80,14 @@ test.describe('WeSendCV smoke checks', () => {
     expect(href).toBeTruthy();
     expect(href).not.toBe('#');
   });
+
+  test('homepage title contains the WeSendCV brand name', async () => {
+    // Navigate to homepage
+    const resp = await wesendcvPage.gotoHomepage();
+    expect(resp && resp.ok()).toBeTruthy();
+
+    // Verify homepage title references the site brand
+    const title = await wesendcvPage.getPageTitle();
+    expect(title).toMatch(/wesendcv/i);
+  });
 });
