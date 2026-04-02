@@ -15,6 +15,7 @@
 - [Test Coverage](#test-coverage)
 - [Types of Tests](#types-of-tests)
 - [Architecture: Page Object Model (POM)](#architecture-page-object-model-pom)
+- [AI Agents — Chatmodes & Skills](#ai-agents--chatmodes--skills)
 - [Best Practices & Tips](#best-practices--tips)
 - [How to Extend](#how-to-extend)
 - [Common Commands](#common-commands)
@@ -545,6 +546,212 @@ test('homepage loads', async ({ page }) => {
 - **Maintainability:** Update selectors in one place, all tests benefit
 - **Scalability:** Easy to add new page objects and test data as the suite grows
 
+## AI Agents — Chatmodes & Skills
+
+This repository ships with **five AI agent chatmodes** and an **agent skill** that power GitHub Copilot, VS Code agent mode, and any MCP-compatible LLM to automate test planning, generation, debugging, and manual testing guidance.
+
+### Agent Overview
+
+| Agent | File | Best for |
+|-------|------|----------|
+| 🩺 **Healer** | `.github/chatmodes/🎭 healer.chatmode.md` | Debug & auto-fix failing tests |
+| 📋 **Planner** | `.github/chatmodes/🎭 planner.chatmode.md` | Generate a full test plan for any URL |
+| ⚙️ **Generator** | `.github/chatmodes/🎭 generator.chatmode.md` | Write automated Playwright test specs |
+| 🔌 **API Testing** | `.github/chatmodes/🎭 api-testing.chatmode.md` | Scaffold API & Pact contract tests |
+| 📝 **Manual Testing** | `.github/chatmodes/🎭 manualtesting.chatmode.md` | Step-by-step manual test checklists |
+| 🔍 **Debug Skill** | `.github/skills/playwright-test-debugging/SKILL.md` | Copilot auto-loads when debugging tests |
+
+---
+
+### How to Activate an Agent in VS Code
+
+1. Open the **GitHub Copilot Chat** panel (`Ctrl+Alt+I` / `Cmd+Alt+I`)
+2. Click the agent-mode selector (the `@` or mode dropdown)
+3. Choose the chatmode you want, or type `@` and select from the list
+4. Start your request — the agent will use the relevant tools automatically
+
+Alternatively, in **VS Code agent mode** open the command palette and run `GitHub Copilot: Open Chat`, then switch to the desired chatmode from the dropdown at the top of the chat panel.
+
+---
+
+### 🩺 Healer Agent — Auto-fix Failing Tests
+
+**When to use:** A test is failing and you want Copilot to diagnose and fix it without manual intervention.
+
+**What it does:**
+1. Runs failing tests with `test_run` / `test_debug`
+2. Takes a browser snapshot to see the current page state
+3. Analyses selectors, timing, assertions, and data issues
+4. Edits Page Object files and test specs to fix the root cause
+5. Reruns the test to verify the fix — iterates until green
+6. If the test cannot be fixed, marks it `test.fixme()` with an explanatory comment
+
+**Example prompts:**
+```
+"The wesendcv smoke test is timing out — please fix it"
+"All tests in tests/security-tests/ are failing after our recent deploy"
+"Fix the flaky selector in tests/pages/WeSendCVPage.ts"
+```
+
+**Trigger in VS Code:**
+```
+@healer The login test is failing with a timeout, please debug and fix it
+```
+
+---
+
+### 📋 Planner Agent — Generate Test Plans
+
+**When to use:** You need a comprehensive, structured test plan for a web page or feature before writing code.
+
+**What it does:**
+1. Navigates to the target URL using `planner_setup_page`
+2. Explores all interactive elements, forms, and navigation paths
+3. Maps primary user journeys (happy paths, edge cases, error flows)
+4. Saves a detailed markdown test plan with numbered steps and expected results
+
+**Example prompts:**
+```
+"Create a test plan for https://wesendcv.com"
+"Generate test scenarios for the checkout flow at https://mystore.com/checkout"
+"I need edge-case scenarios for the registration form"
+```
+
+**Trigger in VS Code:**
+```
+@planner Create a comprehensive test plan for https://wesendcv.com
+```
+
+**Output:** A markdown file written to `specs/` with an executive summary and individual numbered test scenarios ready for the Generator agent.
+
+---
+
+### ⚙️ Generator Agent — Write Automated Test Specs
+
+**When to use:** You have a test plan (from the Planner or manually written) and want to turn it into runnable Playwright `.spec.ts` files.
+
+**What it does:**
+1. Reads the test plan from `specs/`
+2. Runs `generator_setup_page` to prepare the browser context
+3. Executes each step interactively using Playwright browser tools
+4. Reads the generator log (`generator_read_log`) for best-practice hints
+5. Writes a complete, single-test spec file per scenario using `generator_write_test`
+
+**Example prompts:**
+```
+"Generate tests from specs/plan.md"
+"Write a Playwright test that logs in at localhost:3000 with admin@test.com / password123"
+"Create a test for the full checkout flow: add to cart → checkout → confirm order"
+```
+
+**Trigger in VS Code:**
+```
+@generator Generate Playwright tests from specs/wesendcv-plan.md
+```
+
+**Output:** TypeScript spec files dropped into the appropriate `tests/` category folder, following POM conventions and importing data from `tests/data/`.
+
+---
+
+### 🔌 API Testing Agent — Scaffold API & Contract Tests
+
+**When to use:** You need to create API tests or set up Pact consumer-provider contract testing.
+
+**What it does:**
+- Generates `tests/contract-tests/*.spec.ts` and `tests/unit-tests/*.spec.ts`
+- Builds API helpers in `tests/utils.ts` (request builders, auth helpers)
+- Creates test data files in `tests/data/` (`api-endpoints.ts`, `test-payloads.ts`)
+- Sets up Pact interactions and a `pacts/` directory for contract files
+- Updates `package.json` with `test:api` and `test:contract` scripts
+- Documents setup instructions in a generated `README` snippet
+
+**Example prompts:**
+```
+"Create API tests for the /api/users endpoint"
+"Scaffold a Pact contract test between the frontend and the auth service"
+"Generate request/response tests for our REST API at https://api.myapp.com"
+```
+
+**Trigger in VS Code:**
+```
+@api-testing Create contract tests for the /api/jobs endpoint at https://wesendcv.com/api/jobs
+```
+
+---
+
+### 📝 Manual Testing Chatmode — Step-by-Step Checklists
+
+**When to use:** You need a human-executable test checklist, or you want to guide a QA tester through a manual regression run.
+
+**What it does:** Provides structured, step-by-step manual test procedures for the WeSendCV site (or any configured target), including:
+- Landing page and navigation verification
+- Form submission flows
+- Visual and performance checks
+- Cross-browser and mobile checklist
+
+**Example prompts:**
+```
+"Give me a manual testing checklist for the WeSendCV homepage"
+"How do I manually verify the login flow?"
+"What's the regression checklist for UI testing?"
+```
+
+**Trigger in VS Code:**
+```
+@manualtesting Provide a manual regression checklist for https://wesendcv.com
+```
+
+---
+
+### 🔍 Playwright Test Debugging Skill
+
+**Location:** `.github/skills/playwright-test-debugging/SKILL.md`
+
+Unlike the chatmodes above (which you invoke manually), this **skill is loaded automatically by Copilot** when it detects you are debugging a test failure. You do not need to select it explicitly.
+
+**What it teaches Copilot:**
+- Where to find test results (`test-results/results.json`, `junit.xml`, `playwright-report/`)
+- How to identify failure types: selectors, timing, visual regression, network, accessibility
+- How to reproduce failures locally with PowerShell commands
+- Anti-patterns to avoid (hard sleeps, raw selectors in test files, etc.)
+- POM-aware fix strategies specific to this repository's structure
+
+**Auto-triggered by prompts like:**
+```
+"The wesendcv test is failing with a timeout"
+"Debug the accessibility test failures in CI"
+"Why is the vibe spec failing on Windows?"
+```
+
+---
+
+### Using Agents with the MCP Flow
+
+For fully programmatic agent usage (no VS Code UI), start the Playwright MCP server and send chatmode prompts via API:
+
+```powershell
+# Start MCP server
+npx playwright run-test-mcp-server
+
+# Or add as an npm script
+npm set-script mcp:start "npx playwright run-test-mcp-server"
+npm run mcp:start
+```
+
+The `.vscode/mcp.json` file pre-configures the MCP entrypoint for VS Code's agent runtime. See the [Using Chatmode prompts and the MCP flow](#using-chatmode-prompts-and-the-mcp-flow) section for API-level usage examples.
+
+---
+
+### Skills vs Chatmodes vs Custom Instructions
+
+| Feature | Purpose | Location | When to Use |
+|---------|---------|----------|-------------|
+| **Agent Skills** | Contextual instructions auto-loaded when relevant | `.github/skills/` | Complex workflows, debugging guides, repo-specific patterns |
+| **Chatmodes** | Role-based agent personas with dedicated toolsets | `.github/chatmodes/` | Healer, Planner, Generator, API, Manual — explicit invocation |
+| **Custom Instructions** | Global rules applied to every Copilot interaction | `.github/copilot-instructions.md` | Coding standards, architecture rules, project conventions |
+
+---
+
 ## Best Practices & Tips
 
 - **Selectors:** Use stable `id` or `data-test` attributes instead of brittle CSS/XPath.
@@ -771,105 +978,35 @@ For detailed changelog, see [CHANGELOG.md](CHANGELOG.md) (coming soon)
 
 ## Using Chatmode prompts and the MCP flow
 
+See the [AI Agents — Chatmodes & Skills](#ai-agents--chatmodes--skills) section for a full guide on each agent and how to activate it in VS Code.
 
-Chatmode prompts are markdown files in `.github/chatmodes/` that provide structured instructions for LLMs or agents to automate test planning, debugging, and repair.
+**Quick: use a chatmode prompt directly with an LLM API (PowerShell + OpenAI):**
+```powershell
+$env:OPENAI_API_KEY = "sk_..."
+$prompt = Get-Content ".github/chatmodes/🎭 healer.chatmode.md" -Raw
+curl -s https://api.openai.com/v1/chat/completions `
+  -H "Authorization: Bearer $env:OPENAI_API_KEY" `
+  -H "Content-Type: application/json" `
+  -d (@{ model = "gpt-4o-mini" ; messages = @(@{ role = "user"; content = $prompt }) } | ConvertTo-Json)
+```
 
-**Available chatmodes:**
-- `healer.chatmode.md` — Automated test healing and repair
-- `planner.chatmode.md` — Test planning and scenario generation
-- `generator.chatmode.md` — Test code generation
-- `api-testing.chatmode.md` — API contract and integration test focus
-- `manualtesting.chatmode.md` — Manual/step-by-step test guidance
-
-**How to use chatmode prompts:**
-
-1. **Manual (hosted LLM):**
-   - Copy the contents of a chatmode file and paste into your LLM chat UI (OpenAI, Claude, etc.), or send via API.
-   - Example (PowerShell + OpenAI):
-     ```powershell
-     $env:OPENAI_API_KEY = "sk_..."
-     $prompt = Get-Content .github/chatmodes/healer.chatmode.md -Raw
-     curl -s https://api.openai.com/v1/chat/completions `
-       -H "Authorization: Bearer $env:OPENAI_API_KEY" `
-       -H "Content-Type: application/json" `
-       -d (@{ model = "gpt-4o-mini" ; messages = @(@{ role = "user"; content = $prompt }) } | ConvertTo-Json)
-     ```
-
-2. **Programmatic (MCP/local agent):**
-   - Use Playwright's MCP server (`npx playwright run-test-mcp-server`) to enable programmatic test healing, debugging, and automation via chatmode prompts.
-   - The repo provides `.vscode/mcp.json` for editor/agent integration. If `run-test-mcp-server` is missing, update Playwright or add an npm script:
-     ```powershell
-     npm set-script mcp:start "npx playwright run-test-mcp-server"
-     ```
-
-**Best practices:**
-- Never commit API keys; use environment variables or CI secrets.
-- Limit agent exposure to localhost; use local LLM endpoints for privacy.
-
-For advanced automation, you can scaffold a local agent (see repo instructions) to forward chatmode prompts to your LLM endpoint and integrate with MCP for full programmatic test repair and debugging.
+> **Security:** Never commit API keys. Use environment variables or CI secrets.
 
 ---
 
 ## Agent Skills — Automated Test Debugging with GitHub Copilot
 
-### What are Agent Skills?
-
-**Agent Skills** are specialized instruction sets that teach GitHub Copilot and other AI coding assistants how to perform repository-specific tasks. They follow an [open standard](https://github.com/agentskills/agentskills) and work with:
-- ✅ GitHub Copilot coding agent
-- ✅ GitHub Copilot CLI
-- ✅ VS Code agent mode (stable support coming soon)
-
-When you ask Copilot a question or request help, it automatically loads relevant skills based on context, giving it deep knowledge of your project's patterns and workflows.
-
-### Available Skills in This Repository
-
-#### 🎭 `playwright-test-debugging`
-**Location:** `.github/skills/playwright-test-debugging/SKILL.md`
-
-A comprehensive guide for debugging failing Playwright tests using this repository's Page Object Model architecture.
-
-**What it teaches Copilot:**
-- 7-step systematic debugging workflow (gather results → identify failure → reproduce → fix → verify)
-- Repository-specific patterns (POM structure, test data centralization, visual diff workflow)
-- Failure type identification (selectors, timing, visual regression, network, accessibility)
-- Artifact analysis (test-results, traces, screenshots, error-context.md)
-- PowerShell commands for local reproduction
-- Anti-patterns to avoid (no hard sleeps, no raw selectors in tests, etc.)
-
-**When Copilot uses this skill:**
-- When you ask to debug a failing test
-- When investigating test failures or analyzing test results
-- When working with error reports or CI failures
-- When fixing flaky tests or test timeouts
-
-**Example interactions:**
-```
-You: "The wesendcv test is failing with a timeout"
-Copilot: [loads playwright-test-debugging skill]
-         "Let me check the test results and reproduce this locally..."
-         
-You: "Debug the accessibility test failures in CI"
-Copilot: [uses the skill's guidance to check error-context.md, 
-         analyze axe violations, and suggest fixes]
-```
-
-### How Skills Work
-
-1. **Automatic activation:** Copilot detects when a skill is relevant based on your prompt
-2. **Context injection:** The `SKILL.md` file is loaded into Copilot's context
-3. **Guided execution:** Copilot follows the skill's instructions, examples, and best practices
-4. **Tool usage:** Skills can reference scripts, examples, or resources in the skill directory
+See the [AI Agents — Chatmodes & Skills](#ai-agents--chatmodes--skills) section for full details on the `playwright-test-debugging` skill and all chatmode agents.
 
 ### Creating Custom Skills
 
-Add your own project-specific skills to extend Copilot's capabilities:
+Add project-specific skills to extend Copilot's capabilities:
 
-**1. Create a skill directory:**
 ```powershell
 mkdir .github/skills/your-skill-name
 ```
 
-**2. Create `SKILL.md` with YAML frontmatter:**
+Create `.github/skills/your-skill-name/SKILL.md`:
 ```markdown
 ---
 name: your-skill-name
@@ -881,33 +1018,16 @@ description: Brief description of what this skill does and when to use it
 Your detailed instructions, examples, and guidelines here...
 ```
 
-**3. Add supporting resources (optional):**
-- Scripts for automation
-- Example files or templates
-- Configuration snippets
-
-**Example skill ideas for this repo:**
-- `visual-regression-workflow` — Guide for baseline image management
+**Example ideas for this repo:**
+- `visual-regression-workflow` — Baseline image management guide
 - `mobile-test-creation` — Patterns for adding mobile device tests
 - `page-object-scaffolding` — Template for creating new page objects
 - `ci-failure-analysis` — Debugging GitHub Actions workflow failures
-- `performance-test-optimization` — Guide for load time improvements
-
-### Skills vs Chatmodes vs Custom Instructions
-
-| Feature | Purpose | Location | When to Use |
-|---------|---------|----------|-------------|
-| **Agent Skills** | Specialized, contextual instructions loaded when relevant | `.github/skills/` | Complex workflows, debugging guides, repository-specific patterns |
-| **Custom Instructions** | Global rules applied to almost every interaction | `.github/copilot-instructions.md` | Coding standards, architecture rules, project conventions |
-| **Chatmodes** | Structured prompts for specific agent personas or workflows | `.github/chatmodes/` | Role-based agents (healer, planner, generator), one-off automation |
-
-**Best practice:** Use skills for detailed, step-by-step guidance that Copilot should access when relevant. Use custom instructions for simple rules that apply broadly.
 
 ### Learn More
 
 - 📖 [GitHub Agent Skills Documentation](https://docs.github.com/en/copilot/concepts/agents/about-agent-skills)
 - 🌟 [Community Skills Collection](https://github.com/github/awesome-copilot)
-- 🛠️ [Anthropic Skills Repository](https://github.com/anthropics/skills)
 
 ---
 
