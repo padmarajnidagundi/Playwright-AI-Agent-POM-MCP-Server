@@ -563,6 +563,24 @@ This repository ships with **five AI agent chatmodes** and an **agent skill** th
 
 ---
 
+### Quick Usage
+
+1. Open Copilot Chat (`Ctrl+Alt+I`)
+2. Switch to the desired agent mode from the dropdown (e.g. `healer`, `planner`)
+3. Type your request:
+
+| Goal | Example prompt |
+|------|---------------|
+| Fix a failing test | `Fix the failing smoke test in tests/wesendcv.spec.ts` |
+| Generate a test plan | `Create a test plan for https://wesendcv.com` |
+| Write a test spec | `Generate tests from specs/plan.md` |
+| Create API/contract tests | `Scaffold API tests for the /api/jobs endpoint` |
+| Get a manual test checklist | `Give me a manual test checklist for the login page` |
+
+> **Tip:** All agents follow the POM conventions in this repo — they write selectors to `tests/pages/` and data to `tests/data/` automatically.
+
+---
+
 ### How to Activate an Agent in VS Code
 
 1. Open the **GitHub Copilot Chat** panel (`Ctrl+Alt+I` / `Cmd+Alt+I`)
