@@ -969,7 +969,7 @@ For detailed changelog, see [CHANGELOG.md](CHANGELOG.md) (coming soon)
 
 ### Contact & Professional Links
 
-📧 **Email:** padmaraj.nidagundi@gmail.com  
+📧 **Email:** padmaraj.nidagundi at gmail.com  
 💼 **LinkedIn:** https://www.linkedin.com/in/padmarajn/  
 🐙 **GitHub:** https://github.com/padmarajnidagundi/Playwright-AI-Agent-POM-MCP-Server  
 📦 **NpmJs:** [Coming soon - Playwright utilities package]
