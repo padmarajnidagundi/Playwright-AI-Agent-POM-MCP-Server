@@ -1167,7 +1167,7 @@ All contributors will be:
 If you have any questions:
 - 💬 Open a [GitHub Discussion](https://github.com/padmarajnidagundi/Playwright-AI-Agent-POM-MCP-Server/discussions)
 - 🐛 Report bugs via [GitHub Issues](https://github.com/padmarajnidagundi/Playwright-AI-Agent-POM-MCP-Server/issues)
-- 📧 Email: padmaraj.nidagundi@gmail.com
+- 📧 Email: padmaraj.nidagundi at gmail.com
 
 **Response time:** Typically 24-48 hours
 
