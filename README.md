@@ -548,7 +548,7 @@ test('homepage loads', async ({ page }) => {
 
 ## AI Agents — Chatmodes & Skills
 
-This repository ships with **five AI agent chatmodes** and an **agent skill** that power GitHub Copilot, VS Code agent mode, and any MCP-compatible LLM to automate test planning, generation, debugging, and manual testing guidance.
+This repository ships with **six AI agent chatmodes** and **two agent skills** that power GitHub Copilot, VS Code agent mode, and any MCP-compatible LLM to automate test planning, generation, debugging, code review, and manual testing guidance.
 
 ### Agent Overview
 
@@ -559,7 +559,9 @@ This repository ships with **five AI agent chatmodes** and an **agent skill** th
 | ⚙️ **Generator** | `.github/chatmodes/🎭 generator.chatmode.md` | Write automated Playwright test specs |
 | 🔌 **API Testing** | `.github/chatmodes/🎭 api-testing.chatmode.md` | Scaffold API & Pact contract tests |
 | 📝 **Manual Testing** | `.github/chatmodes/🎭 manualtesting.chatmode.md` | Step-by-step manual test checklists |
-| 🔍 **Debug Skill** | `.github/skills/playwright-test-debugging/SKILL.md` | Copilot auto-loads when debugging tests |
+| 🔍 **Code Reviewer** | `.github/chatmodes/🔍 code-reviewer.chatmode.md` | Audit test files for POM, security & best practices |
+| 🛠️ **Debug Skill** | `.github/skills/playwright-test-debugging/SKILL.md` | Copilot auto-loads when debugging tests |
+| 📐 **Review Skill** | `.github/skills/code-review/SKILL.md` | Copilot auto-loads when reviewing or auditing test code |
 
 ---
 
@@ -576,6 +578,7 @@ This repository ships with **five AI agent chatmodes** and an **agent skill** th
 | Write a test spec | `Generate tests from specs/plan.md` |
 | Create API/contract tests | `Scaffold API tests for the /api/jobs endpoint` |
 | Get a manual test checklist | `Give me a manual test checklist for the login page` |
+| Review test code quality | `Review tests/wesendcv.spec.ts for POM compliance and security` |
 
 > **Tip:** All agents follow the POM conventions in this repo — they write selectors to `tests/pages/` and data to `tests/data/` automatically.
 
@@ -721,7 +724,33 @@ Alternatively, in **VS Code agent mode** open the command palette and run `GitHu
 
 ---
 
-### 🔍 Playwright Test Debugging Skill
+### 🔍 Code Reviewer Agent — Audit Test Quality
+
+**When to use:** You want to review a spec or page object for POM compliance, security issues, missing coverage, or Playwright anti-patterns before merging.
+
+**What it does:**
+1. Reads target file(s) in `tests/` fully before evaluating
+2. Checks all selectors are in `tests/pages/` — not inline in specs
+3. Flags `waitForTimeout`, brittle XPath, hardcoded credentials, and missing negative tests
+4. Produces a severity-ranked markdown report (🔴 Critical / 🟡 Warning / 🔵 Suggestion)
+5. Optionally applies fixes directly when asked (moves selectors to Page Objects, removes anti-patterns)
+
+**Example prompts:**
+```
+"Review tests/wesendcv.spec.ts for code quality"
+"Audit all files under tests/security-tests/ before this PR merges"
+"Check tests/pages/WeSendCVPage.ts for POM compliance"
+"Fix the critical issues you found in the review"
+```
+
+**Trigger in VS Code:**
+```
+@code-reviewer Review tests/wesendcv.spec.ts for POM compliance, security, and best practices
+```
+
+---
+
+### 🛠️ Playwright Test Debugging Skill
 
 **Location:** `.github/skills/playwright-test-debugging/SKILL.md`
 
@@ -739,6 +768,28 @@ Unlike the chatmodes above (which you invoke manually), this **skill is loaded a
 "The wesendcv test is failing with a timeout"
 "Debug the accessibility test failures in CI"
 "Why is the vibe spec failing on Windows?"
+```
+
+---
+
+### 📐 Code Review Skill
+
+**Location:** `.github/skills/code-review/SKILL.md`
+
+Like the debugging skill, this **skill is loaded automatically by Copilot** when it detects you are reviewing, auditing, or inspecting test code. You do not need to select it explicitly.
+
+**What it teaches Copilot:**
+- POM compliance rules (selectors in `tests/pages/`, data in `tests/data/`)
+- Playwright anti-patterns to flag (`waitForTimeout`, positional XPath, `networkidle` misuse)
+- Security rules aligned to OWASP Top 10 (no hardcoded secrets, safe XSS payloads)
+- Coverage completeness expectations (negative tests, a11y, performance counterparts)
+- Severity-ranked report format (🔴 Critical / 🟡 Warning / 🔵 Suggestion)
+
+**Auto-triggered by prompts like:**
+```
+"Review this test file"
+"Audit tests/security-tests/ for issues"
+"Is this Page Object following best practices?"
 ```
 
 ---
@@ -765,8 +816,15 @@ The `.vscode/mcp.json` file pre-configures the MCP entrypoint for VS Code's agen
 | Feature | Purpose | Location | When to Use |
 |---------|---------|----------|-------------|
 | **Agent Skills** | Contextual instructions auto-loaded when relevant | `.github/skills/` | Complex workflows, debugging guides, repo-specific patterns |
-| **Chatmodes** | Role-based agent personas with dedicated toolsets | `.github/chatmodes/` | Healer, Planner, Generator, API, Manual — explicit invocation |
+| **Chatmodes** | Role-based agent personas with dedicated toolsets | `.github/chatmodes/` | Healer, Planner, Generator, API, Manual, Code Reviewer — explicit invocation |
 | **Custom Instructions** | Global rules applied to every Copilot interaction | `.github/copilot-instructions.md` | Coding standards, architecture rules, project conventions |
+
+Skills registered in this repo:
+
+| Skill | File | Auto-triggered when… |
+|-------|------|----------------------|
+| 🛠️ **playwright-test-debugging** | `.github/skills/playwright-test-debugging/SKILL.md` | Debugging or fixing a failing test |
+| 📐 **code-review** | `.github/skills/code-review/SKILL.md` | Reviewing, auditing, or inspecting test code |
 
 ---
 

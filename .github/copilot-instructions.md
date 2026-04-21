@@ -67,6 +67,10 @@ Files to inspect for concrete examples
 - `playwright.config.ts` — timeouts, projects, reporters, and `use` settings
 - `package.json` — available npm scripts (`test`, `test:headed`, `test:report`)
 
+Agent skills available in this repo
+- `.github/skills/playwright-test-debugging/SKILL.md` — auto-loaded when debugging failing tests
+- `.github/skills/code-review/SKILL.md` — auto-loaded when reviewing, auditing, or inspecting test code; enforces POM compliance, Playwright best practices, security rules, and coverage completeness
+
 Hints for AI assistants (practical, repository-specific)
 - When proposing changes to tests, prefer editing/adding page object methods and small test-specs; avoid sweeping refactors across unrelated test categories.
 - Use `npx playwright test <file>` when iterating on a single file to save time and isolate failures.
