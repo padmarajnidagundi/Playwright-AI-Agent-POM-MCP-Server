@@ -1074,7 +1074,7 @@ curl -s https://api.openai.com/v1/chat/completions `
 
 See the [AI Agents — Chatmodes & Skills](#ai-agents--chatmodes--skills) section for full details on the `playwright-test-debugging` skill and all chatmode agents.
 
-### Creating Custom Skills
+### Creating Custom Skills.
 
 Add project-specific skills to extend Copilot's capabilities:
 
