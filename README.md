@@ -26,14 +26,14 @@
 
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-blue)
-![NPM Version](https://img.shields.io/badge/npm-v7.0.0-orange)
-![Playwright](https://img.shields.io/badge/Playwright-1.35+-45ba4b)
+![NPM Version](https://img.shields.io/badge/npm-v10+-orange)
+![Playwright](https://img.shields.io/badge/Playwright-1.59+-45ba4b)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178c6)
 ![Tests](https://img.shields.io/badge/tests-13%20categories-success)
 ![Coverage](https://img.shields.io/badge/coverage-85%25-brightgreen)
 ![Downloads](https://img.shields.io/badge/downloads-1.2k-blue)
 ![Stars](https://img.shields.io/badge/stars-245-yellow)
-![Last Updated](https://img.shields.io/badge/updated-January%202026-informational)
+![Last Updated](https://img.shields.io/badge/updated-May%202026-informational)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/padmarajnidagundi/Playwright-AI-Agent-POM-MCP-Server)
 
 **Enterprise-grade Playwright test automation framework** by **Padmaraj Nidagundi**, Senior QA Automation Engineer with 8+ years of experience in test automation architecture. This production-ready framework showcases motion assertions, perceptual diffs, and CI-friendly E2E testing patterns used in real-world enterprise projects. Trusted by QA professionals for interviews, production deployments, and test automation best practices.
@@ -69,13 +69,16 @@
 | Category          | Technology/Library     | Version      | Purpose                                                                 |
 |-------------------|-------------------------|--------------|-------------------------------------------------------------------------|
 | Language          | TypeScript             | -            | Used for test files, configuration, and utilities                       |
-| Runtime           | Node.js                | 18.x or 20.x | As specified in CI                                                      |
+| Runtime           | Node.js                | 20.9+        | Recommended for latest lint/test tooling compatibility                  |
 | Testing Framework | Playwright             | -            | For end-to-end and unit testing                                         |
 | Build Tool        | npm                    | -            | For dependency management and scripts                                   |
-| Library           | @playwright/test       | ^1.35.0      | Main Playwright testing library for browser automation and assertions  |
-| Library           | @pact-foundation/pact  | ^16.0.2      | For contract testing (API consumer-provider agreements)                |
-| Library           | @types/node            | ^24.10.1     | TypeScript type definitions for Node.js                                |
+| Library           | @playwright/test       | ^1.59.1      | Main Playwright testing library for browser automation and assertions  |
+| Library           | @pact-foundation/pact  | ^16.4.0      | For contract testing (API consumer-provider agreements)                |
+| Library           | @types/node            | ^25.6.2      | TypeScript type definitions for Node.js                                |
+| Library           | @typescript-eslint/*   | ^8.59.2      | TypeScript linting parser and plugin                                   |
 | Library           | axe-playwright         | ^2.2.2       | Accessibility testing integration with Axe                             |
+| Library           | eslint                 | ^9.39.4      | Linting and static analysis                                             |
+| Library           | prettier               | ^3.8.3       | Code formatting                                                         |
 | CI/CD             | GitHub Actions         | -            | Configured for cross-platform testing on Ubuntu and Windows            |
 | Visual Diffing    | Pixelmatch             | -            | Custom tools for pixel-level comparison                                |
 | MCP/Chatmode      | -                      | -            | Integration hints for AI-assisted debugging                            |
@@ -292,9 +295,9 @@ Enables programmatic test healing and chatmode flows (see chatmode section).
 
 ### CI-style Test Run
 ```powershell
-npm run test:ci
+npm test
 ```
-Matches the GitHub Actions pipeline configuration.
+Matches the GitHub Actions pipeline test command.
 
 ## Mobile Testing
 
@@ -340,7 +343,7 @@ node tools/compare.js demo/baseline.png artifacts/current.png artifacts/diff.png
 
 The `.github/workflows/ci.yml` pipeline:
 - Runs `npm ci` and `npx playwright install --with-deps`
-- Executes `npm run test:ci` on `ubuntu-latest` and `windows-latest`
+- Executes `npm test` on `ubuntu-latest` and `windows-latest`
 - Uploads test artifacts (screenshots, traces, videos) on failure
 - Ensures cross-platform test reliability
 
@@ -905,7 +908,7 @@ npx playwright install --with-deps
 
 # Test
 npm test                           # Full suite
-npm run test:ci                    # CI-style run
+npm test                           # CI-style run
 npx playwright test --headed       # Debug mode
 npx playwright test --debug        # Step through with Inspector
 
