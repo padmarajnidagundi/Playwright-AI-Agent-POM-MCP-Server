@@ -589,12 +589,35 @@ This repository ships with **six AI agent chatmodes** and **two agent skills** t
 
 ### How to Activate an Agent in VS Code
 
-1. Open the **GitHub Copilot Chat** panel (`Ctrl+Alt+I` / `Cmd+Alt+I`)
-2. Click the agent-mode selector (the `@` or mode dropdown)
-3. Choose the chatmode you want, or type `@` and select from the list
-4. Start your request — the agent will use the relevant tools automatically
+#### Step-by-Step Guide
 
-Alternatively, in **VS Code agent mode** open the command palette and run `GitHub Copilot: Open Chat`, then switch to the desired chatmode from the dropdown at the top of the chat panel.
+**Via Copilot Chat Panel:**
+1. Press `Ctrl+Alt+I` (Windows/Linux) or `Cmd+Alt+I` (macOS) to open Copilot Chat
+2. Look for the agent/chatmode selector dropdown at the top of the chat panel (usually shows the current mode like "default")
+3. Click the dropdown to see all available chatmodes:
+   - 🩺 `healer` — Debug & fix failing tests
+   - 📋 `planner` — Generate test plans
+   - ⚙️ `generator` — Write test specs from plans
+   - 🔌 `api-testing` — Scaffold API tests
+   - 📝 `manualtesting` — Manual test checklists
+   - 🔍 `code-reviewer` — Audit test quality
+4. Select the chatmode you want
+5. Type your request in the chat input
+6. Press Enter or click Send — the agent will use relevant tools automatically
+
+**Alternative: Via Command Palette:**
+1. Press `Ctrl+Shift+P` (Windows/Linux) or `Cmd+Shift+P` (macOS)
+2. Type `GitHub Copilot: Open Chat`
+3. In the chat panel, select your desired chatmode from the dropdown
+4. Start typing your request
+
+**Alternative: Quick Mention Syntax:**
+You can also prefix your message with `@` to invoke an agent:
+```
+@healer Fix the failing test in tests/wesendcv.spec.ts
+@planner Create a test plan for https://example.com
+@code-reviewer Review tests/security-tests/ for compliance
+```
 
 ---
 
@@ -610,17 +633,45 @@ Alternatively, in **VS Code agent mode** open the command palette and run `GitHu
 5. Reruns the test to verify the fix — iterates until green
 6. If the test cannot be fixed, marks it `test.fixme()` with an explanatory comment
 
+**Complete Workflow Example:**
+
+```
+User: "The smoke test in tests/wesendcv.spec.ts is failing on CI. Can you debug and fix it?"
+
+Healer Agent:
+1. Reads test-results/results.json and finds the failure:
+   - Error: "Timeout waiting for 'text=Sign Up' selector"
+2. Opens tests/pages/WeSendCVPage.ts and tests/wesendcv.spec.ts
+3. Runs: npx playwright test tests/wesendcv.spec.ts --headed
+4. Takes a screenshot showing the page state
+5. Identifies: Selector changed from 'text=Sign Up' to 'button[data-test="signup"]'
+6. Edits WeSendCVPage.ts to update the locator
+7. Reruns the test — it passes ✅
+8. Reports: "Fixed selector in WeSendCVPage.ts (line 42). Test now passes."
+```
+
 **Example prompts:**
 ```
 "The wesendcv smoke test is timing out — please fix it"
 "All tests in tests/security-tests/ are failing after our recent deploy"
-"Fix the flaky selector in tests/pages/WeSendCVPage.ts"
+"Fix the flaky selector in tests/pages/WeSendCVPage.ts — it's timing out"
+"Debug why the mobile test is failing on iOS"
+"The API mock test is returning 500 — help me trace the issue"
 ```
 
 **Trigger in VS Code:**
 ```
 @healer The login test is failing with a timeout, please debug and fix it
 ```
+
+**Typical issues the Healer can fix:**
+- ✅ Stale selectors (element moved or class name changed)
+- ✅ Timing issues (page not fully loaded; needs `waitForNavigation`)
+- ✅ Network issues (API endpoint changed; needs mock update)
+- ✅ Visual regression (screenshot doesn't match baseline)
+- ✅ Data issues (test user doesn't exist; credentials stale)
+- ❌ Architecture changes (new page object structure; Healer will flag and suggest)
+- ❌ Complex business logic failures (Healer will diagnose but may need human guidance)
 
 ---
 
@@ -634,11 +685,54 @@ Alternatively, in **VS Code agent mode** open the command palette and run `GitHu
 3. Maps primary user journeys (happy paths, edge cases, error flows)
 4. Saves a detailed markdown test plan with numbered steps and expected results
 
+**Complete Workflow Example:**
+
+```
+User: "Create a test plan for the login page at https://wesendcv.com/login"
+
+Planner Agent:
+1. Navigates to https://wesendcv.com/login
+2. Identifies interactive elements:
+   - Email input field
+   - Password input field
+   - "Login" button
+   - "Forgot Password" link
+   - "Sign Up" link
+   - "Remember me" checkbox
+3. Extracts happy paths, edge cases, and error flows:
+   - Happy Path: Valid credentials → Dashboard
+   - Edge Case: Empty email → Error message
+   - Edge Case: Invalid email format → Error message
+   - Edge Case: Wrong password → Error message (3 attempts → lockout)
+   - Error Flow: Network timeout → Retry button
+4. Saves to specs/login-plan.md:
+   
+   # Login Page Test Plan
+   ## Happy Path Tests
+   1. **Scenario:** User logs in with valid credentials
+      - Steps: Enter email, password, click Login
+      - Expected: Redirected to dashboard
+   
+   2. **Scenario:** User clicks "Forgot Password"
+      - Steps: Click "Forgot Password" link
+      - Expected: Redirected to password reset page
+   
+   ## Edge Case Tests
+   3. **Scenario:** Empty email field
+      - Steps: Leave email empty, click Login
+      - Expected: Error message "Email is required"
+   
+   ... (more scenarios)
+5. Reports: "Test plan saved to specs/login-plan.md with 12 test scenarios"
+```
+
 **Example prompts:**
 ```
 "Create a test plan for https://wesendcv.com"
 "Generate test scenarios for the checkout flow at https://mystore.com/checkout"
 "I need edge-case scenarios for the registration form"
+"Plan a mobile test suite for the navigation menu"
+"What should we test for the payment flow?"
 ```
 
 **Trigger in VS Code:**
@@ -646,7 +740,35 @@ Alternatively, in **VS Code agent mode** open the command palette and run `GitHu
 @planner Create a comprehensive test plan for https://wesendcv.com
 ```
 
-**Output:** A markdown file written to `specs/` with an executive summary and individual numbered test scenarios ready for the Generator agent.
+**Output:** A markdown file written to `specs/` with:
+- Executive summary
+- Happy path scenarios
+- Edge case scenarios
+- Error flow scenarios
+- Numbered test cases with expected results
+- Ready to feed into the **Generator agent** for automation
+
+**Generated plan structure:**
+```markdown
+# Test Plan: [Page Name]
+## Overview
+[Brief description]
+
+## Happy Path Tests
+1. Scenario: [description]
+   - Steps: 1. [step] 2. [step] 3. [step]
+   - Expected: [result]
+
+## Edge Cases
+2. Scenario: [edge case description]
+   - Steps: ...
+   - Expected: ...
+
+## Error Flows
+3. Scenario: [error case description]
+   - Steps: ...
+   - Expected: ...
+```
 
 ---
 
@@ -660,12 +782,59 @@ Alternatively, in **VS Code agent mode** open the command palette and run `GitHu
 3. Executes each step interactively using Playwright browser tools
 4. Reads the generator log (`generator_read_log`) for best-practice hints
 5. Writes a complete, single-test spec file per scenario using `generator_write_test`
+6. **Follows POM conventions:** Creates/updates `tests/pages/`, `tests/data/` as needed
+
+**Complete Workflow Example:**
+
+```
+User: "Generate Playwright tests from specs/login-plan.md"
+
+Generator Agent:
+1. Reads specs/login-plan.md (12 test scenarios)
+2. Sets up browser context via generator_setup_page
+3. For each scenario:
+   a. Navigates to target URL
+   b. Executes steps interactively (click, type, wait, screenshot)
+   c. Reads generator log for best-practice hints
+   d. Records locators: "#email-input", "button[type='submit']", etc.
+   e. Writes generated test to tests/e2e/login.spec.ts:
+
+   import { test, expect } from '@playwright/test';
+   import { LoginPage } from '../pages/LoginPage';
+   import { TEST_USERS } from '../data/users';
+   import { URLS } from '../data/urls';
+
+   test.describe('Login Page', () => {
+     let loginPage: LoginPage;
+
+     test.beforeEach(async ({ page }) => {
+       loginPage = new LoginPage(page);
+       await loginPage.goto();
+     });
+
+     test('User logs in with valid credentials', async () => {
+       await loginPage.login(TEST_USERS.standard.username, TEST_USERS.standard.password);
+       await expect(page).toHaveURL(/\/dashboard/);
+     });
+
+     test('Shows error on empty email', async () => {
+       await loginPage.clickLogin();
+       await expect(loginPage.emailErrorMsg).toBeVisible();
+     });
+   });
+
+4. Creates/updates tests/pages/LoginPage.ts with selectors and methods
+5. Creates/updates tests/data/users.ts with test credentials
+6. Reports: "Generated 12 tests in tests/e2e/login.spec.ts"
+```
 
 **Example prompts:**
 ```
 "Generate tests from specs/plan.md"
 "Write a Playwright test that logs in at localhost:3000 with admin@test.com / password123"
 "Create a test for the full checkout flow: add to cart → checkout → confirm order"
+"Generate negative tests for form validation (empty fields, invalid email, etc.)"
+"Write mobile-optimized tests from this plan"
 ```
 
 **Trigger in VS Code:**
@@ -673,7 +842,16 @@ Alternatively, in **VS Code agent mode** open the command palette and run `GitHu
 @generator Generate Playwright tests from specs/wesendcv-plan.md
 ```
 
-**Output:** TypeScript spec files dropped into the appropriate `tests/` category folder, following POM conventions and importing data from `tests/data/`.
+**Output:** 
+- **Spec file:** `tests/[category]/[feature].spec.ts` (e.g., `tests/e2e/login.spec.ts`)
+- **Page Object:** `tests/pages/[Page]Page.ts` (e.g., `tests/pages/LoginPage.ts`)
+- **Test Data:** `tests/data/[name].ts` (e.g., `tests/data/login-users.ts`)
+- All following **POM conventions** and best practices
+
+**The generated spec is immediately runnable:**
+```powershell
+npx playwright test tests/e2e/login.spec.ts
+```
 
 ---
 
@@ -689,16 +867,97 @@ Alternatively, in **VS Code agent mode** open the command palette and run `GitHu
 - Updates `package.json` with `test:api` and `test:contract` scripts
 - Documents setup instructions in a generated `README` snippet
 
+**Complete Workflow Example:**
+
+```
+User: "Scaffold API tests for the /api/jobs endpoint at https://api.wesendcv.com"
+
+API Testing Agent:
+1. Explores the API endpoint: GET /api/jobs
+2. Introspects response schema (title, description, salary, etc.)
+3. Generates tests/data/api-endpoints.ts:
+   
+   export const API_ENDPOINTS = {
+     jobs: {
+       list: '/api/jobs',
+       detail: '/api/jobs/:id',
+     },
+   };
+
+4. Generates tests/data/test-payloads.ts:
+   
+   export const TEST_PAYLOADS = {
+     job: {
+       valid: { title: 'Senior QA', description: '5+ years', salary: 120000 },
+       invalid: { title: '', description: 'Missing title', salary: -1 },
+     },
+   };
+
+5. Generates tests/unit-tests/api.spec.ts:
+   
+   import { test, expect } from '@playwright/test';
+   import { API_BASE } from '../data/urls';
+   import { API_ENDPOINTS } from '../data/api-endpoints';
+   import { TEST_PAYLOADS } from '../data/test-payloads';
+
+   test.describe('Jobs API', () => {
+     test('GET /api/jobs returns 200 with job list', async ({ request }) => {
+       const response = await request.get(
+         `${API_BASE}${API_ENDPOINTS.jobs.list}`
+       );
+       expect(response.status()).toBe(200);
+       const jobs = await response.json();
+       expect(Array.isArray(jobs)).toBeTruthy();
+     });
+
+     test('POST /api/jobs with invalid payload returns 400', async ({ request }) => {
+       const response = await request.post(
+         `${API_BASE}${API_ENDPOINTS.jobs.list}`,
+         { data: TEST_PAYLOADS.job.invalid }
+       );
+       expect(response.status()).toBe(400);
+     });
+   });
+
+6. Generates tests/contract-tests/api-contract.spec.ts (Pact setup)
+7. Updates package.json with scripts:
+   - npm run test:api
+   - npm run test:contract
+8. Reports: "API test scaffold complete. Run 'npm run test:api' to test."
+```
+
 **Example prompts:**
 ```
 "Create API tests for the /api/users endpoint"
 "Scaffold a Pact contract test between the frontend and the auth service"
 "Generate request/response tests for our REST API at https://api.myapp.com"
+"Write API tests for authentication (login, logout, token refresh)"
+"Create negative tests for the /api/posts endpoint (400, 401, 404, 500 cases)"
 ```
 
 **Trigger in VS Code:**
 ```
 @api-testing Create contract tests for the /api/jobs endpoint at https://wesendcv.com/api/jobs
+```
+
+**Output files created:**
+- ✅ `tests/unit-tests/api.spec.ts` — Basic request/response tests
+- ✅ `tests/contract-tests/api-contract.spec.ts` — Pact consumer contract
+- ✅ `tests/data/api-endpoints.ts` — Centralized endpoint URLs
+- ✅ `tests/data/test-payloads.ts` — Valid/invalid request bodies
+- ✅ `tests/utils.ts` (updated) — API helper functions (auth, request builders)
+- ✅ `pacts/` directory — Pact interaction files for contract testing
+
+**Run the generated tests:**
+```powershell
+# Run API tests
+npm run test:api
+
+# Run contract tests
+npm run test:contract
+
+# Or via Playwright CLI
+npx playwright test tests/unit-tests/api.spec.ts
 ```
 
 ---
@@ -713,17 +972,112 @@ Alternatively, in **VS Code agent mode** open the command palette and run `GitHu
 - Visual and performance checks
 - Cross-browser and mobile checklist
 
+**Complete Checklist Example:**
+
+```
+User: "Give me a manual testing checklist for the WeSendCV homepage"
+
+Manual Testing Chatmode provides:
+
+## WeSendCV Homepage Manual Test Checklist
+
+### Section 1: Page Load & Navigation (5 min)
+- [ ] Open https://wesendcv.com in Chrome, Firefox, Safari
+- [ ] Verify page loads in < 2 seconds
+- [ ] Check all navigation links present:
+  - [ ] Home (highlighted)
+  - [ ] About
+  - [ ] Jobs
+  - [ ] Blog
+  - [ ] Contact
+- [ ] Verify logo links to homepage
+- [ ] Check mobile menu opens on small screens
+
+### Section 2: Hero Section (3 min)
+- [ ] Hero image displays correctly
+- [ ] Tagline text: "Send CVs. Get Hired." visible
+- [ ] CTA button "Get Started" is clickable
+- [ ] Button color is brand blue (#0066FF)
+- [ ] Hover effect changes button color to darker shade
+
+### Section 3: Search Form (5 min)
+- [ ] Search form visible below hero
+- [ ] Search input accepts text
+- [ ] Search button is enabled when text entered
+- [ ] Pressing Enter submits the form
+- [ ] Search results page loads correctly
+- [ ] Try edge cases:
+  - [ ] Empty search (should show error)
+  - [ ] Special characters (should handle gracefully)
+  - [ ] Very long input (should truncate or handle)
+
+### Section 4: Visual & Performance (5 min)
+- [ ] No broken images (all logos, icons display)
+- [ ] Colors match brand guidelines
+- [ ] Text is readable (contrast passes WCAG AA)
+- [ ] No layout shifts or visual glitches
+- [ ] Open DevTools → Performance:
+  - [ ] Largest Contentful Paint < 2.5s
+  - [ ] Cumulative Layout Shift < 0.1
+  - [ ] First Input Delay < 100ms
+
+### Section 5: Responsive Design (5 min)
+- [ ] Test on Mobile (375px):
+  - [ ] Hero text readable
+  - [ ] Menu collapses to hamburger
+  - [ ] Search form stacks vertically
+- [ ] Test on Tablet (768px):
+  - [ ] Layout adapts correctly
+  - [ ] Touch targets are large (>44px)
+- [ ] Test on Desktop (1920px):
+  - [ ] No excessive white space
+  - [ ] Content is centered
+
+### Section 6: Accessibility (3 min)
+- [ ] Navigate with keyboard only:
+  - [ ] Tab through all interactive elements
+  - [ ] Tab order is logical
+  - [ ] Focus indicator visible
+- [ ] Screen reader test (NVDA/JAWS):
+  - [ ] All text read correctly
+  - [ ] Buttons announce their purpose
+  - [ ] Images have alt text
+
+### Section 7: Error Cases (3 min)
+- [ ] Disconnect internet, refresh page:
+  - [ ] See offline message or fallback UI
+- [ ] Delete cookies, refresh:
+  - [ ] Page functions normally
+- [ ] Open DevTools → Block CSS:
+  - [ ] Page is still usable (unstyled but functional)
+
+**Total Time:** ~25 minutes | **Pass Criteria:** All items checked ✅
+```
+
 **Example prompts:**
 ```
 "Give me a manual testing checklist for the WeSendCV homepage"
 "How do I manually verify the login flow?"
 "What's the regression checklist for UI testing?"
+"Create a manual test checklist for the mobile app"
+"What should I manually test before deploying to production?"
 ```
 
 **Trigger in VS Code:**
 ```
 @manualtesting Provide a manual regression checklist for https://wesendcv.com
 ```
+
+**Output format:**
+Structured markdown with:
+- ✅ Organized sections (one feature per section)
+- ✅ Numbered steps with expected results
+- ✅ Checkboxes for QA to mark progress
+- ✅ Time estimates per section
+- ✅ Pass/fail criteria
+- ✅ Edge cases and error scenarios
+- ✅ Browser and device recommendations
+- ✅ Accessibility and performance checks
 
 ---
 
@@ -738,18 +1092,100 @@ Alternatively, in **VS Code agent mode** open the command palette and run `GitHu
 4. Produces a severity-ranked markdown report (🔴 Critical / 🟡 Warning / 🔵 Suggestion)
 5. Optionally applies fixes directly when asked (moves selectors to Page Objects, removes anti-patterns)
 
+**Complete Review Example:**
+
+```
+User: "Review tests/wesendcv.spec.ts for POM compliance and security"
+
+Code Reviewer Agent:
+1. Reads tests/wesendcv.spec.ts completely
+2. Checks against POM rules:
+   ❌ CRITICAL: Raw selectors found in test spec:
+      Line 45: page.click('button.submit')
+      → Should be in WeSendCVPage.ts as clickSubmitButton()
+   
+   ⚠️ WARNING: Hardcoded credentials detected:
+      Line 12: username: 'admin', password: 'secret123'
+      → Should import from tests/data/users.ts
+   
+   ⚠️ WARNING: No negative test cases:
+      → Missing tests for: invalid email, empty password, 404 responses
+   
+   💡 SUGGESTION: Replace page.waitForTimeout(5000) with waitForNavigation()
+      → More reliable and follows Playwright best practices
+
+3. Generates report:
+
+   # Code Review: tests/wesendcv.spec.ts
+   **Status:** ❌ Needs fixes before merge
+   **Issues Found:** 3 Critical, 2 Warnings, 1 Suggestion
+
+   ## 🔴 Critical Issues (Must Fix)
+   1. **Raw selectors in test file** (Lines 45, 67, 89)
+      - Issue: Selectors should be in Page Object, not test spec
+      - Fix: Create WeSendCVPage.ts methods for these actions
+      - Impact: Hard to maintain; breaks on selector changes
+   
+   2. **Hardcoded test credentials** (Line 12)
+      - Issue: Security risk; credentials visible in source
+      - Fix: Import from tests/data/users.ts
+      - Impact: Credentials may be exposed in git history
+
+   ## 🟡 Warnings (Should Fix)
+   1. **Missing negative tests**
+      - Current coverage: 4/7 happy-path tests
+      - Missing: Invalid email, empty password, network timeout, 404 cases
+      - Fix: Add 3-4 test cases for error scenarios
+   
+   2. **Hard sleep/timeout** (Line 23)
+      - Issue: page.waitForTimeout(5000) is unreliable
+      - Fix: Use page.waitForNavigation() or waitForSelector()
+
+   ## 💡 Suggestions (Nice to Have)
+   1. Add Axe accessibility checks to smoke test
+   2. Add performance metrics (load time, FCP, LCP)
+   3. Document expected URLs in test data
+
+   ## Summary
+   ✅ Positive: Clear test structure, good use of beforeEach
+   ❌ Blocking: Fix selectors & credentials before merge
+   📋 Follow-up: Add negative tests in separate PR
+
+4. Offers to fix critical issues:
+   User: "Apply the critical fixes"
+   Agent:
+   - Moves selectors to WeSendCVPage.ts
+   - Updates test to import TEST_USERS from tests/data/users.ts
+   - Reruns tests to verify fixes
+   - Reports: "Fixed all critical issues. All tests passing."
+```
+
 **Example prompts:**
 ```
 "Review tests/wesendcv.spec.ts for code quality"
 "Audit all files under tests/security-tests/ before this PR merges"
 "Check tests/pages/WeSendCVPage.ts for POM compliance"
 "Fix the critical issues you found in the review"
+"Is this test following best practices? Any anti-patterns?"
+"Verify this new test has proper coverage (happy + negative paths)"
 ```
 
 **Trigger in VS Code:**
 ```
 @code-reviewer Review tests/wesendcv.spec.ts for POM compliance, security, and best practices
 ```
+
+**Report severity levels:**
+- 🔴 **Critical:** Security risk, POM violation, or flaky test pattern
+- 🟡 **Warning:** Best practice not followed; may cause issues
+- 💡 **Suggestion:** Nice-to-have improvement; low priority
+
+**Output:** Markdown report with:
+- Executive summary (Pass/Fail status)
+- Severity-ranked issues with line numbers
+- Clear fix recommendations
+- Impact analysis
+- Offer to apply fixes automatically
 
 ---
 
@@ -797,7 +1233,289 @@ Like the debugging skill, this **skill is loaded automatically by Copilot** when
 
 ---
 
-### Using Agents with the MCP Flow
+## Common Workflows: Real-World Scenarios
+
+This section shows how to combine agents to accomplish realistic testing tasks.
+
+### Workflow 1: Test New Feature From Scratch
+
+**Scenario:** Your team built a new **CV Upload** feature. You need to create comprehensive tests before shipping to production.
+
+**Steps:**
+
+1. **Plan the tests** (use Planner)
+   ```
+   @planner Create a test plan for the CV upload feature at https://wesendcv.com/upload
+   ```
+   → Outputs: `specs/cv-upload-plan.md` with 8-12 test scenarios
+
+2. **Generate test code** (use Generator)
+   ```
+   @generator Generate Playwright tests from specs/cv-upload-plan.md
+   ```
+   → Outputs: `tests/integration-tests/cv-upload.spec.ts` + Page Object + Test Data
+
+3. **Review generated code** (use Code Reviewer)
+   ```
+   @code-reviewer Review tests/integration-tests/cv-upload.spec.ts for POM compliance and coverage
+   ```
+   → Outputs: Review report with suggestions (usually minimal for generated code)
+
+4. **Run tests locally**
+   ```powershell
+   npm run test:headed tests/integration-tests/cv-upload.spec.ts
+   ```
+
+5. **Add API tests** (use API Testing Agent)
+   ```
+   @api-testing Scaffold API tests for the /api/upload endpoint
+   ```
+   → Outputs: `tests/unit-tests/api.spec.ts` + Contract tests
+
+6. **Final review** (use Code Reviewer again)
+   ```
+   @code-reviewer Audit tests/integration-tests/cv-upload.spec.ts and tests/unit-tests/api.spec.ts before shipping
+   ```
+
+**Timeline:** 30-45 minutes per feature (instead of 2-3 hours of manual test writing)
+
+---
+
+### Workflow 2: Debug & Fix Failing Tests in CI
+
+**Scenario:** Your tests were passing locally, but CI broke them after a deployment. You need to diagnose and fix ASAP.
+
+**Steps:**
+
+1. **View CI failure** (GitHub Actions)
+   - Click the failed test run in GitHub
+   - See error: "Timeout waiting for selector 'button[name=\"submit\"]'"
+
+2. **Use Healer to diagnose & fix** (use Healer)
+   ```
+   @healer The upload form tests are timing out in CI on tests/integration-tests/cv-upload.spec.ts
+   ```
+   → Healer:
+   - Runs the test locally
+   - Takes screenshot of current page state
+   - Identifies: Selector moved to `button[data-testid="submit"]`
+   - Automatically updates Page Object with new selector
+   - Reruns test: ✅ PASSES
+   - Reports: "Fixed selector in WeSendCVPage.ts (line 92)"
+
+3. **Verify the fix**
+   ```powershell
+   npm test tests/integration-tests/cv-upload.spec.ts
+   ```
+
+4. **Commit & push**
+   ```powershell
+   git add tests/pages/WeSendCVPage.ts
+   git commit -m "Fix: Update CV upload selector for new DOM structure"
+   git push
+   ```
+
+**Timeline:** 5-10 minutes (instead of 30-60 minutes of manual debugging)
+
+---
+
+### Workflow 3: Add Missing Test Coverage
+
+**Scenario:** Code review feedback: "Your tests only cover the happy path. Add edge cases and error scenarios."
+
+**Steps:**
+
+1. **Get code review feedback** (use Code Reviewer)
+   ```
+   @code-reviewer Check tests/integration-tests/cv-upload.spec.ts for coverage gaps
+   ```
+   → Reports: "Missing 4 edge case tests: invalid file type, file too large, network timeout, server error"
+
+2. **Ask Planner for edge case scenarios** (use Planner)
+   ```
+   @planner What are the edge cases and error flows for CV file upload?
+   ```
+   → Outputs: `specs/cv-upload-edge-cases.md` with 5-7 error scenarios
+
+3. **Generate the missing tests** (use Generator)
+   ```
+   @generator Generate tests for the edge cases in specs/cv-upload-edge-cases.md and add to tests/integration-tests/cv-upload.spec.ts
+   ```
+   → Appends new test cases to existing spec file
+
+4. **Review coverage again** (use Code Reviewer)
+   ```
+   @code-reviewer Review tests/integration-tests/cv-upload.spec.ts - is coverage now complete?
+   ```
+   → Reports: "✅ Good coverage. Happy path + 5 edge cases + 2 error scenarios"
+
+5. **Run full test suite**
+   ```powershell
+   npm test tests/integration-tests/
+   ```
+
+**Timeline:** 15-20 minutes
+
+---
+
+### Workflow 4: Security & Accessibility Audit Before Release
+
+**Scenario:** You're shipping to production. Ensure your tests cover security and accessibility requirements.
+
+**Steps:**
+
+1. **Get security review** (use Code Reviewer)
+   ```
+   @code-reviewer Review tests/security-tests/ and tests/authentication/ - are we covering OWASP Top 10?
+   ```
+   → Reports: "Missing tests for: CSRF protection, XSS payloads, SQL injection attempt, API rate limiting"
+
+2. **Generate security tests** (use Planner + Generator)
+   ```
+   @planner What are the top security scenarios for a job application platform?
+   ```
+   → Then:
+   ```
+   @generator Generate security tests from specs/security-scenarios.md
+   ```
+   → Outputs: Enhanced `tests/security-tests/` with new attack scenarios
+
+3. **Get accessibility review** (use Code Reviewer)
+   ```
+   @code-reviewer Do our tests cover WCAG 2.1 Level AA accessibility? Check tests/accessibility/
+   ```
+   → Reports: "Missing: Color contrast verification, focus management in modals, ARIA label validation"
+
+4. **Generate a11y tests** (use Generator)
+   ```
+   @generator Create accessibility tests for keyboard navigation, screen reader support, and color contrast in tests/accessibility/
+   ```
+
+5. **Run security + a11y tests**
+   ```powershell
+   npx playwright test tests/security-tests/ tests/accessibility/
+   ```
+
+6. **Final audit** (use Code Reviewer)
+   ```
+   @code-reviewer Perform final audit of all tests before production release - check coverage, security, a11y
+   ```
+
+**Timeline:** 1-2 hours (comprehensive security + a11y coverage)
+
+---
+
+### Workflow 5: Create Manual Testing Guide for QA Team
+
+**Scenario:** You need to hand off testing to a QA team that prefers manual checklists for exploratory testing.
+
+**Steps:**
+
+1. **Generate manual checklist** (use Manual Testing Chatmode)
+   ```
+   @manualtesting Create a comprehensive manual test checklist for https://wesendcv.com
+   ```
+   → Outputs: Detailed checklist with:
+   - Page sections to test
+   - Step-by-step procedures
+   - Expected results
+   - Edge cases
+   - Browser/device matrix
+
+2. **Export as PDF or share**
+   ```powershell
+   # Copy checklist to team wiki/Confluence
+   # Or save as PDF for offline testing
+   ```
+
+3. **Share with QA team**
+   - Slack: "Manual test checklist ready in #qa-testing"
+   - Jira: Link to shared document
+
+4. **Combine with automated tests**
+   ```
+   @manualtesting Create a manual regression checklist that complements our automated test suite
+   ```
+   → Focuses on exploratory testing, UX validation, and edge cases that automation may miss
+
+**Timeline:** 10-15 minutes per feature
+
+---
+
+### Workflow 6: Batch Process: Review & Fix Multiple Test Files
+
+**Scenario:** You have 5 test files that need refactoring for POM compliance. You want to fix them all at once.
+
+**Steps:**
+
+1. **Audit all test files**
+   ```
+   @code-reviewer Audit all test files in tests/integration-tests/ and tests/security-tests/ for POM compliance and best practices
+   ```
+   → Reports: Aggregated review of all files with priorities
+
+2. **Ask Healer to apply fixes**
+   ```
+   @code-reviewer You identified these issues [paste list]. Can you fix them across all files?
+   ```
+   → Healer applies fixes:
+   - Moves inline selectors to Page Objects
+   - Extracts hardcoded test data to `tests/data/`
+   - Replaces anti-patterns
+   - Reruns all tests to verify
+
+3. **Verify all tests pass**
+   ```powershell
+   npm test tests/integration-tests/ tests/security-tests/
+   ```
+
+4. **Commit batch changes**
+   ```powershell
+   git add tests/
+   git commit -m "Refactor: POM compliance across integration & security tests"
+   git push
+   ```
+
+**Timeline:** 20-30 minutes for 5+ files (instead of 2-3 hours manual refactoring)
+
+---
+
+### Workflow 7: API Contract Testing for Microservices
+
+**Scenario:** Your team has multiple APIs. You need to ensure frontend tests will work with backend APIs (consumer-driven contract testing).
+
+**Steps:**
+
+1. **Scaffold contract tests** (use API Testing Agent)
+   ```
+   @api-testing Create Pact consumer-driven contract tests for our APIs:
+   - /api/jobs (list, get, create)
+   - /api/users (login, profile, logout)
+   - /api/uploads (post file)
+   ```
+   → Outputs: `tests/contract-tests/` with Pact setup
+
+2. **Generate API interaction tests** (use Generator)
+   ```
+   @generator Write integration tests that invoke these API endpoints and validate responses
+   ```
+   → Outputs: `tests/unit-tests/api.spec.ts` with full coverage
+
+3. **Run contract tests**
+   ```powershell
+   npm run test:contract
+   ```
+   → Generates `pacts/` contract files for backend validation
+
+4. **Share contracts with backend team**
+   - Contracts in `pacts/` are human-readable JSON
+   - Backend team uses Pact verification to ensure their changes don't break frontend
+
+**Timeline:** 30-45 minutes to set up contract testing for 3+ APIs
+
+---
+
+## Using Agents with the MCP Flow
 
 For fully programmatic agent usage (no VS Code UI), start the Playwright MCP server and send chatmode prompts via API:
 
@@ -828,6 +1546,115 @@ Skills registered in this repo:
 |-------|------|----------------------|
 | 🛠️ **playwright-test-debugging** | `.github/skills/playwright-test-debugging/SKILL.md` | Debugging or fixing a failing test |
 | 📐 **code-review** | `.github/skills/code-review/SKILL.md` | Reviewing, auditing, or inspecting test code |
+
+---
+
+## Agent Quick Reference Guide
+
+### Decision Tree: Which Agent to Use?
+
+```
+Do you have...
+│
+├─ A failing test?
+│  └─ Use 🩺 HEALER: Diagnose & auto-fix the issue
+│
+├─ A new feature to test?
+│  ├─ No test plan yet?
+│  │  └─ Use 📋 PLANNER: Create a test plan first
+│  └─ Have a test plan?
+│     └─ Use ⚙️ GENERATOR: Write automated tests from the plan
+│
+├─ API endpoints to test?
+│  └─ Use 🔌 API TESTING: Scaffold API & contract tests
+│
+├─ Need to review test code?
+│  └─ Use 🔍 CODE REVIEWER: Audit for POM compliance & security
+│
+├─ Need a manual test checklist?
+│  └─ Use 📝 MANUAL TESTING: Generate step-by-step procedures
+│
+└─ Not sure? 
+   └─ Ask in chat: "Help me plan testing for [feature]"
+      → Agent will recommend next steps
+```
+
+### Agent Capability Matrix
+
+| Task | Healer | Planner | Generator | API Testing | Manual Testing | Code Reviewer |
+|------|--------|---------|-----------|-------------|----------------|---------------|
+| Debug failing tests | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Create test plans | ❌ | ✅ | ❌ | ❌ | ❌ | ❌ |
+| Write test specs | ❌ | ❌ | ✅ | ❌ | ❌ | ❌ |
+| Scaffold API tests | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ |
+| Generate manual checklists | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ |
+| Review test code | ✅* | ❌ | ❌ | ❌ | ❌ | ✅ |
+| Suggest fixes | ✅ | ❌ | ❌ | ❌ | ❌ | ✅ |
+| Apply fixes | ✅ | ❌ | ❌ | ❌ | ❌ | ✅* |
+| Cross-browser testing | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ |
+| Performance analysis | ❌ | ✅ | ✅ | ❌ | ✅ | ❌ |
+| Accessibility audit | ❌ | ✅ | ✅ | ❌ | ✅ | ✅ |
+
+_*Can review and optionally fix with permission_
+
+### Time Savings by Agent
+
+| Task | Manual Time | With Agent | Savings |
+|------|------------|-----------|---------|
+| Debug + fix a failing test | 30-60 min | 5-10 min | **85-90%** |
+| Create test plan | 1-2 hours | 10-15 min | **90%** |
+| Write test specs | 2-3 hours | 30-45 min | **80%** |
+| Scaffold API tests | 1-2 hours | 15-30 min | **80%** |
+| Code review audit | 45-90 min | 5-10 min | **85%** |
+| Create manual checklist | 2-3 hours | 5-10 min | **95%** |
+| Full test suite (plan → code → review) | 8-12 hours | 1-2 hours | **85%** |
+
+---
+
+## Pro Tips & Best Practices
+
+### ✅ DO:
+- **Use Planner first:** Always create a test plan before writing code. Saves time & ensures coverage.
+- **Chain agents:** Plan → Generate → Review → Test. Each agent's output feeds into the next.
+- **Ask for edge cases:** Planners excel at finding edge cases. Ask specifically: "What are the error scenarios?"
+- **Let Healer iterate:** If a test is flaky, give Healer multiple attempts. It learns from failures.
+- **Review generated code:** Always do a final code review, even for generated tests. Agents follow conventions but may miss nuances.
+- **Commit often:** After each agent completes a task, commit & push. Makes it easy to roll back if needed.
+- **Use descriptive prompts:** "Fix the login test" is vague. "The login test times out when clicking the submit button" is better.
+
+### ❌ DON'T:
+- **Don't skip the review step:** Code Reviewer catches 80% of issues. Always run it before merging.
+- **Don't hardcode credentials:** Agents will flag this. Always use `tests/data/` for sensitive test data.
+- **Don't use raw selectors:** Let agents enforce POM. Selectors belong in Page Objects, not test specs.
+- **Don't ignore agent suggestions:** If Code Reviewer warns about a pattern, it's usually a real issue.
+- **Don't over-test:** 20 tests for one feature is overkill. Plan for happy path + 3-5 edge cases.
+- **Don't run tests without agents:** Use Healer for CI failures. Manual debugging wastes time.
+
+### 🎯 Optimization Tips:
+1. **Batch similar tasks:** Ask for multiple test scenarios at once. Agents are more efficient with batches.
+2. **Reuse test data:** Create comprehensive `tests/data/` files first. Agents leverage existing data.
+3. **Document selectors:** If a Page Object has unstable selectors, add a comment. Agents respect comments.
+4. **Version your test plans:** Keep `specs/` in git. Plans serve as documentation for non-technical stakeholders.
+5. **Use mobile projects:** When Planner explores a site, ask it to test mobile viewport too.
+
+---
+
+## Troubleshooting Agent Issues
+
+### Issue: Healer can't fix the test, marks it `test.fixme()`
+**Solution:** Check if the issue is environmental (network, server down). Restart dev server or API, try again.
+
+### Issue: Generator produces tests but selectors don't work
+**Solution:** The website may have dynamic content. Ask Generator to use `data-test` attributes if available.
+
+### Issue: Code Reviewer is too strict / lenient
+**Solution:** Review `.github/skills/code-review/SKILL.md` to understand the rules. Customize severity levels if needed.
+
+### Issue: Manual Testing checklist is too long
+**Solution:** Ask for a specific section: "Create a manual checklist for just the login form"
+
+### Issue: Agent isn't using my test data (tests/data/)
+**Solution:** Make sure test data files export constants. Agents look for exports in `*.ts` files.
 
 ---
 
