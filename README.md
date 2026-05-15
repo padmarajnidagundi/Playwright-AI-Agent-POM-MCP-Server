@@ -1112,7 +1112,7 @@ Code Reviewer Agent:
       → Missing tests for: invalid email, empty password, 404 responses
    
    💡 SUGGESTION: Replace page.waitForTimeout(5000) with waitForNavigation()
-      → More reliable and follows Playwright best practices
+      → More reliable and follows Playwright best practices/
 
 3. Generates report:
 
@@ -1135,7 +1135,7 @@ Code Reviewer Agent:
    1. **Missing negative tests**
       - Current coverage: 4/7 happy-path tests
       - Missing: Invalid email, empty password, network timeout, 404 cases
-      - Fix: Add 3-4 test cases for error scenarios
+      - Fix: Add 3-4 test cases for error scenarios/
    
    2. **Hard sleep/timeout** (Line 23)
       - Issue: page.waitForTimeout(5000) is unreliable
