@@ -1149,7 +1149,7 @@ Code Reviewer Agent:
    ## Summary
    ✅ Positive: Clear test structure, good use of beforeEach
    ❌ Blocking: Fix selectors & credentials before merge
-   📋 Follow-up: Add negative tests in separate PR
+   📋 Follow-up: Add negative tests in separate PR/
 
 4. Offers to fix critical issues:
    User: "Apply the critical fixes"
@@ -1167,7 +1167,7 @@ Code Reviewer Agent:
 "Check tests/pages/WeSendCVPage.ts for POM compliance"
 "Fix the critical issues you found in the review"
 "Is this test following best practices? Any anti-patterns?"
-"Verify this new test has proper coverage (happy + negative paths)"
+"Verify this new test has proper coverage (happy + negative paths)"/
 ```
 
 **Trigger in VS Code:**
