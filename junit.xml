@@ -1,66 +1,1642 @@
-<testsuites id="" name="" tests="7" failures="1" skipped="0" errors="0" time="19.722371">
-<testsuite name="wesendcv.spec.ts" timestamp="2026-04-01T16:40:26.779Z" hostname="chromium" tests="7" failures="1" skipped="0" time="52.275" errors="0">
-<testcase name="WeSendCV smoke checks › homepage loads, title and main visible, save screenshot" classname="wesendcv.spec.ts" time="8.839">
+<testsuites id="" name="" tests="350" failures="0" skipped="350" errors="0" time="0.9292370000000001">
+<testsuite name="accessibility\a11y.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="chromium" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="Accessibility Tests › should not have detectable a11y violations" classname="accessibility\a11y.spec.ts">
+<skipped>
+</skipped>
 </testcase>
-<testcase name="WeSendCV smoke checks › invalid page returns 404 error" classname="wesendcv.spec.ts" time="12.422">
+</testsuite>
+<testsuite name="accessibility\keyboard.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="chromium" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="WeSendCV page keyboard navigation works" classname="accessibility\keyboard.spec.ts">
+<skipped>
+</skipped>
 </testcase>
-<testcase name="WeSendCV smoke checks › can click first job link and navigate to job details" classname="wesendcv.spec.ts" time="17.183">
-<failure message="wesendcv.spec.ts:37:7 can click first job link and navigate to job details" type="FAILURE">
-<![CDATA[  [chromium] › wesendcv.spec.ts:37:7 › WeSendCV smoke checks › can click first job link and navigate to job details 
-
-    TimeoutError: locator.click: Timeout 10000ms exceeded.
-    Call log:
-      - waiting for locator('.tpg-post-link').first()
-        - locator resolved to <a data-id="3254" target="_self" class="tpg-post-link" href="https://wesendcv.com/jobs-in-foreign-countries-for-indian-freshers/">⇆⇆↵⇆⇆</a>
-      - attempting click action
-        2 × waiting for element to be visible, enabled and stable
-          - element is not visible
-        - retrying click action
-        - waiting 20ms
-        2 × waiting for element to be visible, enabled and stable
-          - element is not visible
-        - retrying click action
-          - waiting 100ms
-        18 × waiting for element to be visible, enabled and stable
-           - element is not visible
-         - retrying click action
-           - waiting 500ms
-
-
-       at pages\WeSendCVPage.ts:65
-
-      63 |    */
-      64 |   async clickFirstJobLink() {
-    > 65 |     await this.firstJobLink.click();
-         |                             ^
-      66 |   }
-      67 |
-      68 |   /**
-        at WeSendCVPage.clickFirstJobLink (C:\Playwright-AI-Agent-POM-MCP-Server\tests\pages\WeSendCVPage.ts:65:29)
-        at C:\Playwright-AI-Agent-POM-MCP-Server\tests\wesendcv.spec.ts:43:24
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    ..\test-results\wesendcv-WeSendCV-smoke-ch-7d7e1-and-navigate-to-job-details-chromium\test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Error Context: ..\test-results\wesendcv-WeSendCV-smoke-ch-7d7e1-and-navigate-to-job-details-chromium\error-context.md
-]]>
-</failure>
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\wesendcv-WeSendCV-smoke-ch-7d7e1-and-navigate-to-job-details-chromium\test-failed-1.png]]
-
-[[ATTACHMENT|test-results\wesendcv-WeSendCV-smoke-ch-7d7e1-and-navigate-to-job-details-chromium\error-context.md]]
-]]>
-</system-out>
+</testsuite>
+<testsuite name="chaos-tests\concurrency.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="chromium" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="simulate concurrent users accessing homepage" classname="chaos-tests\concurrency.spec.ts">
+<skipped>
+</skipped>
 </testcase>
-<testcase name="WeSendCV smoke checks › homepage URL matches configured home URL" classname="wesendcv.spec.ts" time="7.553">
+</testsuite>
+<testsuite name="contract-tests\api-contract.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="chromium" tests="2" failures="0" skipped="2" time="0" errors="0">
+<testcase name="API contract test for user data endpoint" classname="contract-tests\api-contract.spec.ts">
+<skipped>
+</skipped>
 </testcase>
-<testcase name="WeSendCV smoke checks › homepage contains at least one job listing link" classname="wesendcv.spec.ts" time="2.748">
+<testcase name="API contract test for user list endpoint" classname="contract-tests\api-contract.spec.ts">
+<skipped>
+</skipped>
 </testcase>
-<testcase name="WeSendCV smoke checks › first job listing link has a usable href" classname="wesendcv.spec.ts" time="1.792">
+</testsuite>
+<testsuite name="contract-tests\api-response-compare.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="chromium" tests="2" failures="0" skipped="2" time="0" errors="0">
+<testcase name="API Response Compare Tests › should fetch and validate WordPress posts API response" classname="contract-tests\api-response-compare.spec.ts">
+<skipped>
+</skipped>
 </testcase>
-<testcase name="WeSendCV smoke checks › homepage title contains the WeSendCV brand name" classname="wesendcv.spec.ts" time="1.738">
+<testcase name="API Response Compare Tests › negative: should handle invalid API endpoint" classname="contract-tests\api-response-compare.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="e2e\e2e.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="chromium" tests="2" failures="0" skipped="2" time="0" errors="0">
+<testcase name="critical path: homepage to job page" classname="e2e\e2e.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="404 error handling" classname="e2e\e2e.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="i18n-tests\i18n.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="chromium" tests="2" failures="0" skipped="2" time="0" errors="0">
+<testcase name="WeSendCV page has correct language attributes and basic translations" classname="i18n-tests\i18n.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV page switches to Spanish and displays correct translation" classname="i18n-tests\i18n.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="integration-tests\workflow.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="chromium" tests="4" failures="0" skipped="4" time="0" errors="0">
+<testcase name="Integration Tests - E2E Workflows › should complete full homepage visit workflow" classname="integration-tests\workflow.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Integration Tests - E2E Workflows › should handle multi-step navigation workflow" classname="integration-tests\workflow.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Integration Tests - E2E Workflows › should handle invalid page navigation gracefully" classname="integration-tests\workflow.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Integration Tests - E2E Workflows › should complete login workflow" classname="integration-tests\workflow.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="interop-tests\compatibility.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="chromium" tests="6" failures="0" skipped="6" time="0" errors="0">
+<testcase name="Interop Tests - Cross-Browser Compatibility › should render consistently across browsers" classname="interop-tests\compatibility.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Interop Tests - Cross-Browser Compatibility › should support CSS Grid layout" classname="interop-tests\compatibility.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Interop Tests - Cross-Browser Compatibility › should support ES6 features" classname="interop-tests\compatibility.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Interop Tests - Cross-Browser Compatibility › should handle touch events gracefully" classname="interop-tests\compatibility.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Interop Tests - Cross-Browser Compatibility › should respect user viewport preferences" classname="interop-tests\compatibility.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Interop Tests - Cross-Browser Compatibility › negative: invalid path returns error or displays not-found text" classname="interop-tests\compatibility.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="mobile.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="chromium" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="Mobile testing example › homepage loads on mobile" classname="mobile.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="mock-tests\api-mocking.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="chromium" tests="8" failures="0" skipped="8" time="0" errors="0">
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › should handle mocked API error responses" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › should handle mocked slow network responses" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › should handle mocked unavailable service gracefully" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › should stub XHR/Fetch responses" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › negative: API returns 500 and app handles it gracefully" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › should handle mocked 404 responses for missing resources" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › should handle mocked redirect responses" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › negative: API returns 401 Unauthorized and app handles authentication failure" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="network-resilience\example-network-resilience.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="chromium" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="Network Resilience › should display offline message when network is disconnected" classname="network-resilience\example-network-resilience.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="network-resilience\offline.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="chromium" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="page handles offline/network failure gracefully" classname="network-resilience\offline.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="performance-tests\load-time.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="chromium" tests="4" failures="0" skipped="4" time="0" errors="0">
+<testcase name="Performance Tests - Load Time &amp; Metrics › should load homepage within acceptable time" classname="performance-tests\load-time.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Performance Tests - Load Time &amp; Metrics › should measure First Contentful Paint (FCP)" classname="performance-tests\load-time.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Performance Tests - Load Time &amp; Metrics › should load resources efficiently" classname="performance-tests\load-time.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Performance Tests - Load Time &amp; Metrics › negative: should handle page timeout gracefully" classname="performance-tests\load-time.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="ping-tests\ping.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="chromium" tests="3" failures="0" skipped="3" time="0" errors="0">
+<testcase name="Ping Tests - Endpoint Availability › should ping base URL successfully" classname="ping-tests\ping.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Ping Tests - Endpoint Availability › should ping homepage endpoint" classname="ping-tests\ping.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Ping Tests - Endpoint Availability › negative: invalid endpoint should return 404" classname="ping-tests\ping.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="resilience\resource-failure.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="chromium" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="page still loads when image or stylesheet assets fail" classname="resilience\resource-failure.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="response-code-tests\response-code.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="chromium" tests="3" failures="0" skipped="3" time="0" errors="0">
+<testcase name="Response Code Tests › homepage returns 200 OK" classname="response-code-tests\response-code.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Response Code Tests › invalid page returns 404 Not Found" classname="response-code-tests\response-code.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Response Code Tests › API posts endpoint returns 200 OK" classname="response-code-tests\response-code.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="security-tests\auth.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="chromium" tests="5" failures="0" skipped="5" time="0" errors="0">
+<testcase name="Security Tests - Auth &amp; Access Control › should enforce HTTPS protocol" classname="security-tests\auth.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Security Tests - Auth &amp; Access Control › should not expose sensitive headers" classname="security-tests\auth.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Security Tests - Auth &amp; Access Control › should handle unauthorized access gracefully" classname="security-tests\auth.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Security Tests - Auth &amp; Access Control › should prevent XSS injection in page content" classname="security-tests\auth.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Security Tests - Auth &amp; Access Control › negative: invalid bearer token is rejected" classname="security-tests\auth.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="security-tests\xss.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="chromium" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="XSS Protection › should not execute injected script in input" classname="security-tests\xss.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="unit-tests\api.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="chromium" tests="5" failures="0" skipped="5" time="0" errors="0">
+<testcase name="Unit Tests - API Operations › should parse URL correctly" classname="unit-tests\api.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - API Operations › should validate email format" classname="unit-tests\api.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - API Operations › should calculate request timeout correctly" classname="unit-tests\api.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - API Operations › negative: invalid URL throws" classname="unit-tests\api.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - API Operations › negative: should reject malformed JSON response" classname="unit-tests\api.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="validation-tests\broken-links.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="chromium" tests="3" failures="0" skipped="3" time="0" errors="0">
+<testcase name="WeSendCV - Broken Links Validation › should not have broken internal links" classname="validation-tests\broken-links.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV - Broken Links Validation › should have valid homepage" classname="validation-tests\broken-links.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV - Broken Links Validation › should return 404 for invalid paths" classname="validation-tests\broken-links.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="validation-tests\input-validation.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="chromium" tests="5" failures="0" skipped="5" time="0" errors="0">
+<testcase name="Validation Tests - Input Validation › should validate email addresses correctly" classname="validation-tests\input-validation.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Validation Tests - Input Validation › should validate phone numbers correctly" classname="validation-tests\input-validation.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Validation Tests - Input Validation › should validate URLs correctly" classname="validation-tests\input-validation.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Validation Tests - Input Validation › should validate text length boundaries" classname="validation-tests\input-validation.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Validation Tests - Input Validation › should reject malicious input patterns" classname="validation-tests\input-validation.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="validation-tests\invalid-route.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="chromium" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="Negative tests - invalid routes › non-existent path should return 404 or show Not Found" classname="validation-tests\invalid-route.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="wesendcv.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="chromium" tests="7" failures="0" skipped="7" time="0" errors="0">
+<testcase name="WeSendCV smoke checks › homepage loads, title and main visible, save screenshot" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV smoke checks › invalid page returns 404 error" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV smoke checks › can click first job link and navigate to job details" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV smoke checks › homepage URL matches configured home URL" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV smoke checks › homepage contains at least one job listing link" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV smoke checks › first job listing link has a usable href" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV smoke checks › homepage title contains the WeSendCV brand name" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="accessibility\a11y.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="firefox" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="Accessibility Tests › should not have detectable a11y violations" classname="accessibility\a11y.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="accessibility\keyboard.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="firefox" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="WeSendCV page keyboard navigation works" classname="accessibility\keyboard.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="chaos-tests\concurrency.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="firefox" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="simulate concurrent users accessing homepage" classname="chaos-tests\concurrency.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="contract-tests\api-contract.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="firefox" tests="2" failures="0" skipped="2" time="0" errors="0">
+<testcase name="API contract test for user data endpoint" classname="contract-tests\api-contract.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="API contract test for user list endpoint" classname="contract-tests\api-contract.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="contract-tests\api-response-compare.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="firefox" tests="2" failures="0" skipped="2" time="0" errors="0">
+<testcase name="API Response Compare Tests › should fetch and validate WordPress posts API response" classname="contract-tests\api-response-compare.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="API Response Compare Tests › negative: should handle invalid API endpoint" classname="contract-tests\api-response-compare.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="e2e\e2e.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="firefox" tests="2" failures="0" skipped="2" time="0" errors="0">
+<testcase name="critical path: homepage to job page" classname="e2e\e2e.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="404 error handling" classname="e2e\e2e.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="i18n-tests\i18n.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="firefox" tests="2" failures="0" skipped="2" time="0" errors="0">
+<testcase name="WeSendCV page has correct language attributes and basic translations" classname="i18n-tests\i18n.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV page switches to Spanish and displays correct translation" classname="i18n-tests\i18n.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="integration-tests\workflow.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="firefox" tests="4" failures="0" skipped="4" time="0" errors="0">
+<testcase name="Integration Tests - E2E Workflows › should complete full homepage visit workflow" classname="integration-tests\workflow.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Integration Tests - E2E Workflows › should handle multi-step navigation workflow" classname="integration-tests\workflow.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Integration Tests - E2E Workflows › should handle invalid page navigation gracefully" classname="integration-tests\workflow.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Integration Tests - E2E Workflows › should complete login workflow" classname="integration-tests\workflow.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="interop-tests\compatibility.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="firefox" tests="6" failures="0" skipped="6" time="0" errors="0">
+<testcase name="Interop Tests - Cross-Browser Compatibility › should render consistently across browsers" classname="interop-tests\compatibility.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Interop Tests - Cross-Browser Compatibility › should support CSS Grid layout" classname="interop-tests\compatibility.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Interop Tests - Cross-Browser Compatibility › should support ES6 features" classname="interop-tests\compatibility.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Interop Tests - Cross-Browser Compatibility › should handle touch events gracefully" classname="interop-tests\compatibility.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Interop Tests - Cross-Browser Compatibility › should respect user viewport preferences" classname="interop-tests\compatibility.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Interop Tests - Cross-Browser Compatibility › negative: invalid path returns error or displays not-found text" classname="interop-tests\compatibility.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="mobile.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="firefox" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="Mobile testing example › homepage loads on mobile" classname="mobile.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="mock-tests\api-mocking.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="firefox" tests="8" failures="0" skipped="8" time="0" errors="0">
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › should handle mocked API error responses" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › should handle mocked slow network responses" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › should handle mocked unavailable service gracefully" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › should stub XHR/Fetch responses" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › negative: API returns 500 and app handles it gracefully" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › should handle mocked 404 responses for missing resources" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › should handle mocked redirect responses" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › negative: API returns 401 Unauthorized and app handles authentication failure" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="network-resilience\example-network-resilience.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="firefox" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="Network Resilience › should display offline message when network is disconnected" classname="network-resilience\example-network-resilience.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="network-resilience\offline.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="firefox" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="page handles offline/network failure gracefully" classname="network-resilience\offline.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="performance-tests\load-time.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="firefox" tests="4" failures="0" skipped="4" time="0" errors="0">
+<testcase name="Performance Tests - Load Time &amp; Metrics › should load homepage within acceptable time" classname="performance-tests\load-time.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Performance Tests - Load Time &amp; Metrics › should measure First Contentful Paint (FCP)" classname="performance-tests\load-time.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Performance Tests - Load Time &amp; Metrics › should load resources efficiently" classname="performance-tests\load-time.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Performance Tests - Load Time &amp; Metrics › negative: should handle page timeout gracefully" classname="performance-tests\load-time.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="ping-tests\ping.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="firefox" tests="3" failures="0" skipped="3" time="0" errors="0">
+<testcase name="Ping Tests - Endpoint Availability › should ping base URL successfully" classname="ping-tests\ping.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Ping Tests - Endpoint Availability › should ping homepage endpoint" classname="ping-tests\ping.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Ping Tests - Endpoint Availability › negative: invalid endpoint should return 404" classname="ping-tests\ping.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="resilience\resource-failure.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="firefox" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="page still loads when image or stylesheet assets fail" classname="resilience\resource-failure.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="response-code-tests\response-code.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="firefox" tests="3" failures="0" skipped="3" time="0" errors="0">
+<testcase name="Response Code Tests › homepage returns 200 OK" classname="response-code-tests\response-code.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Response Code Tests › invalid page returns 404 Not Found" classname="response-code-tests\response-code.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Response Code Tests › API posts endpoint returns 200 OK" classname="response-code-tests\response-code.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="security-tests\auth.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="firefox" tests="5" failures="0" skipped="5" time="0" errors="0">
+<testcase name="Security Tests - Auth &amp; Access Control › should enforce HTTPS protocol" classname="security-tests\auth.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Security Tests - Auth &amp; Access Control › should not expose sensitive headers" classname="security-tests\auth.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Security Tests - Auth &amp; Access Control › should handle unauthorized access gracefully" classname="security-tests\auth.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Security Tests - Auth &amp; Access Control › should prevent XSS injection in page content" classname="security-tests\auth.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Security Tests - Auth &amp; Access Control › negative: invalid bearer token is rejected" classname="security-tests\auth.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="security-tests\xss.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="firefox" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="XSS Protection › should not execute injected script in input" classname="security-tests\xss.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="unit-tests\api.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="firefox" tests="5" failures="0" skipped="5" time="0" errors="0">
+<testcase name="Unit Tests - API Operations › should parse URL correctly" classname="unit-tests\api.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - API Operations › should validate email format" classname="unit-tests\api.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - API Operations › should calculate request timeout correctly" classname="unit-tests\api.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - API Operations › negative: invalid URL throws" classname="unit-tests\api.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - API Operations › negative: should reject malformed JSON response" classname="unit-tests\api.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="validation-tests\broken-links.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="firefox" tests="3" failures="0" skipped="3" time="0" errors="0">
+<testcase name="WeSendCV - Broken Links Validation › should not have broken internal links" classname="validation-tests\broken-links.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV - Broken Links Validation › should have valid homepage" classname="validation-tests\broken-links.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV - Broken Links Validation › should return 404 for invalid paths" classname="validation-tests\broken-links.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="validation-tests\input-validation.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="firefox" tests="5" failures="0" skipped="5" time="0" errors="0">
+<testcase name="Validation Tests - Input Validation › should validate email addresses correctly" classname="validation-tests\input-validation.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Validation Tests - Input Validation › should validate phone numbers correctly" classname="validation-tests\input-validation.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Validation Tests - Input Validation › should validate URLs correctly" classname="validation-tests\input-validation.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Validation Tests - Input Validation › should validate text length boundaries" classname="validation-tests\input-validation.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Validation Tests - Input Validation › should reject malicious input patterns" classname="validation-tests\input-validation.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="validation-tests\invalid-route.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="firefox" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="Negative tests - invalid routes › non-existent path should return 404 or show Not Found" classname="validation-tests\invalid-route.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="wesendcv.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="firefox" tests="7" failures="0" skipped="7" time="0" errors="0">
+<testcase name="WeSendCV smoke checks › homepage loads, title and main visible, save screenshot" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV smoke checks › invalid page returns 404 error" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV smoke checks › can click first job link and navigate to job details" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV smoke checks › homepage URL matches configured home URL" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV smoke checks › homepage contains at least one job listing link" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV smoke checks › first job listing link has a usable href" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV smoke checks › homepage title contains the WeSendCV brand name" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="accessibility\a11y.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="webkit" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="Accessibility Tests › should not have detectable a11y violations" classname="accessibility\a11y.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="accessibility\keyboard.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="webkit" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="WeSendCV page keyboard navigation works" classname="accessibility\keyboard.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="chaos-tests\concurrency.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="webkit" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="simulate concurrent users accessing homepage" classname="chaos-tests\concurrency.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="contract-tests\api-contract.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="webkit" tests="2" failures="0" skipped="2" time="0" errors="0">
+<testcase name="API contract test for user data endpoint" classname="contract-tests\api-contract.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="API contract test for user list endpoint" classname="contract-tests\api-contract.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="contract-tests\api-response-compare.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="webkit" tests="2" failures="0" skipped="2" time="0" errors="0">
+<testcase name="API Response Compare Tests › should fetch and validate WordPress posts API response" classname="contract-tests\api-response-compare.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="API Response Compare Tests › negative: should handle invalid API endpoint" classname="contract-tests\api-response-compare.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="e2e\e2e.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="webkit" tests="2" failures="0" skipped="2" time="0" errors="0">
+<testcase name="critical path: homepage to job page" classname="e2e\e2e.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="404 error handling" classname="e2e\e2e.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="i18n-tests\i18n.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="webkit" tests="2" failures="0" skipped="2" time="0" errors="0">
+<testcase name="WeSendCV page has correct language attributes and basic translations" classname="i18n-tests\i18n.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV page switches to Spanish and displays correct translation" classname="i18n-tests\i18n.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="integration-tests\workflow.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="webkit" tests="4" failures="0" skipped="4" time="0" errors="0">
+<testcase name="Integration Tests - E2E Workflows › should complete full homepage visit workflow" classname="integration-tests\workflow.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Integration Tests - E2E Workflows › should handle multi-step navigation workflow" classname="integration-tests\workflow.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Integration Tests - E2E Workflows › should handle invalid page navigation gracefully" classname="integration-tests\workflow.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Integration Tests - E2E Workflows › should complete login workflow" classname="integration-tests\workflow.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="interop-tests\compatibility.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="webkit" tests="6" failures="0" skipped="6" time="0" errors="0">
+<testcase name="Interop Tests - Cross-Browser Compatibility › should render consistently across browsers" classname="interop-tests\compatibility.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Interop Tests - Cross-Browser Compatibility › should support CSS Grid layout" classname="interop-tests\compatibility.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Interop Tests - Cross-Browser Compatibility › should support ES6 features" classname="interop-tests\compatibility.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Interop Tests - Cross-Browser Compatibility › should handle touch events gracefully" classname="interop-tests\compatibility.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Interop Tests - Cross-Browser Compatibility › should respect user viewport preferences" classname="interop-tests\compatibility.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Interop Tests - Cross-Browser Compatibility › negative: invalid path returns error or displays not-found text" classname="interop-tests\compatibility.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="mobile.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="webkit" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="Mobile testing example › homepage loads on mobile" classname="mobile.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="mock-tests\api-mocking.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="webkit" tests="8" failures="0" skipped="8" time="0" errors="0">
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › should handle mocked API error responses" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › should handle mocked slow network responses" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › should handle mocked unavailable service gracefully" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › should stub XHR/Fetch responses" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › negative: API returns 500 and app handles it gracefully" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › should handle mocked 404 responses for missing resources" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › should handle mocked redirect responses" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › negative: API returns 401 Unauthorized and app handles authentication failure" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="network-resilience\example-network-resilience.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="webkit" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="Network Resilience › should display offline message when network is disconnected" classname="network-resilience\example-network-resilience.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="network-resilience\offline.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="webkit" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="page handles offline/network failure gracefully" classname="network-resilience\offline.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="performance-tests\load-time.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="webkit" tests="4" failures="0" skipped="4" time="0" errors="0">
+<testcase name="Performance Tests - Load Time &amp; Metrics › should load homepage within acceptable time" classname="performance-tests\load-time.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Performance Tests - Load Time &amp; Metrics › should measure First Contentful Paint (FCP)" classname="performance-tests\load-time.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Performance Tests - Load Time &amp; Metrics › should load resources efficiently" classname="performance-tests\load-time.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Performance Tests - Load Time &amp; Metrics › negative: should handle page timeout gracefully" classname="performance-tests\load-time.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="ping-tests\ping.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="webkit" tests="3" failures="0" skipped="3" time="0" errors="0">
+<testcase name="Ping Tests - Endpoint Availability › should ping base URL successfully" classname="ping-tests\ping.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Ping Tests - Endpoint Availability › should ping homepage endpoint" classname="ping-tests\ping.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Ping Tests - Endpoint Availability › negative: invalid endpoint should return 404" classname="ping-tests\ping.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="resilience\resource-failure.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="webkit" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="page still loads when image or stylesheet assets fail" classname="resilience\resource-failure.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="response-code-tests\response-code.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="webkit" tests="3" failures="0" skipped="3" time="0" errors="0">
+<testcase name="Response Code Tests › homepage returns 200 OK" classname="response-code-tests\response-code.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Response Code Tests › invalid page returns 404 Not Found" classname="response-code-tests\response-code.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Response Code Tests › API posts endpoint returns 200 OK" classname="response-code-tests\response-code.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="security-tests\auth.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="webkit" tests="5" failures="0" skipped="5" time="0" errors="0">
+<testcase name="Security Tests - Auth &amp; Access Control › should enforce HTTPS protocol" classname="security-tests\auth.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Security Tests - Auth &amp; Access Control › should not expose sensitive headers" classname="security-tests\auth.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Security Tests - Auth &amp; Access Control › should handle unauthorized access gracefully" classname="security-tests\auth.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Security Tests - Auth &amp; Access Control › should prevent XSS injection in page content" classname="security-tests\auth.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Security Tests - Auth &amp; Access Control › negative: invalid bearer token is rejected" classname="security-tests\auth.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="security-tests\xss.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="webkit" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="XSS Protection › should not execute injected script in input" classname="security-tests\xss.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="unit-tests\api.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="webkit" tests="5" failures="0" skipped="5" time="0" errors="0">
+<testcase name="Unit Tests - API Operations › should parse URL correctly" classname="unit-tests\api.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - API Operations › should validate email format" classname="unit-tests\api.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - API Operations › should calculate request timeout correctly" classname="unit-tests\api.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - API Operations › negative: invalid URL throws" classname="unit-tests\api.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - API Operations › negative: should reject malformed JSON response" classname="unit-tests\api.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="validation-tests\broken-links.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="webkit" tests="3" failures="0" skipped="3" time="0" errors="0">
+<testcase name="WeSendCV - Broken Links Validation › should not have broken internal links" classname="validation-tests\broken-links.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV - Broken Links Validation › should have valid homepage" classname="validation-tests\broken-links.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV - Broken Links Validation › should return 404 for invalid paths" classname="validation-tests\broken-links.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="validation-tests\input-validation.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="webkit" tests="5" failures="0" skipped="5" time="0" errors="0">
+<testcase name="Validation Tests - Input Validation › should validate email addresses correctly" classname="validation-tests\input-validation.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Validation Tests - Input Validation › should validate phone numbers correctly" classname="validation-tests\input-validation.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Validation Tests - Input Validation › should validate URLs correctly" classname="validation-tests\input-validation.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Validation Tests - Input Validation › should validate text length boundaries" classname="validation-tests\input-validation.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Validation Tests - Input Validation › should reject malicious input patterns" classname="validation-tests\input-validation.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="validation-tests\invalid-route.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="webkit" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="Negative tests - invalid routes › non-existent path should return 404 or show Not Found" classname="validation-tests\invalid-route.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="wesendcv.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="webkit" tests="7" failures="0" skipped="7" time="0" errors="0">
+<testcase name="WeSendCV smoke checks › homepage loads, title and main visible, save screenshot" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV smoke checks › invalid page returns 404 error" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV smoke checks › can click first job link and navigate to job details" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV smoke checks › homepage URL matches configured home URL" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV smoke checks › homepage contains at least one job listing link" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV smoke checks › first job listing link has a usable href" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV smoke checks › homepage title contains the WeSendCV brand name" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="accessibility\a11y.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Chrome" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="Accessibility Tests › should not have detectable a11y violations" classname="accessibility\a11y.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="accessibility\keyboard.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Chrome" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="WeSendCV page keyboard navigation works" classname="accessibility\keyboard.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="chaos-tests\concurrency.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Chrome" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="simulate concurrent users accessing homepage" classname="chaos-tests\concurrency.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="contract-tests\api-contract.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Chrome" tests="2" failures="0" skipped="2" time="0" errors="0">
+<testcase name="API contract test for user data endpoint" classname="contract-tests\api-contract.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="API contract test for user list endpoint" classname="contract-tests\api-contract.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="contract-tests\api-response-compare.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Chrome" tests="2" failures="0" skipped="2" time="0" errors="0">
+<testcase name="API Response Compare Tests › should fetch and validate WordPress posts API response" classname="contract-tests\api-response-compare.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="API Response Compare Tests › negative: should handle invalid API endpoint" classname="contract-tests\api-response-compare.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="e2e\e2e.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Chrome" tests="2" failures="0" skipped="2" time="0" errors="0">
+<testcase name="critical path: homepage to job page" classname="e2e\e2e.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="404 error handling" classname="e2e\e2e.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="i18n-tests\i18n.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Chrome" tests="2" failures="0" skipped="2" time="0" errors="0">
+<testcase name="WeSendCV page has correct language attributes and basic translations" classname="i18n-tests\i18n.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV page switches to Spanish and displays correct translation" classname="i18n-tests\i18n.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="integration-tests\workflow.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Chrome" tests="4" failures="0" skipped="4" time="0" errors="0">
+<testcase name="Integration Tests - E2E Workflows › should complete full homepage visit workflow" classname="integration-tests\workflow.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Integration Tests - E2E Workflows › should handle multi-step navigation workflow" classname="integration-tests\workflow.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Integration Tests - E2E Workflows › should handle invalid page navigation gracefully" classname="integration-tests\workflow.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Integration Tests - E2E Workflows › should complete login workflow" classname="integration-tests\workflow.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="interop-tests\compatibility.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Chrome" tests="6" failures="0" skipped="6" time="0" errors="0">
+<testcase name="Interop Tests - Cross-Browser Compatibility › should render consistently across browsers" classname="interop-tests\compatibility.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Interop Tests - Cross-Browser Compatibility › should support CSS Grid layout" classname="interop-tests\compatibility.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Interop Tests - Cross-Browser Compatibility › should support ES6 features" classname="interop-tests\compatibility.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Interop Tests - Cross-Browser Compatibility › should handle touch events gracefully" classname="interop-tests\compatibility.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Interop Tests - Cross-Browser Compatibility › should respect user viewport preferences" classname="interop-tests\compatibility.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Interop Tests - Cross-Browser Compatibility › negative: invalid path returns error or displays not-found text" classname="interop-tests\compatibility.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="mobile.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Chrome" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="Mobile testing example › homepage loads on mobile" classname="mobile.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="mock-tests\api-mocking.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Chrome" tests="8" failures="0" skipped="8" time="0" errors="0">
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › should handle mocked API error responses" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › should handle mocked slow network responses" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › should handle mocked unavailable service gracefully" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › should stub XHR/Fetch responses" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › negative: API returns 500 and app handles it gracefully" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › should handle mocked 404 responses for missing resources" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › should handle mocked redirect responses" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › negative: API returns 401 Unauthorized and app handles authentication failure" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="network-resilience\example-network-resilience.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Chrome" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="Network Resilience › should display offline message when network is disconnected" classname="network-resilience\example-network-resilience.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="network-resilience\offline.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Chrome" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="page handles offline/network failure gracefully" classname="network-resilience\offline.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="performance-tests\load-time.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Chrome" tests="4" failures="0" skipped="4" time="0" errors="0">
+<testcase name="Performance Tests - Load Time &amp; Metrics › should load homepage within acceptable time" classname="performance-tests\load-time.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Performance Tests - Load Time &amp; Metrics › should measure First Contentful Paint (FCP)" classname="performance-tests\load-time.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Performance Tests - Load Time &amp; Metrics › should load resources efficiently" classname="performance-tests\load-time.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Performance Tests - Load Time &amp; Metrics › negative: should handle page timeout gracefully" classname="performance-tests\load-time.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="ping-tests\ping.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Chrome" tests="3" failures="0" skipped="3" time="0" errors="0">
+<testcase name="Ping Tests - Endpoint Availability › should ping base URL successfully" classname="ping-tests\ping.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Ping Tests - Endpoint Availability › should ping homepage endpoint" classname="ping-tests\ping.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Ping Tests - Endpoint Availability › negative: invalid endpoint should return 404" classname="ping-tests\ping.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="resilience\resource-failure.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Chrome" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="page still loads when image or stylesheet assets fail" classname="resilience\resource-failure.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="response-code-tests\response-code.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Chrome" tests="3" failures="0" skipped="3" time="0" errors="0">
+<testcase name="Response Code Tests › homepage returns 200 OK" classname="response-code-tests\response-code.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Response Code Tests › invalid page returns 404 Not Found" classname="response-code-tests\response-code.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Response Code Tests › API posts endpoint returns 200 OK" classname="response-code-tests\response-code.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="security-tests\auth.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Chrome" tests="5" failures="0" skipped="5" time="0" errors="0">
+<testcase name="Security Tests - Auth &amp; Access Control › should enforce HTTPS protocol" classname="security-tests\auth.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Security Tests - Auth &amp; Access Control › should not expose sensitive headers" classname="security-tests\auth.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Security Tests - Auth &amp; Access Control › should handle unauthorized access gracefully" classname="security-tests\auth.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Security Tests - Auth &amp; Access Control › should prevent XSS injection in page content" classname="security-tests\auth.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Security Tests - Auth &amp; Access Control › negative: invalid bearer token is rejected" classname="security-tests\auth.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="security-tests\xss.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Chrome" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="XSS Protection › should not execute injected script in input" classname="security-tests\xss.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="unit-tests\api.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Chrome" tests="5" failures="0" skipped="5" time="0" errors="0">
+<testcase name="Unit Tests - API Operations › should parse URL correctly" classname="unit-tests\api.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - API Operations › should validate email format" classname="unit-tests\api.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - API Operations › should calculate request timeout correctly" classname="unit-tests\api.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - API Operations › negative: invalid URL throws" classname="unit-tests\api.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - API Operations › negative: should reject malformed JSON response" classname="unit-tests\api.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="validation-tests\broken-links.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Chrome" tests="3" failures="0" skipped="3" time="0" errors="0">
+<testcase name="WeSendCV - Broken Links Validation › should not have broken internal links" classname="validation-tests\broken-links.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV - Broken Links Validation › should have valid homepage" classname="validation-tests\broken-links.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV - Broken Links Validation › should return 404 for invalid paths" classname="validation-tests\broken-links.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="validation-tests\input-validation.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Chrome" tests="5" failures="0" skipped="5" time="0" errors="0">
+<testcase name="Validation Tests - Input Validation › should validate email addresses correctly" classname="validation-tests\input-validation.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Validation Tests - Input Validation › should validate phone numbers correctly" classname="validation-tests\input-validation.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Validation Tests - Input Validation › should validate URLs correctly" classname="validation-tests\input-validation.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Validation Tests - Input Validation › should validate text length boundaries" classname="validation-tests\input-validation.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Validation Tests - Input Validation › should reject malicious input patterns" classname="validation-tests\input-validation.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="validation-tests\invalid-route.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Chrome" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="Negative tests - invalid routes › non-existent path should return 404 or show Not Found" classname="validation-tests\invalid-route.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="wesendcv.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Chrome" tests="7" failures="0" skipped="7" time="0" errors="0">
+<testcase name="WeSendCV smoke checks › homepage loads, title and main visible, save screenshot" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV smoke checks › invalid page returns 404 error" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV smoke checks › can click first job link and navigate to job details" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV smoke checks › homepage URL matches configured home URL" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV smoke checks › homepage contains at least one job listing link" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV smoke checks › first job listing link has a usable href" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV smoke checks › homepage title contains the WeSendCV brand name" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="accessibility\a11y.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Safari" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="Accessibility Tests › should not have detectable a11y violations" classname="accessibility\a11y.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="accessibility\keyboard.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Safari" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="WeSendCV page keyboard navigation works" classname="accessibility\keyboard.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="chaos-tests\concurrency.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Safari" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="simulate concurrent users accessing homepage" classname="chaos-tests\concurrency.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="contract-tests\api-contract.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Safari" tests="2" failures="0" skipped="2" time="0" errors="0">
+<testcase name="API contract test for user data endpoint" classname="contract-tests\api-contract.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="API contract test for user list endpoint" classname="contract-tests\api-contract.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="contract-tests\api-response-compare.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Safari" tests="2" failures="0" skipped="2" time="0" errors="0">
+<testcase name="API Response Compare Tests › should fetch and validate WordPress posts API response" classname="contract-tests\api-response-compare.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="API Response Compare Tests › negative: should handle invalid API endpoint" classname="contract-tests\api-response-compare.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="e2e\e2e.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Safari" tests="2" failures="0" skipped="2" time="0" errors="0">
+<testcase name="critical path: homepage to job page" classname="e2e\e2e.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="404 error handling" classname="e2e\e2e.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="i18n-tests\i18n.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Safari" tests="2" failures="0" skipped="2" time="0" errors="0">
+<testcase name="WeSendCV page has correct language attributes and basic translations" classname="i18n-tests\i18n.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV page switches to Spanish and displays correct translation" classname="i18n-tests\i18n.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="integration-tests\workflow.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Safari" tests="4" failures="0" skipped="4" time="0" errors="0">
+<testcase name="Integration Tests - E2E Workflows › should complete full homepage visit workflow" classname="integration-tests\workflow.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Integration Tests - E2E Workflows › should handle multi-step navigation workflow" classname="integration-tests\workflow.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Integration Tests - E2E Workflows › should handle invalid page navigation gracefully" classname="integration-tests\workflow.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Integration Tests - E2E Workflows › should complete login workflow" classname="integration-tests\workflow.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="interop-tests\compatibility.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Safari" tests="6" failures="0" skipped="6" time="0" errors="0">
+<testcase name="Interop Tests - Cross-Browser Compatibility › should render consistently across browsers" classname="interop-tests\compatibility.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Interop Tests - Cross-Browser Compatibility › should support CSS Grid layout" classname="interop-tests\compatibility.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Interop Tests - Cross-Browser Compatibility › should support ES6 features" classname="interop-tests\compatibility.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Interop Tests - Cross-Browser Compatibility › should handle touch events gracefully" classname="interop-tests\compatibility.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Interop Tests - Cross-Browser Compatibility › should respect user viewport preferences" classname="interop-tests\compatibility.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Interop Tests - Cross-Browser Compatibility › negative: invalid path returns error or displays not-found text" classname="interop-tests\compatibility.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="mobile.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Safari" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="Mobile testing example › homepage loads on mobile" classname="mobile.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="mock-tests\api-mocking.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Safari" tests="8" failures="0" skipped="8" time="0" errors="0">
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › should handle mocked API error responses" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › should handle mocked slow network responses" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › should handle mocked unavailable service gracefully" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › should stub XHR/Fetch responses" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › negative: API returns 500 and app handles it gracefully" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › should handle mocked 404 responses for missing resources" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › should handle mocked redirect responses" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Mock Tests - API Mocking &amp; Stubbing › negative: API returns 401 Unauthorized and app handles authentication failure" classname="mock-tests\api-mocking.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="network-resilience\example-network-resilience.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Safari" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="Network Resilience › should display offline message when network is disconnected" classname="network-resilience\example-network-resilience.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="network-resilience\offline.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Safari" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="page handles offline/network failure gracefully" classname="network-resilience\offline.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="performance-tests\load-time.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Safari" tests="4" failures="0" skipped="4" time="0" errors="0">
+<testcase name="Performance Tests - Load Time &amp; Metrics › should load homepage within acceptable time" classname="performance-tests\load-time.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Performance Tests - Load Time &amp; Metrics › should measure First Contentful Paint (FCP)" classname="performance-tests\load-time.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Performance Tests - Load Time &amp; Metrics › should load resources efficiently" classname="performance-tests\load-time.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Performance Tests - Load Time &amp; Metrics › negative: should handle page timeout gracefully" classname="performance-tests\load-time.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="ping-tests\ping.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Safari" tests="3" failures="0" skipped="3" time="0" errors="0">
+<testcase name="Ping Tests - Endpoint Availability › should ping base URL successfully" classname="ping-tests\ping.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Ping Tests - Endpoint Availability › should ping homepage endpoint" classname="ping-tests\ping.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Ping Tests - Endpoint Availability › negative: invalid endpoint should return 404" classname="ping-tests\ping.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="resilience\resource-failure.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Safari" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="page still loads when image or stylesheet assets fail" classname="resilience\resource-failure.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="response-code-tests\response-code.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Safari" tests="3" failures="0" skipped="3" time="0" errors="0">
+<testcase name="Response Code Tests › homepage returns 200 OK" classname="response-code-tests\response-code.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Response Code Tests › invalid page returns 404 Not Found" classname="response-code-tests\response-code.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Response Code Tests › API posts endpoint returns 200 OK" classname="response-code-tests\response-code.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="security-tests\auth.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Safari" tests="5" failures="0" skipped="5" time="0" errors="0">
+<testcase name="Security Tests - Auth &amp; Access Control › should enforce HTTPS protocol" classname="security-tests\auth.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Security Tests - Auth &amp; Access Control › should not expose sensitive headers" classname="security-tests\auth.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Security Tests - Auth &amp; Access Control › should handle unauthorized access gracefully" classname="security-tests\auth.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Security Tests - Auth &amp; Access Control › should prevent XSS injection in page content" classname="security-tests\auth.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Security Tests - Auth &amp; Access Control › negative: invalid bearer token is rejected" classname="security-tests\auth.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="security-tests\xss.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Safari" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="XSS Protection › should not execute injected script in input" classname="security-tests\xss.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="unit-tests\api.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Safari" tests="5" failures="0" skipped="5" time="0" errors="0">
+<testcase name="Unit Tests - API Operations › should parse URL correctly" classname="unit-tests\api.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - API Operations › should validate email format" classname="unit-tests\api.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - API Operations › should calculate request timeout correctly" classname="unit-tests\api.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - API Operations › negative: invalid URL throws" classname="unit-tests\api.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Unit Tests - API Operations › negative: should reject malformed JSON response" classname="unit-tests\api.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="validation-tests\broken-links.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Safari" tests="3" failures="0" skipped="3" time="0" errors="0">
+<testcase name="WeSendCV - Broken Links Validation › should not have broken internal links" classname="validation-tests\broken-links.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV - Broken Links Validation › should have valid homepage" classname="validation-tests\broken-links.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV - Broken Links Validation › should return 404 for invalid paths" classname="validation-tests\broken-links.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="validation-tests\input-validation.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Safari" tests="5" failures="0" skipped="5" time="0" errors="0">
+<testcase name="Validation Tests - Input Validation › should validate email addresses correctly" classname="validation-tests\input-validation.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Validation Tests - Input Validation › should validate phone numbers correctly" classname="validation-tests\input-validation.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Validation Tests - Input Validation › should validate URLs correctly" classname="validation-tests\input-validation.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Validation Tests - Input Validation › should validate text length boundaries" classname="validation-tests\input-validation.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Validation Tests - Input Validation › should reject malicious input patterns" classname="validation-tests\input-validation.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="validation-tests\invalid-route.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Safari" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="Negative tests - invalid routes › non-existent path should return 404 or show Not Found" classname="validation-tests\invalid-route.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="wesendcv.spec.ts" timestamp="2026-05-21T16:49:00.243Z" hostname="Mobile Safari" tests="7" failures="0" skipped="7" time="0" errors="0">
+<testcase name="WeSendCV smoke checks › homepage loads, title and main visible, save screenshot" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV smoke checks › invalid page returns 404 error" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV smoke checks › can click first job link and navigate to job details" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV smoke checks › homepage URL matches configured home URL" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV smoke checks › homepage contains at least one job listing link" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV smoke checks › first job listing link has a usable href" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="WeSendCV smoke checks › homepage title contains the WeSendCV brand name" classname="wesendcv.spec.ts">
+<skipped>
+</skipped>
 </testcase>
 </testsuite>
 </testsuites>

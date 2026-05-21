@@ -27,7 +27,7 @@
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 ![NPM Version](https://img.shields.io/badge/npm-v10+-orange)
-![Playwright](https://img.shields.io/badge/Playwright-1.59+-45ba4b)
+![Playwright](https://img.shields.io/badge/Playwright-1.60+-45ba4b)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178c6)
 ![Tests](https://img.shields.io/badge/tests-13%20categories-success)
 ![Coverage](https://img.shields.io/badge/coverage-85%25-brightgreen)
@@ -69,13 +69,13 @@
 | Category          | Technology/Library     | Version      | Purpose                                                                 |
 |-------------------|-------------------------|--------------|-------------------------------------------------------------------------|
 | Language          | TypeScript             | -            | Used for test files, configuration, and utilities                       |
-| Runtime           | Node.js                | 20.9+        | Recommended for latest lint/test tooling compatibility                  |
+| Runtime           | Node.js                | 20.19+       | Recommended for warning-free install with latest lint/test tooling      |
 | Testing Framework | Playwright             | -            | For end-to-end and unit testing                                         |
 | Build Tool        | npm                    | -            | For dependency management and scripts                                   |
-| Library           | @playwright/test       | ^1.59.1      | Main Playwright testing library for browser automation and assertions  |
+| Library           | @playwright/test       | ^1.60.0      | Main Playwright testing library for browser automation and assertions  |
 | Library           | @pact-foundation/pact  | ^16.4.0      | For contract testing (API consumer-provider agreements)                |
-| Library           | @types/node            | ^25.6.2      | TypeScript type definitions for Node.js                                |
-| Library           | @typescript-eslint/*   | ^8.59.2      | TypeScript linting parser and plugin                                   |
+| Library           | @types/node            | ^25.9.1      | TypeScript type definitions for Node.js                                |
+| Library           | @typescript-eslint/*   | ^8.59.4      | TypeScript linting parser and plugin                                   |
 | Library           | axe-playwright         | ^2.2.2       | Accessibility testing integration with Axe                             |
 | Library           | eslint                 | ^9.39.4      | Linting and static analysis                                             |
 | Library           | prettier               | ^3.8.3       | Code formatting                                                         |
@@ -164,51 +164,22 @@ Playwright-AI-Agent-POM-MCP-Server/
 | `playwright.config.ts` | Multi-browser projects, webServer config, trace/screenshot retention on failure |
 
 ## Installation
-## Playwright CLI Usage and Skills Installation
 
-This repository supports advanced automation and skill-based workflows using the Playwright CLI. The CLI can be used for browser automation, test debugging, and loading custom skills for Copilot or agent workflows.
+Use local project dependencies via `npx` so runs are reproducible across machines and CI.
 
-### Install Playwright CLI
+### Prerequisites
 
-It is recommended to install the official Playwright CLI globally:
-
-```powershell
-npm install -g @playwright/cli
-```
-
-### Using the CLI
-
-You can use the CLI for browser automation, page interaction, and more:
-
-```powershell
-# Open a browser
-playwright open https://example.com
-# Take a screenshot
-playwright screenshot page.png
-# Run a test
-playwright test tests/wesendcv.spec.ts
-```
-
-### Installing Agent Skills
-
-To enable Copilot or agent workflows with repository-specific skills, use the following command:
-
-```powershell
-playwright install --skills
-```
-
-This will load all skills found in `.github/skills/` and make them available for Copilot and agent-based debugging or automation. For more information on skills, see the [Agent Skills](#agent-skills--automated-test-debugging-with-github-copilot) section below.
-
-> **Note:** If you see a deprecation warning for `playwright-cli`, always prefer `@playwright/cli` for the latest features and compatibility.
+- Node.js 20.19+ (recommended)
+- npm 10+
 
 ### Windows PowerShell
 ```powershell
 cd C:\Playwright-AI-Agent-POM-MCP-Server
 
-# Install dependencies
-npm install
+# Install dependencies exactly from lockfile (recommended for reproducibility)
+npm ci
 
-# Install Playwright browsers
+# Install Playwright browsers and OS dependencies
 npx playwright install --with-deps
 
 # Verify installation
@@ -221,6 +192,12 @@ cd ~/Playwright-AI-Agent-POM-MCP-Server
 
 npm install
 npx playwright install
+```
+
+### Optional: Check Dependency Status
+
+```powershell
+npm outdated
 ```
 
 ## Docker
