@@ -1645,6 +1645,14 @@ _*Can review and optionally fix with permission_
 - **Isolation:** Tests should be independent and idempotent; avoid test-to-test dependencies.
 - **No hard sleeps:** Use Playwright's built-in waits (`waitForSelector`, `waitForNavigation`, etc.).
 - **Negative tests:** Always validate error paths and edge cases alongside happy paths.
+- **Assertion quality:** Avoid permissive assertions that always pass; assert clear expected outcomes.
+- **POM boundary:** Keep raw selectors out of `*.spec.ts`; place them in `tests/pages/` only.
+- **Data contracts:** Keep URL and user keys consistent across `tests/data/` and consuming specs.
+- **Parallelism strategy:** Run smoke tests on every PR, and schedule long-running suites in nightly jobs.
+- **Flake prevention:** Prefer `expect(locator).toBeVisible()` and response-based waits over timing heuristics.
+- **Cross-browser reliability:** Validate critical flows first on Chromium, then expand to Firefox/WebKit/mobile.
+- **Environment safety:** Mark template/example tests as skipped so they don't block CI.
+- **Debuggability:** Use `test.step()` in complex scenarios to make traces and reports easier to read.
 
 ## How to Extend
 
