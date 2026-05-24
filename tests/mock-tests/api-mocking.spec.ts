@@ -43,7 +43,7 @@ test.describe('Mock Tests - API Mocking & Stubbing', () => {
   }) => {
     // Mock external resource as unavailable
     await page.route('**/external/**', (route) => {
-      route.respond({
+      route.fulfill({
         status: 503,
         contentType: 'application/json',
         body: JSON.stringify({ error: 'Service Unavailable' }),
@@ -59,7 +59,7 @@ test.describe('Mock Tests - API Mocking & Stubbing', () => {
 
   test('should stub XHR/Fetch responses', async ({ page }) => {
     await page.route('**/api/data', (route) => {
-      route.respond({
+      route.fulfill({
         status: 200,
         contentType: 'application/json',
         body: JSON.stringify({ data: 'mocked response' }),
@@ -74,12 +74,45 @@ test.describe('Mock Tests - API Mocking & Stubbing', () => {
     expect(result.data).toBe('mocked response');
   });
 
+  test('should mock POST requests with a custom response', async ({ page }) => {
+    await page.goto(URLS.wesendcv.base, { waitUntil: 'domcontentloaded' });
+
+    await page.route('**/api/submit', async (route) => {
+      const request = route.request();
+      const payload = request.postDataJSON();
+
+      expect(request.method()).toBe('POST');
+      expect(payload).toEqual({ name: 'Jane Doe' });
+
+      await route.fulfill({
+        status: 201,
+        contentType: 'application/json',
+        body: JSON.stringify({ ok: true, received: payload }),
+      });
+    });
+
+    const result = await page.evaluate(async () => {
+      const response = await fetch('/api/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: 'Jane Doe' }),
+      });
+
+      return response.json();
+    });
+
+    expect(result).toEqual({
+      ok: true,
+      received: { name: 'Jane Doe' },
+    });
+  });
+
   test('negative: API returns 500 and app handles it gracefully', async ({
     page,
   }) => {
     // Mock API to return 500 for any API route
     await page.route('**/api/**', (route) => {
-      route.respond({
+      route.fulfill({
         status: 500,
         contentType: 'application/json',
         body: JSON.stringify({ error: 'Internal Server Error' }),
@@ -113,7 +146,7 @@ test.describe('Mock Tests - API Mocking & Stubbing', () => {
   }) => {
     // Mock specific resource as not found
     await page.route('**/missing-resource/**', (route) => {
-      route.respond({
+      route.fulfill({
         status: 404,
         contentType: 'application/json',
         body: JSON.stringify({ error: 'Not Found' }),
@@ -140,7 +173,7 @@ test.describe('Mock Tests - API Mocking & Stubbing', () => {
   test('should handle mocked redirect responses', async ({ page }) => {
     // Mock a resource to redirect to another URL
     await page.route('**/redirect-me/**', (route) => {
-      route.respond({
+      route.fulfill({
         status: 302,
         headers: { Location: '/redirected-page' },
       });
@@ -159,7 +192,7 @@ test.describe('Mock Tests - API Mocking & Stubbing', () => {
   }) => {
     // Mock API to return 401 for any API route requiring authentication
     await page.route('**/api/auth/**', (route) => {
-      route.respond({
+      route.fulfill({
         status: 401,
         contentType: 'application/json',
         body: JSON.stringify({
