@@ -19,3 +19,18 @@ test('page handles offline/network failure gracefully', async ({ page }) => {
     expect(error.message).toContain('net::ERR_FAILED');
   }
 });
+
+test('page recovers when network is restored', async ({ page }) => {
+  const abortAllRequests = (route) => route.abort();
+  await page.route('**/*', abortAllRequests);
+
+  const weSend = new WeSendCVPage(page);
+
+  // First navigation should fail while offline.
+  await expect(weSend.gotoHomepage()).rejects.toThrow(/ERR_FAILED|net::ERR/i);
+
+  // Restore network and verify the page can load again.
+  await page.unroute('**/*', abortAllRequests);
+  await weSend.gotoHomepage();
+  await weSend.verifyHomepageLoaded();
+});
