@@ -27,7 +27,7 @@
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 ![NPM Version](https://img.shields.io/badge/npm-v10+-orange)
-![Playwright](https://img.shields.io/badge/Playwright-1.60+-45ba4b)
+![Playwright](https://img.shields.io/badge/Playwright-1.61+-45ba4b)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178c6)
 ![Tests](https://img.shields.io/badge/tests-13%20categories-success)
 ![Coverage](https://img.shields.io/badge/coverage-85%25-brightgreen)
@@ -72,13 +72,13 @@
 | Runtime           | Node.js                | 20.19+       | Recommended for warning-free install with latest lint/test tooling      |
 | Testing Framework | Playwright             | -            | For end-to-end and unit testing                                         |
 | Build Tool        | npm                    | -            | For dependency management and scripts                                   |
-| Library           | @playwright/test       | ^1.60.0      | Main Playwright testing library for browser automation and assertions  |
-| Library           | @pact-foundation/pact  | ^16.4.0      | For contract testing (API consumer-provider agreements)                |
-| Library           | @types/node            | ^25.9.1      | TypeScript type definitions for Node.js                                |
-| Library           | @typescript-eslint/*   | ^8.59.4      | TypeScript linting parser and plugin                                   |
+| Library           | @playwright/test       | ^1.61.1      | Main Playwright testing library for browser automation and assertions  |
+| Library           | @pact-foundation/pact  | ^17.0.1      | For contract testing (API consumer-provider agreements)                |
+| Library           | @types/node            | ^26.1.0      | TypeScript type definitions for Node.js                                |
+| Library           | @typescript-eslint/*   | ^8.62.1      | TypeScript linting parser and plugin                                   |
 | Library           | axe-playwright         | ^2.2.2       | Accessibility testing integration with Axe                             |
-| Library           | eslint                 | ^9.39.4      | Linting and static analysis                                             |
-| Library           | prettier               | ^3.8.3       | Code formatting                                                         |
+| Library           | eslint                 | ^10.6.0      | Linting and static analysis                                             |
+| Library           | prettier               | ^3.9.4       | Code formatting                                                         |
 | CI/CD             | GitHub Actions         | -            | Configured for cross-platform testing on Ubuntu and Windows            |
 | Visual Diffing    | Pixelmatch             | -            | Custom tools for pixel-level comparison                                |
 | MCP/Chatmode      | -                      | -            | Integration hints for AI-assisted debugging                            |
@@ -2051,5 +2051,4 @@ If you have any questions:
 New to open source? No problem! Look for issues tagged with `good-first-issue` or `help-wanted`. We provide mentorship and guidance to help you succeed.
 
 **Thank you for making test automation better for everyone!** 🚀
-
 
