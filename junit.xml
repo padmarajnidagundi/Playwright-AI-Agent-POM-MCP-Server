@@ -1,211 +1,62 @@
-<testsuites id="" name="" tests="9" failures="0" skipped="0" errors="9" time="6.234459000000031">
-<testsuite name="mock-tests\api-mocking.spec.ts" timestamp="2026-05-24T18:22:47.109Z" hostname="chromium" tests="9" failures="0" skipped="0" time="0.105" errors="9">
-<testcase name="Mock Tests - API Mocking &amp; Stubbing › should handle mocked API error responses" classname="mock-tests\api-mocking.spec.ts" time="0.013">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\mock-tests-api-mocking-Moc-e352e--mocked-API-error-responses-chromium\error-context.md]]
-]]>
-</system-out>
-<error message="browserType.launch: Executable doesn&apos;t exist at C:\Users\padmaraj\AppData\Local\ms-playwright\chromium_headless_shell-1223\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
-<![CDATA[  [chromium] › mock-tests\api-mocking.spec.ts:10:7 › Mock Tests - API Mocking & Stubbing › should handle mocked API error responses 
-
-    Error: browserType.launch: Executable doesn't exist at C:\Users\padmaraj\AppData\Local\ms-playwright\chromium_headless_shell-1223\chrome-headless-shell-win64\chrome-headless-shell.exe
-    ╔════════════════════════════════════════════════════════════╗
-    ║ Looks like Playwright was just installed or updated.       ║
-    ║ Please run the following command to download new browsers: ║
-    ║                                                            ║
-    ║     npx playwright install                                 ║
-    ║                                                            ║
-    ║ <3 Playwright Team                                         ║
-    ╚════════════════════════════════════════════════════════════╝
-
-    Error Context: ..\test-results\mock-tests-api-mocking-Moc-e352e--mocked-API-error-responses-chromium\error-context.md
-]]>
-</error>
+<testsuites id="" name="" tests="25" failures="0" skipped="0" errors="0" time="2.930849">
+<testsuite name="unit-tests/api.spec.ts" timestamp="2026-07-01T18:04:09.644Z" hostname="chromium" tests="5" failures="0" skipped="0" time="0.03" errors="0">
+<testcase name="Unit Tests - API Operations › should parse URL correctly" classname="unit-tests/api.spec.ts" time="0.009">
 </testcase>
-<testcase name="Mock Tests - API Mocking &amp; Stubbing › should handle mocked slow network responses" classname="mock-tests\api-mocking.spec.ts" time="0.017">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\mock-tests-api-mocking-Moc-8324b-cked-slow-network-responses-chromium\error-context.md]]
-]]>
-</system-out>
-<error message="browserType.launch: Executable doesn&apos;t exist at C:\Users\padmaraj\AppData\Local\ms-playwright\chromium_headless_shell-1223\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
-<![CDATA[  [chromium] › mock-tests\api-mocking.spec.ts:25:7 › Mock Tests - API Mocking & Stubbing › should handle mocked slow network responses 
-
-    Error: browserType.launch: Executable doesn't exist at C:\Users\padmaraj\AppData\Local\ms-playwright\chromium_headless_shell-1223\chrome-headless-shell-win64\chrome-headless-shell.exe
-    ╔════════════════════════════════════════════════════════════╗
-    ║ Looks like Playwright was just installed or updated.       ║
-    ║ Please run the following command to download new browsers: ║
-    ║                                                            ║
-    ║     npx playwright install                                 ║
-    ║                                                            ║
-    ║ <3 Playwright Team                                         ║
-    ╚════════════════════════════════════════════════════════════╝
-
-    Error Context: ..\test-results\mock-tests-api-mocking-Moc-8324b-cked-slow-network-responses-chromium\error-context.md
-]]>
-</error>
+<testcase name="Unit Tests - API Operations › should validate email format" classname="unit-tests/api.spec.ts" time="0.008">
 </testcase>
-<testcase name="Mock Tests - API Mocking &amp; Stubbing › should handle mocked unavailable service gracefully" classname="mock-tests\api-mocking.spec.ts" time="0.011">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\mock-tests-api-mocking-Moc-75d2c-vailable-service-gracefully-chromium\error-context.md]]
-]]>
-</system-out>
-<error message="browserType.launch: Executable doesn&apos;t exist at C:\Users\padmaraj\AppData\Local\ms-playwright\chromium_headless_shell-1223\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
-<![CDATA[  [chromium] › mock-tests\api-mocking.spec.ts:41:7 › Mock Tests - API Mocking & Stubbing › should handle mocked unavailable service gracefully 
-
-    Error: browserType.launch: Executable doesn't exist at C:\Users\padmaraj\AppData\Local\ms-playwright\chromium_headless_shell-1223\chrome-headless-shell-win64\chrome-headless-shell.exe
-    ╔════════════════════════════════════════════════════════════╗
-    ║ Looks like Playwright was just installed or updated.       ║
-    ║ Please run the following command to download new browsers: ║
-    ║                                                            ║
-    ║     npx playwright install                                 ║
-    ║                                                            ║
-    ║ <3 Playwright Team                                         ║
-    ╚════════════════════════════════════════════════════════════╝
-
-    Error Context: ..\test-results\mock-tests-api-mocking-Moc-75d2c-vailable-service-gracefully-chromium\error-context.md
-]]>
-</error>
+<testcase name="Unit Tests - API Operations › should calculate request timeout correctly" classname="unit-tests/api.spec.ts" time="0.004">
 </testcase>
-<testcase name="Mock Tests - API Mocking &amp; Stubbing › should stub XHR/Fetch responses" classname="mock-tests\api-mocking.spec.ts" time="0.011">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\mock-tests-api-mocking-Moc-3cdd6-ld-stub-XHR-Fetch-responses-chromium\error-context.md]]
-]]>
-</system-out>
-<error message="browserType.launch: Executable doesn&apos;t exist at C:\Users\padmaraj\AppData\Local\ms-playwright\chromium_headless_shell-1223\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
-<![CDATA[  [chromium] › mock-tests\api-mocking.spec.ts:60:7 › Mock Tests - API Mocking & Stubbing › should stub XHR/Fetch responses 
-
-    Error: browserType.launch: Executable doesn't exist at C:\Users\padmaraj\AppData\Local\ms-playwright\chromium_headless_shell-1223\chrome-headless-shell-win64\chrome-headless-shell.exe
-    ╔════════════════════════════════════════════════════════════╗
-    ║ Looks like Playwright was just installed or updated.       ║
-    ║ Please run the following command to download new browsers: ║
-    ║                                                            ║
-    ║     npx playwright install                                 ║
-    ║                                                            ║
-    ║ <3 Playwright Team                                         ║
-    ╚════════════════════════════════════════════════════════════╝
-
-    Error Context: ..\test-results\mock-tests-api-mocking-Moc-3cdd6-ld-stub-XHR-Fetch-responses-chromium\error-context.md
-]]>
-</error>
+<testcase name="Unit Tests - API Operations › negative: invalid URL throws" classname="unit-tests/api.spec.ts" time="0.004">
 </testcase>
-<testcase name="Mock Tests - API Mocking &amp; Stubbing › should mock POST requests with a custom response" classname="mock-tests\api-mocking.spec.ts" time="0.011">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\mock-tests-api-mocking-Moc-8bff8-ests-with-a-custom-response-chromium\error-context.md]]
-]]>
-</system-out>
-<error message="browserType.launch: Executable doesn&apos;t exist at C:\Users\padmaraj\AppData\Local\ms-playwright\chromium_headless_shell-1223\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
-<![CDATA[  [chromium] › mock-tests\api-mocking.spec.ts:77:7 › Mock Tests - API Mocking & Stubbing › should mock POST requests with a custom response 
-
-    Error: browserType.launch: Executable doesn't exist at C:\Users\padmaraj\AppData\Local\ms-playwright\chromium_headless_shell-1223\chrome-headless-shell-win64\chrome-headless-shell.exe
-    ╔════════════════════════════════════════════════════════════╗
-    ║ Looks like Playwright was just installed or updated.       ║
-    ║ Please run the following command to download new browsers: ║
-    ║                                                            ║
-    ║     npx playwright install                                 ║
-    ║                                                            ║
-    ║ <3 Playwright Team                                         ║
-    ╚════════════════════════════════════════════════════════════╝
-
-    Error Context: ..\test-results\mock-tests-api-mocking-Moc-8bff8-ests-with-a-custom-response-chromium\error-context.md
-]]>
-</error>
+<testcase name="Unit Tests - API Operations › negative: should reject malformed JSON response" classname="unit-tests/api.spec.ts" time="0.005">
 </testcase>
-<testcase name="Mock Tests - API Mocking &amp; Stubbing › negative: API returns 500 and app handles it gracefully" classname="mock-tests\api-mocking.spec.ts" time="0.009">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\mock-tests-api-mocking-Moc-af6c8-d-app-handles-it-gracefully-chromium\error-context.md]]
-]]>
-</system-out>
-<error message="browserType.launch: Executable doesn&apos;t exist at C:\Users\padmaraj\AppData\Local\ms-playwright\chromium_headless_shell-1223\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
-<![CDATA[  [chromium] › mock-tests\api-mocking.spec.ts:110:7 › Mock Tests - API Mocking & Stubbing › negative: API returns 500 and app handles it gracefully 
-
-    Error: browserType.launch: Executable doesn't exist at C:\Users\padmaraj\AppData\Local\ms-playwright\chromium_headless_shell-1223\chrome-headless-shell-win64\chrome-headless-shell.exe
-    ╔════════════════════════════════════════════════════════════╗
-    ║ Looks like Playwright was just installed or updated.       ║
-    ║ Please run the following command to download new browsers: ║
-    ║                                                            ║
-    ║     npx playwright install                                 ║
-    ║                                                            ║
-    ║ <3 Playwright Team                                         ║
-    ╚════════════════════════════════════════════════════════════╝
-
-    Error Context: ..\test-results\mock-tests-api-mocking-Moc-af6c8-d-app-handles-it-gracefully-chromium\error-context.md
-]]>
-</error>
+</testsuite>
+<testsuite name="unit-tests/api.spec.ts" timestamp="2026-07-01T18:04:09.644Z" hostname="firefox" tests="5" failures="0" skipped="0" time="0.037" errors="0">
+<testcase name="Unit Tests - API Operations › should parse URL correctly" classname="unit-tests/api.spec.ts" time="0.01">
 </testcase>
-<testcase name="Mock Tests - API Mocking &amp; Stubbing › should handle mocked 404 responses for missing resources" classname="mock-tests\api-mocking.spec.ts" time="0.014">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\mock-tests-api-mocking-Moc-c111b-onses-for-missing-resources-chromium\error-context.md]]
-]]>
-</system-out>
-<error message="browserType.launch: Executable doesn&apos;t exist at C:\Users\padmaraj\AppData\Local\ms-playwright\chromium_headless_shell-1223\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
-<![CDATA[  [chromium] › mock-tests\api-mocking.spec.ts:144:7 › Mock Tests - API Mocking & Stubbing › should handle mocked 404 responses for missing resources 
-
-    Error: browserType.launch: Executable doesn't exist at C:\Users\padmaraj\AppData\Local\ms-playwright\chromium_headless_shell-1223\chrome-headless-shell-win64\chrome-headless-shell.exe
-    ╔════════════════════════════════════════════════════════════╗
-    ║ Looks like Playwright was just installed or updated.       ║
-    ║ Please run the following command to download new browsers: ║
-    ║                                                            ║
-    ║     npx playwright install                                 ║
-    ║                                                            ║
-    ║ <3 Playwright Team                                         ║
-    ╚════════════════════════════════════════════════════════════╝
-
-    Error Context: ..\test-results\mock-tests-api-mocking-Moc-c111b-onses-for-missing-resources-chromium\error-context.md
-]]>
-</error>
+<testcase name="Unit Tests - API Operations › should validate email format" classname="unit-tests/api.spec.ts" time="0.009">
 </testcase>
-<testcase name="Mock Tests - API Mocking &amp; Stubbing › should handle mocked redirect responses" classname="mock-tests\api-mocking.spec.ts" time="0.012">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\mock-tests-api-mocking-Moc-66974-e-mocked-redirect-responses-chromium\error-context.md]]
-]]>
-</system-out>
-<error message="browserType.launch: Executable doesn&apos;t exist at C:\Users\padmaraj\AppData\Local\ms-playwright\chromium_headless_shell-1223\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
-<![CDATA[  [chromium] › mock-tests\api-mocking.spec.ts:173:7 › Mock Tests - API Mocking & Stubbing › should handle mocked redirect responses 
-
-    Error: browserType.launch: Executable doesn't exist at C:\Users\padmaraj\AppData\Local\ms-playwright\chromium_headless_shell-1223\chrome-headless-shell-win64\chrome-headless-shell.exe
-    ╔════════════════════════════════════════════════════════════╗
-    ║ Looks like Playwright was just installed or updated.       ║
-    ║ Please run the following command to download new browsers: ║
-    ║                                                            ║
-    ║     npx playwright install                                 ║
-    ║                                                            ║
-    ║ <3 Playwright Team                                         ║
-    ╚════════════════════════════════════════════════════════════╝
-
-    Error Context: ..\test-results\mock-tests-api-mocking-Moc-66974-e-mocked-redirect-responses-chromium\error-context.md
-]]>
-</error>
+<testcase name="Unit Tests - API Operations › should calculate request timeout correctly" classname="unit-tests/api.spec.ts" time="0.009">
 </testcase>
-<testcase name="Mock Tests - API Mocking &amp; Stubbing › negative: API returns 401 Unauthorized and app handles authentication failure" classname="mock-tests\api-mocking.spec.ts" time="0.007">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\mock-tests-api-mocking-Moc-d0414-dles-authentication-failure-chromium\error-context.md]]
-]]>
-</system-out>
-<error message="browserType.launch: Executable doesn&apos;t exist at C:\Users\padmaraj\AppData\Local\ms-playwright\chromium_headless_shell-1223\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
-<![CDATA[  [chromium] › mock-tests\api-mocking.spec.ts:190:7 › Mock Tests - API Mocking & Stubbing › negative: API returns 401 Unauthorized and app handles authentication failure 
-
-    Error: browserType.launch: Executable doesn't exist at C:\Users\padmaraj\AppData\Local\ms-playwright\chromium_headless_shell-1223\chrome-headless-shell-win64\chrome-headless-shell.exe
-    ╔════════════════════════════════════════════════════════════╗
-    ║ Looks like Playwright was just installed or updated.       ║
-    ║ Please run the following command to download new browsers: ║
-    ║                                                            ║
-    ║     npx playwright install                                 ║
-    ║                                                            ║
-    ║ <3 Playwright Team                                         ║
-    ╚════════════════════════════════════════════════════════════╝
-
-    Error Context: ..\test-results\mock-tests-api-mocking-Moc-d0414-dles-authentication-failure-chromium\error-context.md
-]]>
-</error>
+<testcase name="Unit Tests - API Operations › negative: invalid URL throws" classname="unit-tests/api.spec.ts" time="0.004">
+</testcase>
+<testcase name="Unit Tests - API Operations › negative: should reject malformed JSON response" classname="unit-tests/api.spec.ts" time="0.005">
+</testcase>
+</testsuite>
+<testsuite name="unit-tests/api.spec.ts" timestamp="2026-07-01T18:04:09.644Z" hostname="webkit" tests="5" failures="0" skipped="0" time="0.032" errors="0">
+<testcase name="Unit Tests - API Operations › should parse URL correctly" classname="unit-tests/api.spec.ts" time="0.01">
+</testcase>
+<testcase name="Unit Tests - API Operations › should validate email format" classname="unit-tests/api.spec.ts" time="0.007">
+</testcase>
+<testcase name="Unit Tests - API Operations › should calculate request timeout correctly" classname="unit-tests/api.spec.ts" time="0.005">
+</testcase>
+<testcase name="Unit Tests - API Operations › negative: invalid URL throws" classname="unit-tests/api.spec.ts" time="0.005">
+</testcase>
+<testcase name="Unit Tests - API Operations › negative: should reject malformed JSON response" classname="unit-tests/api.spec.ts" time="0.005">
+</testcase>
+</testsuite>
+<testsuite name="unit-tests/api.spec.ts" timestamp="2026-07-01T18:04:09.644Z" hostname="Mobile Chrome" tests="5" failures="0" skipped="0" time="0.033" errors="0">
+<testcase name="Unit Tests - API Operations › should parse URL correctly" classname="unit-tests/api.spec.ts" time="0.008">
+</testcase>
+<testcase name="Unit Tests - API Operations › should validate email format" classname="unit-tests/api.spec.ts" time="0.012">
+</testcase>
+<testcase name="Unit Tests - API Operations › should calculate request timeout correctly" classname="unit-tests/api.spec.ts" time="0.004">
+</testcase>
+<testcase name="Unit Tests - API Operations › negative: invalid URL throws" classname="unit-tests/api.spec.ts" time="0.004">
+</testcase>
+<testcase name="Unit Tests - API Operations › negative: should reject malformed JSON response" classname="unit-tests/api.spec.ts" time="0.005">
+</testcase>
+</testsuite>
+<testsuite name="unit-tests/api.spec.ts" timestamp="2026-07-01T18:04:09.644Z" hostname="Mobile Safari" tests="5" failures="0" skipped="0" time="0.026" errors="0">
+<testcase name="Unit Tests - API Operations › should parse URL correctly" classname="unit-tests/api.spec.ts" time="0.007">
+</testcase>
+<testcase name="Unit Tests - API Operations › should validate email format" classname="unit-tests/api.spec.ts" time="0.007">
+</testcase>
+<testcase name="Unit Tests - API Operations › should calculate request timeout correctly" classname="unit-tests/api.spec.ts" time="0.003">
+</testcase>
+<testcase name="Unit Tests - API Operations › negative: invalid URL throws" classname="unit-tests/api.spec.ts" time="0.005">
+</testcase>
+<testcase name="Unit Tests - API Operations › negative: should reject malformed JSON response" classname="unit-tests/api.spec.ts" time="0.004">
 </testcase>
 </testsuite>
 </testsuites>
