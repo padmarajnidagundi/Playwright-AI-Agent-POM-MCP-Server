@@ -9,13 +9,14 @@
     "auth:generate": "node ./scripts/generate-auth.js"
   },
   "devDependencies": {
-    "@pact-foundation/pact": "^17.0.1",
-    "@playwright/test": "^1.61.1",
-    "@types/node": "^26.1.0",
-    "@typescript-eslint/eslint-plugin": "^8.62.1",
-    "@typescript-eslint/parser": "^8.62.1",
+    "@pact-foundation/pact": "17.0.1",
+    "@playwright/test": "1.61.1",
+    "@types/node": "^26.2.0",
+    "@typescript-eslint/eslint-plugin": "^8.66.0",
+    "@typescript-eslint/parser": "^8.66.0",
     "axe-playwright": "^2.2.2",
-    "eslint": "^10.6.0",
-    "prettier": "^3.9.4"
+    "eslint": "^10.8.1",
+    "playwright": "1.61.1",
+    "prettier": "^3.9.6"
   }
 }
