@@ -6,7 +6,10 @@
     "test": "npx playwright test",
     "test:headed": "npx playwright test --headed",
     "test:report": "npx playwright show-report",
-    "auth:generate": "node ./scripts/generate-auth.js"
+    "auth:generate": "node ./scripts/generate-auth.js",
+    "mcp:server": "npx ts-node mcp-server.ts",
+    "lint": "eslint tests/ tools/ --ext .ts",
+    "format": "prettier --write tests/ tools/ *.ts"
   },
   "devDependencies": {
     "@pact-foundation/pact": "17.0.1",
