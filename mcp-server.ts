@@ -73,13 +73,38 @@ const TOOLS = [
 
 // ── Tool handlers ─────────────────────────────────────────────────────────────
 
+// ── Known Playwright project names (allowlist) ────────────────────────────────
+const KNOWN_PROJECTS = new Set([
+  'chromium', 'firefox', 'webkit', 'Mobile Chrome', 'Mobile Safari',
+]);
+
+// Safe path pattern: allows only alphanumeric, hyphens, underscores, slashes, dots
+const SAFE_PATH_RE = /^[\w./-]+$/;
+
+function sanitizeFilter(value: string): string {
+  if (!SAFE_PATH_RE.test(value)) {
+    throw new Error(`Invalid filter value: "${value}". Only alphanumeric, hyphens, underscores, slashes, and dots are allowed.`);
+  }
+  return value;
+}
+
+function sanitizeProject(value: string): string {
+  if (!KNOWN_PROJECTS.has(value)) {
+    throw new Error(`Unknown project: "${value}". Must be one of: ${[...KNOWN_PROJECTS].join(', ')}.`);
+  }
+  return value;
+}
+
 function handleRunTests(params: Record<string, unknown>): string {
-  const filter = typeof params.filter === 'string' ? params.filter : '';
-  const project = typeof params.project === 'string' ? `--project="${params.project}"` : '';
+  const rawFilter = typeof params.filter === 'string' ? params.filter : '';
+  const rawProject = typeof params.project === 'string' ? params.project : '';
+
+  const filter = rawFilter ? sanitizeFilter(rawFilter) : '';
+  const project = rawProject ? `--project="${sanitizeProject(rawProject)}"` : '';
   const cmd = `npx playwright test ${filter} ${project} --reporter=list`.trim();
   try {
     const output = execSync(cmd, {
-      cwd: path.resolve(__dirname, '..'),
+      cwd: path.resolve(__dirname),
       encoding: 'utf8',
       timeout: 300_000,
       stdio: ['pipe', 'pipe', 'pipe'],
@@ -92,7 +117,7 @@ function handleRunTests(params: Record<string, unknown>): string {
 }
 
 function handleGetTestResults(): unknown {
-  const reportPath = path.resolve(__dirname, '..', 'test-results', 'ai-report.json');
+  const reportPath = path.resolve(__dirname, 'test-results', 'ai-report.json');
   if (!fs.existsSync(reportPath)) {
     return { error: 'No AI report found. Run tests first using the run_tests tool.' };
   }
@@ -113,7 +138,7 @@ function listSpecFiles(dir: string): string[] {
 }
 
 function handleListTestFiles(): string[] {
-  const testsDir = path.resolve(__dirname, '..', 'tests');
+  const testsDir = path.resolve(__dirname, 'tests');
   return listSpecFiles(testsDir);
 }
 

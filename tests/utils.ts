@@ -16,7 +16,10 @@ export async function waitForNavigationIfNeeded(
 }
 
 /**
- * Retry an async function up to `maxAttempts` times with linear back-off.
+ * Retry an async function up to `maxAttempts` times with linear back-off
+ * (delay grows as `delayMs × attempt`).
+ *
+ * For exponential back-off, use `BasePage.retryAction` instead.
  * Resolves with the first successful result or rejects after exhausting attempts.
  */
 export async function retry<T>(

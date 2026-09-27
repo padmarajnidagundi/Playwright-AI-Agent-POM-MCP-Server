@@ -1,5 +1,4 @@
-import { expect } from '@playwright/test';
-import { Page } from '@playwright/test';
+import { expect, Page } from '@playwright/test';
 import { URLS } from '../data/urls';
 import { BasePage } from './BasePage';
 
