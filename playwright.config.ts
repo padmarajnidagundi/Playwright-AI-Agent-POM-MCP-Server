@@ -12,6 +12,7 @@ export default defineConfig({
     ['json', { outputFile: 'test-results/results.json' }],
     ['junit', { outputFile: 'junit.xml' }],
     ['list'],
+    ['./tools/ai-reporter.ts'],
   ],
   use: {
     baseURL: 'https://www.wesendcv.com',

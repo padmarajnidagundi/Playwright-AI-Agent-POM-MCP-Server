@@ -1,13 +1,14 @@
-import { Page, expect } from '@playwright/test';
+import { expect } from '@playwright/test';
+import { Page } from '@playwright/test';
 import { URLS } from '../data/urls';
+import { BasePage } from './BasePage';
 
-export class WeSendCVPage {
-  readonly page: Page;
+export class WeSendCVPage extends BasePage {
   readonly url = URLS.wesendcv.base;
   readonly baseUrl = URLS.wesendcv.base;
 
   constructor(page: Page) {
-    this.page = page;
+    super(page);
   }
 
   // Locators
