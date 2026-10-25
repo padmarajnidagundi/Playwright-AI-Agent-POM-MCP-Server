@@ -24,7 +24,7 @@ export function buildLocatorRepairProposal(args: {
   impactedSpecs: string[];
 }): HealingProposal {
   const proposedSelector = args.candidateSelectors[0] ?? args.currentSelector;
-  const confidence = proposedSelector === args.currentSelector ? 0.35 : 0.84;
+  const confidence = proposedSelector === args.currentSelector ? 0.35 : 0.9;
 
   return {
     id: `heal-${Date.now()}`,
@@ -47,7 +47,7 @@ export function buildLocatorRepairProposal(args: {
 
 export function assertPomGuardrails(filePath: string): void {
   const normalized = filePath.replace(/\\/g, '/');
-  if (!normalized.includes('/tests/pages/')) {
+  if (!normalized.includes('/tests/pages/') && !normalized.startsWith('tests/pages/')) {
     throw new Error('Guardrail violation: locator edits are only allowed in tests/pages/* files.');
   }
 }

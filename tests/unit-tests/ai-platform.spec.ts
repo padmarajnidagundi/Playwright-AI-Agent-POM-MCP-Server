@@ -13,7 +13,7 @@ import { buildDashboardMetrics } from '../../tools/platform/dashboard';
 import { selectTestsForChanges } from '../../tools/platform/test-selection';
 import { dispatch } from '../../mcp-server';
 
-const repoRoot = path.resolve(__dirname, '../..', '..');
+const repoRoot = path.resolve(__dirname, '..', '..');
 const tmpRoot = path.join('/tmp', 'playwright-ai-agent-platform-tests');
 
 test.beforeEach(() => {

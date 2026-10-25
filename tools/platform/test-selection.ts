@@ -3,6 +3,7 @@ import * as path from 'path';
 
 function collectSpecFiles(dir: string): string[] {
   const out: string[] = [];
+  if (!fs.existsSync(dir)) return out;
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) out.push(...collectSpecFiles(full));
@@ -35,7 +36,10 @@ export function selectTestsForChanges(args: {
       const pageHint = file.includes('/tests/pages/');
       const dataHint = file.includes('/tests/data/');
 
-      if (relativeSpec.includes('unit-tests') && (file.includes('/tools/') || file.endsWith('mcp-server.ts'))) {
+      if (
+        relativeSpec.includes('unit-tests') &&
+        (file.includes('/tools/') || file.startsWith('tools/') || file.endsWith('mcp-server.ts'))
+      ) {
         selected.add(relativeSpec);
         reasons[relativeSpec] = [...(reasons[relativeSpec] ?? []), `unit scope for changed tool file: ${file}`];
       }
