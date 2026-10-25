@@ -58,8 +58,11 @@ This is **not a tutorial project**. Every pattern here is drawn from real enterp
 
 | Feature | Description |
 |---|---|
-| 🧠 **MCP Server** | A standards-compliant Model Context Protocol server (`mcp-server.ts`) that lets any AI assistant run tests, fetch results, and list specs via JSON-RPC tools |
-| 📊 **AI Reporter** | Custom Playwright reporter (`tools/ai-reporter.ts`) that emits structured JSON consumed by LLMs — includes per-test `aiHint` fields with auto-generated fix suggestions |
+| 🧠 **MCP Server** | A standards-compliant Model Context Protocol server (`mcp-server.ts`) that lets any AI assistant run tests, fetch results, list specs, and orchestrate healing workflows via JSON-RPC tools |
+| 📊 **AI Reporter** | Custom Playwright reporter (`tools/ai-reporter.ts`) that emits structured JSON consumed by LLMs — includes per-test `aiHint`, `rootCause`, and `traceSummary` fields with auto-generated fix guidance |
+| 🧠 **Failure Intelligence** | `tools/platform/failure-analysis.ts` + `trace-summary.ts` normalize failures by category, estimate the probable cause, and convert trace/screenshot artifacts into actionable triage steps |
+| 🛠️ **Guarded Healing** | `tools/platform/healing.ts` enforces POM-only edits, computes risk-aware locator repair proposals, requires approval for medium/high risk changes, and records validation outcomes |
+| 📈 **AI QA Analytics** | `tools/platform/dashboard.ts`, `report-history.ts`, and `analytics.ts` aggregate historical runs into pass-rate, failure-category, and flaky-test metrics |
 | 🏗️ **BasePage** | Abstract base class (`tests/pages/BasePage.ts`) with smart retries (exponential back-off), structured action logs, performance timing, soft assertions, and stable-element waits |
 | 🔌 **Custom Fixtures** | `tests/fixtures.ts` extends Playwright with `apiContext` (pre-authenticated REST context) and automatic trace capture on failure |
 | ⚙️ **Centralized Config** | `tests/data/testConfig.ts` — single source of truth for all timeouts, thresholds, retry policies, and environment variables |
@@ -88,20 +91,29 @@ This is **not a tutorial project**. Every pattern here is drawn from real enterp
                          ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │                    mcp-server.ts                                │
-│  Tools: run_tests · get_test_results · list_test_files         │
+│  Tools: run_tests · get_test_results · analyze_failures         │
+│  propose_locator_repair · get_dashboard_metrics                 │
 └────────────────────────┬────────────────────────────────────────┘
-                         │  spawns / reads
+                         │  spawns / reads / writes
                          ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │                Playwright Test Runner                           │
-│  playwright.config.ts  →  5 browser projects                   │
+│  playwright.config.ts  →  multi-browser projects               │
 │                         →  AI Reporter (tools/ai-reporter.ts)  │
+│                         →  Failure analysis + trace summaries   │
 └────────────┬───────────────────────────────────────────────────┘
              │
    ┌─────────▼──────────┐    ┌──────────────────────────────────┐
    │   Test Specs        │    │   Page Objects (tests/pages/)    │
    │   tests/**/*.spec.ts│───▶│   BasePage.ts (base class)       │
    │   14 categories     │    │   WeSendCVPage.ts                │
+   └─────────────────────┘    └──────────────────────────────────┘
+             │
+   ┌─────────▼──────────┐    ┌──────────────────────────────────┐
+   │   Failure platform  │    │   Healing + analytics           │
+   │   tools/platform/   │    │   tools/platform/healing.ts     │
+   │   failure-analysis  │    │   dashboard.ts                  │
+   │   trace-summary     │    │   feature-flags.ts              │
    └─────────────────────┘    └──────────────────────────────────┘
              │
    ┌─────────▼──────────┐    ┌──────────────────────────────────┐
@@ -118,7 +130,7 @@ This is **not a tutorial project**. Every pattern here is drawn from real enterp
 
 ```
 Playwright-AI-Agent-POM-MCP-Server/
-├── mcp-server.ts                  # MCP server — AI tool integration
+├── mcp-server.ts                  # MCP server — AI tool integration + healing orchestration
 ├── playwright.config.ts           # Multi-browser config + AI reporter
 ├── package.json                   # Scripts: test, mcp:server, lint, format
 ├── Dockerfile                     # Containerized test runner
@@ -127,13 +139,14 @@ Playwright-AI-Agent-POM-MCP-Server/
 │   ├── fixtures.ts                # Custom Playwright fixtures (apiContext, auto-trace)
 │   ├── utils.ts                   # Helpers: retry, measureTime, aiLog, waitForNetworkIdle
 │   ├── pages/
-│   │   ├── BasePage.ts            # 🆕 Abstract base: retries, logging, perf timing
+│   │   ├── BasePage.ts            # Abstract base: retries, logging, perf timing
 │   │   └── WeSendCVPage.ts        # WeSendCV page object (extends BasePage)
 │   ├── data/
 │   │   ├── urls.ts                # Centralized URL constants
 │   │   ├── users.ts               # Test user credentials (env-var backed)
-│   │   └── testConfig.ts          # 🆕 All timeouts, thresholds, retry policies
+│   │   └── testConfig.ts          # All timeouts, thresholds, retry policies
 │   ├── unit-tests/
+│   │   ├── ai-platform.spec.ts    # Failure-analysis + healing + MCP contract coverage
 │   │   └── api.spec.ts
 │   ├── integration-tests/
 │   │   └── workflow.spec.ts
@@ -173,14 +186,30 @@ Playwright-AI-Agent-POM-MCP-Server/
 │   ├── vibe.spec.ts
 │   └── wesendcv.spec.ts
 ├── tools/
-│   └── ai-reporter.ts             # 🆕 Custom AI-parseable Playwright reporter
-└── .github/
-    ├── copilot-instructions.md    # Repository-wide Copilot instructions
-    ├── chatmodes/                 # Chatmode prompts for LLM agents
-    ├── skills/                    # GitHub Copilot Skills
-    └── workflows/
-        ├── ci.yml                 # GitHub Actions multi-OS pipeline
-        └── code-quality.yml       # ESLint + Prettier quality gate
+│   ├── ai-reporter.ts             # AI-parseable Playwright reporter
+│   └── platform/
+│       ├── failure-analysis.ts    # Failure categorization and root-cause scoring
+│       ├── trace-summary.ts       # Trace/screenshot/video triage summaries
+│       ├── healing.ts             # POM-only locator repairs + validation hooks
+│       ├── dashboard.ts           # Historical metrics aggregation
+│       ├── analytics.ts           # Event recording for AI QA telemetry
+│       ├── feature-flags.ts       # Feature-flag access helpers
+│       ├── parallel-executor.ts   # Deterministic parallel sharding runner
+│       ├── report-history.ts      # Report archive access helpers
+│       ├── schemas.ts             # Shared AI QA schemas
+│       ├── secret-redaction.ts    # Secret sanitization for logs
+│       ├── test-generator.ts      # Natural-language test preview generation
+│       ├── test-selection.ts      # Impact analysis for changed files
+│       └── ...
+├── .github/
+│   ├── copilot-instructions.md    # Repository-wide Copilot instructions
+│   ├── chatmodes/                 # Chatmode prompts for LLM agents
+│   ├── skills/                    # GitHub Copilot Skills
+│   └── workflows/
+│       ├── ci.yml                 # GitHub Actions multi-OS pipeline
+│       └── code-quality.yml       # ESLint + Prettier quality gate
+└── .claude/
+    └── skills/playwright-cli/     # Playwright CLI agent references and guides
 ```
 
 ---
@@ -189,8 +218,12 @@ Playwright-AI-Agent-POM-MCP-Server/
 
 | File | Purpose |
 |------|---------|
-| `mcp-server.ts` | MCP-compliant JSON-RPC server exposing `run_tests`, `get_test_results`, `list_test_files` |
-| `tools/ai-reporter.ts` | Custom Playwright reporter — writes `test-results/ai-report.json` with AI hints |
+| `mcp-server.ts` | MCP-compliant JSON-RPC server exposing test execution, failure analysis, healing, and dashboard tools |
+| `tools/ai-reporter.ts` | Custom Playwright reporter — writes `test-results/ai-report.json` with AI hints, root causes, and trace summaries |
+| `tools/platform/failure-analysis.ts` | Normalizes failure categories and probable root causes from Playwright errors |
+| `tools/platform/trace-summary.ts` | Summarizes trace, screenshot, and video artifacts into remediation actions |
+| `tools/platform/healing.ts` | Guarded POM repair proposals, approval checks, validation reruns, and persisted healing records |
+| `tools/platform/dashboard.ts` | Aggregates historical run metrics for QA dashboards and trend analysis |
 | `tests/pages/BasePage.ts` | Abstract POM base class: smart retry, structured logging, perf timing, soft asserts |
 | `tests/pages/WeSendCVPage.ts` | Concrete page object extending `BasePage` |
 | `tests/fixtures.ts` | Extended `test` export with `apiContext` fixture and automatic trace-on-failure |
@@ -338,11 +371,21 @@ npx ts-node mcp-server.ts
 | `analyze_failures` | Aggregate failed tests by normalized category with probable root cause and confidence |
 | `get_trace_summary` | Summarize trace/screenshot/video artifacts into actionable triage steps |
 | `generate_test_preview` | Generate natural-language test plan output with POM page-object/spec update contract |
-| `propose_locator_repair` | Produce locator repair proposal with confidence and blast-radius metadata |
+| `propose_locator_repair` | Produce locator repair proposal with confidence, risk, and blast-radius metadata |
 | `apply_locator_repair` | Apply approved locator proposal with POM guardrails and healing audit record |
 | `validate_healing_rerun` | Run impacted-spec validation reruns after healing proposals |
 | `get_dashboard_metrics` | Build historical QA dashboard metrics from archived AI reports |
 | `select_tests_for_changes` | Select impacted tests from changed files with explainable reasons |
+
+### AI QA platform capabilities
+
+Beyond running tests, the MCP layer exposes the repository’s failure-analysis workflow:
+
+- `analyze_failures` classifies failures such as locator, timeout, network, assertion, navigation, and environment issues.
+- `get_trace_summary` converts trace, screenshot, and video artifacts into concise, prioritized remediation guidance.
+- `propose_locator_repair` generates a low/medium/high risk fix plan that stays inside `tests/pages/*` files only.
+- `apply_locator_repair` enforces Page Object Model guardrails and records the healing decision.
+- `get_dashboard_metrics` surfaces historical trends from archived report JSON for dashboard and trend reporting.
 
 ### VS Code integration
 
@@ -420,7 +463,8 @@ Add to `.vscode/mcp.json`:
       "category": "locator",
       "rootCause": {
         "probableCause": "Locator likely stale or too brittle for current DOM.",
-        "confidence": 0.88
+        "confidence": 0.88,
+        "category": "locator"
       },
       "artifacts": {
         "trace": "test-results/.../trace.zip",
@@ -428,8 +472,12 @@ Add to `.vscode/mcp.json`:
       },
       "traceSummary": {
         "available": true,
-        "summary": "Collected artifact signals for failure triage.",
-        "actionableSteps": ["Inspect DOM at failure point in trace and update page-object locator."]
+        "summary": "Collected 2 artifact signal(s) for failure triage.",
+        "actionableSteps": [
+          "Inspect DOM at failure point in trace and update page-object locator to role/data-testid strategy.",
+          "Validate updated locator with targeted rerun on impacted spec only."
+        ],
+        "evidence": ["Trace: trace.zip", "Screenshot: test-failed-1.png"]
       },
       "error": {
         "message": "locator('.tpg-post-link') not found",
@@ -441,7 +489,7 @@ Add to `.vscode/mcp.json`:
 }
 ```
 
-The `aiHint` field is automatically populated based on the error message pattern — no manual configuration needed.
+The `aiHint`, `rootCause`, and `traceSummary` fields are generated automatically from the failure signal and artifact metadata; the platform also keeps a schema version for compatibility and historical analysis.
 
 ---
 
@@ -699,12 +747,15 @@ export class MyPage extends BasePage {
 
 ### Chatmode prompts (`.github/chatmodes/`)
 
-Pre-written prompt files that give LLM agents rich context about this framework:
+Pre-written prompt files that give LLM agents rich context about this framework and the AI QA workflow:
 
 | File | Purpose |
 |------|---------|
-| `🎭 healer.chatmode.md` | Auto-heal failing tests by suggesting selector or timeout fixes |
+| `🎭 healer.chatmode.md` | Auto-heal failing tests by suggesting selector, timeout, or trace-driven fixes |
 | `🎭 planner.chatmode.md` | Plan new test categories or page objects from a feature description |
+| `🎭 generator.chatmode.md` | Generate new Playwright specs and page-object scaffolds aligned to repo conventions |
+| `🎭 api-testing.chatmode.md` | Focused API testing and contract coverage playbooks |
+| `🔍 code-reviewer.chatmode.md` | Review changes for POM compliance, resilience, and security correctness |
 
 ### GitHub Copilot Skills (`.github/skills/`)
 
@@ -712,6 +763,10 @@ Pre-written prompt files that give LLM agents rich context about this framework:
 |-------|---------|--------|
 | `playwright-test-debugging` | Debugging failing tests | Loads systematic Playwright debugging guide |
 | `code-review` | Reviewing test code | Enforces POM compliance, Playwright best practices, security rules |
+
+### Claude CLI references (`.claude/skills/playwright-cli/`)
+
+The repo also ships Playwright CLI training docs for session management, storage state, tracing, video capture, and code execution — useful when pairing the MCP server with agentic browser workflows.
 
 ---
 
@@ -745,9 +800,9 @@ Pre-written prompt files that give LLM agents rich context about this framework:
 ### Add a new MCP tool
 
 1. Add a tool definition to the `TOOLS` array in `mcp-server.ts`
-2. Implement the handler function
-3. Dispatch it in the `dispatch()` function
-4. Document it in this README
+2. Implement the handler in the platform layer or the server dispatch path
+3. Add the corresponding validation test under `tests/unit-tests/`
+4. Dispatch it in the `dispatch()` function and document it in this README
 
 ---
 
