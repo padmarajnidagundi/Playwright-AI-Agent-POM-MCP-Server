@@ -19,6 +19,7 @@ import { redactSecrets, sanitizeEnv } from './tools/platform/secret-redaction';
 import { readFeatureFlags } from './tools/platform/feature-flags';
 import { runInParallel } from './tools/platform/parallel-executor';
 import { writeAnalyticsEvent } from './tools/platform/analytics';
+import { HealingProposal } from './tools/platform/schemas';
 
 type JsonObject = Record<string, unknown>;
 
@@ -172,6 +173,21 @@ function sanitizeProject(value: string): string {
 function parseArrayStrings(value: unknown): string[] {
   if (!Array.isArray(value)) return [];
   return value.filter((x): x is string => typeof x === 'string');
+}
+
+function parseHealingProposal(value: unknown): HealingProposal {
+  const proposal = value as Partial<HealingProposal> | undefined;
+  if (!proposal) throw new Error('proposal is required.');
+  if (!proposal.id || !proposal.file || !proposal.locatorName || !proposal.currentSelector || !proposal.proposedSelector) {
+    throw new Error('proposal is missing required fields.');
+  }
+  if (!proposal.blastRadius || !Array.isArray(proposal.blastRadius.impactedSpecs)) {
+    throw new Error('proposal blastRadius.impactedSpecs must be an array.');
+  }
+  if (!proposal.risk || !['low', 'medium', 'high'].includes(proposal.risk)) {
+    throw new Error('proposal risk must be one of: low, medium, high.');
+  }
+  return proposal as HealingProposal;
 }
 
 function listSpecFiles(dir: string): string[] {
@@ -352,25 +368,22 @@ function handleProposeLocatorRepair(params: JsonObject): unknown {
 }
 
 function handleApplyLocatorRepair(params: JsonObject): unknown {
-  const proposal = params.proposal as JsonObject | undefined;
-  if (!proposal) throw new Error('proposal is required.');
+  const proposal = parseHealingProposal(params.proposal);
 
   const approvedBy = typeof params.approvedBy === 'string' ? params.approvedBy : undefined;
   const apply = applyLocatorRepairWithApproval({
     repoRoot: REPO_ROOT,
-    proposal: proposal as unknown as ReturnType<typeof buildLocatorRepairProposal>,
+    proposal,
     approvedBy,
   });
 
-  const impactedSpecs = Array.isArray((proposal as JsonObject).blastRadius)
-    ? []
-    : (((proposal as JsonObject).blastRadius as JsonObject | undefined)?.impactedSpecs as string[] | undefined) ?? [];
+  const impactedSpecs = proposal.blastRadius.impactedSpecs.map(spec => sanitizePath(spec));
   const validation = runValidationRerun({ cwd: REPO_ROOT, impactedSpecs });
 
-  const approvalRequired = (proposal.risk as string | undefined) !== 'low';
+  const approvalRequired = proposal.risk !== 'low';
   const record = persistHealingRecord({
     outputDir: HEALING_DIR,
-    proposal: proposal as unknown as ReturnType<typeof buildLocatorRepairProposal>,
+    proposal,
     approval: {
       required: approvalRequired,
       approvedBy,

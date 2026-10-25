@@ -332,9 +332,17 @@ npx ts-node mcp-server.ts
 
 | Tool | Description |
 |------|-------------|
-| `run_tests` | Execute Playwright tests. Accepts optional `filter` (path/glob) and `project` parameters |
-| `get_test_results` | Read `test-results/ai-report.json` — returns summary, per-test status, errors, and AI hints |
+| `run_tests` | Execute Playwright tests with optional `filter`, `project`, and deterministic `shards` parallel execution |
+| `get_test_results` | Read `test-results/ai-report.json` — returns summary, per-test status, root-cause analysis, and artifact links |
 | `list_test_files` | List all `*.spec.ts` files in the `tests/` directory |
+| `analyze_failures` | Aggregate failed tests by normalized category with probable root cause and confidence |
+| `get_trace_summary` | Summarize trace/screenshot/video artifacts into actionable triage steps |
+| `generate_test_preview` | Generate natural-language test plan output with POM page-object/spec update contract |
+| `propose_locator_repair` | Produce locator repair proposal with confidence and blast-radius metadata |
+| `apply_locator_repair` | Apply approved locator proposal with POM guardrails and healing audit record |
+| `validate_healing_rerun` | Run impacted-spec validation reruns after healing proposals |
+| `get_dashboard_metrics` | Build historical QA dashboard metrics from archived AI reports |
+| `select_tests_for_changes` | Select impacted tests from changed files with explainable reasons |
 
 ### VS Code integration
 
@@ -380,7 +388,9 @@ Add to `.vscode/mcp.json`:
 
 ```json
 {
+  "schemaVersion": "2.0.0",
   "runId": "2026-09-27T09:00:00.000Z",
+  "generatedAt": "2026-09-27T09:00:01.000Z",
   "summary": {
     "passed": 42,
     "failed": 2,
@@ -407,6 +417,20 @@ Add to `.vscode/mcp.json`:
       "status": "failed",
       "durationMs": 10001,
       "retries": 1,
+      "category": "locator",
+      "rootCause": {
+        "probableCause": "Locator likely stale or too brittle for current DOM.",
+        "confidence": 0.88
+      },
+      "artifacts": {
+        "trace": "test-results/.../trace.zip",
+        "screenshot": "test-results/.../test-failed-1.png"
+      },
+      "traceSummary": {
+        "available": true,
+        "summary": "Collected artifact signals for failure triage.",
+        "actionableSteps": ["Inspect DOM at failure point in trace and update page-object locator."]
+      },
       "error": {
         "message": "locator('.tpg-post-link') not found",
         "location": "tests/pages/WeSendCVPage.ts:72"

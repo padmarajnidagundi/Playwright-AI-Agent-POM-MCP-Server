@@ -15,12 +15,16 @@ export function redactSecrets(value: string): string {
 }
 
 export function sanitizeEnv(input: NodeJS.ProcessEnv): Record<string, string> {
-  const allowedPrefixes = ['E2E_', 'PLAYWRIGHT_', 'CI', 'NODE_ENV'];
+  const allowedPrefixes = ['E2E_', 'PLAYWRIGHT_', 'CI', 'NODE_ENV', 'FEATURE_', 'MCP_ALLOWED_TOOLS'];
+  const requiredRuntimeKeys = ['PATH', 'HOME', 'USER', 'TMP', 'TEMP', 'SYSTEMROOT'];
   const out: Record<string, string> = {};
 
   for (const [k, v] of Object.entries(input)) {
     if (!v) continue;
-    if (allowedPrefixes.some(prefix => k === prefix || k.startsWith(prefix))) {
+    if (
+      requiredRuntimeKeys.includes(k) ||
+      allowedPrefixes.some(prefix => k === prefix || k.startsWith(prefix))
+    ) {
       out[k] = v;
     }
   }
