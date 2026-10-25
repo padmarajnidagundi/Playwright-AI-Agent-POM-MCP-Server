@@ -3,32 +3,21 @@
  * file consumed by LLM agents, MCP tools, and chatmode prompts.
  *
  * Output: test-results/ai-report.json
- *
- * Schema:
- *   {
- *     "runId": "<ISO timestamp>",
- *     "summary": { passed, failed, skipped, total, durationMs },
- *     "tests": [
- *       {
- *         "title": "...",
- *         "file": "...",
- *         "status": "passed" | "failed" | "skipped" | "timedOut",
- *         "durationMs": 1234,
- *         "retries": 0,
- *         "error": null | { message, stack, location },
- *         "aiHint": "..." // auto-generated failure suggestion
- *       }
- *     ]
- *   }
  */
 
 import type {
   Reporter,
   TestCase,
   TestResult,
+  TestError,
 } from '@playwright/test/reporter';
 import * as fs from 'fs';
 import * as path from 'path';
+import { AI_REPORT_SCHEMA_VERSION } from './platform/schemas';
+import { analyzeFailure } from './platform/failure-analysis';
+import { summarizeTraceArtifacts } from './platform/trace-summary';
+import { redactSecrets } from './platform/secret-redaction';
+import { archiveReportIfExists } from './platform/report-history';
 
 interface AITestEntry {
   title: string;
@@ -39,10 +28,26 @@ interface AITestEntry {
   retries: number;
   error: { message: string; stack?: string; location?: string } | null;
   aiHint: string | null;
+  category: string;
+  rootCause: { probableCause: string; confidence: number } | null;
+  artifacts: {
+    trace?: string;
+    screenshot?: string;
+    video?: string;
+    log?: string;
+  };
+  traceSummary: {
+    available: boolean;
+    summary: string;
+    actionableSteps: string[];
+    evidence: string[];
+  };
 }
 
 interface AIReport {
+  schemaVersion: string;
   runId: string;
+  generatedAt: string;
   summary: {
     passed: number;
     failed: number;
@@ -54,9 +59,22 @@ interface AIReport {
   tests: AITestEntry[];
 }
 
-// ── Heuristic AI hints ────────────────────────────────────────────────────────
+function toErrorInfo(error: TestError | undefined): {
+  message: string;
+  stack?: string;
+  location?: string;
+} | null {
+  if (!error) return null;
+  return {
+    message: redactSecrets(error.message ?? ''),
+    stack: error.stack ? redactSecrets(error.stack) : undefined,
+    location: error.location
+      ? `${error.location.file}:${error.location.line}`
+      : undefined,
+  };
+}
 
-function buildAIHint(entry: Pick<AITestEntry, 'status' | 'error'>): string | null {
+function buildAIHint(entry: Pick<AITestEntry, 'status' | 'error' | 'category'>): string | null {
   if (entry.status === 'passed' || entry.status === 'skipped') return null;
 
   const msg = entry.error?.message ?? '';
@@ -64,14 +82,11 @@ function buildAIHint(entry: Pick<AITestEntry, 'status' | 'error'>): string | nul
   if (entry.status === 'timedOut') {
     return 'Test timed out. Consider increasing the timeout, checking for slow selectors, or adding explicit waits.';
   }
-  if (/locator.*not found|unable to find/i.test(msg)) {
+  if (entry.category === 'locator') {
     return 'Selector not found. Verify the locator in the Page Object matches current DOM. Use role or data-testid attributes for resilience.';
   }
-  if (/net::ERR_CONNECTION|ECONNREFUSED|ENOTFOUND/i.test(msg)) {
+  if (entry.category === 'network') {
     return 'Network error. Ensure the target URL is reachable from the test runner. Check baseURL in playwright.config.ts.';
-  }
-  if (/404|not found/i.test(msg)) {
-    return 'HTTP 404 returned. Verify the URL or route exists.';
   }
   if (/expect.*toBeVisible/i.test(msg)) {
     return 'Element visibility assertion failed. Use locator.waitFor() before asserting visibility.';
@@ -79,36 +94,60 @@ function buildAIHint(entry: Pick<AITestEntry, 'status' | 'error'>): string | nul
   if (/expect.*toHaveURL/i.test(msg)) {
     return 'URL assertion failed. Add page.waitForURL() before asserting the URL.';
   }
-  if (/assertion.*failed|expect.*received/i.test(msg)) {
-    return 'Assertion mismatch. Review the expected vs received values and ensure test data in tests/data/ is up to date.';
-  }
 
   return 'Test failed. Review the error stack, check the Playwright trace (trace.zip), and inspect screenshots in test-results/.';
 }
 
-// ── Reporter implementation ───────────────────────────────────────────────────
+function collectArtifacts(result: TestResult): {
+  trace?: string;
+  screenshot?: string;
+  video?: string;
+  log?: string;
+} {
+  const artifacts: {
+    trace?: string;
+    screenshot?: string;
+    video?: string;
+    log?: string;
+  } = {};
+
+  for (const attachment of result.attachments ?? []) {
+    const name = (attachment.name ?? '').toLowerCase();
+    const filePath = attachment.path;
+    if (!filePath) continue;
+
+    if (name.includes('trace') || filePath.endsWith('.zip')) artifacts.trace = filePath;
+    else if (name.includes('screenshot') || filePath.endsWith('.png')) artifacts.screenshot = filePath;
+    else if (name.includes('video') || filePath.endsWith('.webm')) artifacts.video = filePath;
+    else if (name.includes('log') || filePath.endsWith('.log')) artifacts.log = filePath;
+  }
+
+  return artifacts;
+}
 
 class AIReporter implements Reporter {
   private readonly outputPath: string;
+  private readonly historyPath: string;
   private readonly startTime: number;
   private readonly tests: AITestEntry[] = [];
 
   constructor(options: { outputDir?: string } = {}) {
     const dir = options.outputDir ?? 'test-results';
     this.outputPath = path.join(dir, 'ai-report.json');
+    this.historyPath = path.join(dir, 'history');
     this.startTime = Date.now();
   }
 
   onTestEnd(test: TestCase, result: TestResult): void {
-    const errorInfo = result.error
-      ? {
-          message: result.error.message ?? '',
-          stack: result.error.stack,
-          location: result.error.location
-            ? `${result.error.location.file}:${result.error.location.line}`
-            : undefined,
-        }
-      : null;
+    const errorInfo = toErrorInfo(result.error);
+    const artifacts = collectArtifacts(result);
+    const assessment = analyzeFailure(errorInfo?.message ?? '', result.status);
+    const traceSummary = summarizeTraceArtifacts({
+      tracePath: artifacts.trace,
+      screenshotPath: artifacts.screenshot,
+      videoPath: artifacts.video,
+      errorMessage: errorInfo?.message,
+    });
 
     const entry: AITestEntry = {
       title: test.titlePath().join(' > '),
@@ -118,9 +157,16 @@ class AIReporter implements Reporter {
       durationMs: result.duration,
       retries: result.retry,
       error: errorInfo,
-      aiHint: buildAIHint({ status: result.status, error: errorInfo }),
+      category: assessment.category,
+      rootCause: result.status === 'passed' || result.status === 'skipped'
+        ? null
+        : { probableCause: assessment.probableCause, confidence: assessment.confidence },
+      artifacts,
+      traceSummary,
+      aiHint: null,
     };
 
+    entry.aiHint = buildAIHint(entry);
     this.tests.push(entry);
   }
 
@@ -135,7 +181,9 @@ class AIReporter implements Reporter {
     };
 
     const report: AIReport = {
+      schemaVersion: AI_REPORT_SCHEMA_VERSION,
       runId: new Date().toISOString(),
+      generatedAt: new Date().toISOString(),
       summary,
       tests: this.tests,
     };
@@ -143,6 +191,7 @@ class AIReporter implements Reporter {
     try {
       const dir = path.dirname(this.outputPath);
       if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+      archiveReportIfExists(this.outputPath, this.historyPath);
       fs.writeFileSync(this.outputPath, JSON.stringify(report, null, 2), 'utf8');
     } catch {
       // Non-fatal: reporter failure should never block CI

@@ -2,29 +2,53 @@ name: Playwright Tests CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
-  test:
-    timeout-minutes: 60
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-        node-version: [18.x, 20.x]
-
+  lint:
+    name: Lint and format checks
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js ${{ matrix.node-version }}
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          node-version: 20.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Check Prettier formatting
+        run: npx prettier --check "tests/**/*.ts" "tools/**/*.ts" "mcp-server.ts" "playwright.config.ts"
+
+  critical-tests:
+    name: Critical Playwright suites
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
+      checks: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: npm
 
       - name: Install dependencies
         run: npm ci
@@ -32,67 +56,33 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
-      - name: Run Unit Tests
+      - name: Run unit tests
         run: npx playwright test tests/unit-tests/
-        continue-on-error: true
 
-      - name: Run Integration Tests
+      - name: Run integration tests
         run: npx playwright test tests/integration-tests/
 
-  security-audit:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install dependencies
-        run: npm install
-      - name: Run npm audit
-        run: npm audit --audit-level=high
-
-  secrets-scan:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Scan for secrets
-        uses: trufflesecurity/trufflehog@v3.56.3
-        continue-on-error: true
-
-      - name: Run Performance Tests
-        run: npx playwright test tests/performance-tests/
-        continue-on-error: true
-
-      - name: Run Security Tests
-        run: npx playwright test tests/security-tests/
-        continue-on-error: true
-
-      - name: Run Validation Tests
-        run: npx playwright test tests/validation-tests/
-        continue-on-error: true
-
-      - name: Run Mock Tests
-        run: npx playwright test tests/mock-tests/
-        continue-on-error: true
-
-      - name: Run Interop Tests
-        run: npx playwright test tests/interop-tests/
-        continue-on-error: true
-
-      - name: Run Smoke & Negative Tests
+      - name: Run smoke tests
         run: npx playwright test tests/wesendcv.spec.ts tests/vibe.spec.ts
-        continue-on-error: true
 
-      - name: Upload test results
+      - name: Verify report artifacts
+        run: |
+          test -f test-results/results.json
+          test -f junit.xml
+
+      - name: Upload playwright report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report-${{ matrix.os }}-node-${{ matrix.node-version }}
+          name: playwright-report
           path: playwright-report/
           retention-days: 30
 
-      - name: Upload test traces
+      - name: Upload test results and traces
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-traces-${{ matrix.os }}-node-${{ matrix.node-version }}
+          name: test-results
           path: test-results/
           retention-days: 30
 
@@ -102,5 +92,80 @@ jobs:
         with:
           files: |
             junit.xml
-          check_name: Test Results - ${{ matrix.os }} / Node ${{ matrix.node-version }}
-        continue-on-error: true
+          check_name: Test Results
+
+  extended-tests:
+    name: Extended suites (non-blocking)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run validation tests
+        run: npx playwright test tests/validation-tests/
+
+      - name: Run mock tests
+        run: npx playwright test tests/mock-tests/
+
+      - name: Run interop tests
+        run: npx playwright test tests/interop-tests/
+
+      - name: Run performance tests
+        run: npx playwright test tests/performance-tests/
+
+      - name: Run security tests
+        run: npx playwright test tests/security-tests/
+
+  security-audit:
+    name: Dependency vulnerability audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit
+        run: npm audit --audit-level=high
+
+  secret-scan:
+    name: Secret scanning
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: TruffleHog secrets scan
+        uses: trufflesecurity/trufflehog@v3.88.16
+        with:
+          path: ./
+          base: HEAD~1
+          head: HEAD
+
+  quality-gate:
+    name: CI quality gate
+    runs-on: ubuntu-latest
+    needs: [lint, critical-tests, security-audit, secret-scan]
+    steps:
+      - name: Confirm quality gate
+        run: echo "All blocking quality gates passed."
