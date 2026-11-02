@@ -131,10 +131,11 @@ This is **not a tutorial project**. Every pattern here is drawn from real enterp
 ```
 Playwright-AI-Agent-POM-MCP-Server/
 ├── mcp-server.ts                  # MCP server — AI tool integration + healing orchestration
-├── playwright.config.ts           # Multi-browser config + AI reporter
+├── playwright.config.ts           # Multi-browser config + JSON/JUnit/HTML reporters
 ├── package.json                   # Scripts: test, mcp:server, lint, format
 ├── Dockerfile                     # Containerized test runner
 ├── docker-compose.yml             # One-command compose run
+├── seed.spec.ts                   # Lightweight seed/spec scaffold used by AI workflows
 ├── tests/
 │   ├── fixtures.ts                # Custom Playwright fixtures (apiContext, auto-trace)
 │   ├── utils.ts                   # Helpers: retry, measureTime, aiLog, waitForNetworkIdle
@@ -144,7 +145,7 @@ Playwright-AI-Agent-POM-MCP-Server/
 │   ├── data/
 │   │   ├── urls.ts                # Centralized URL constants
 │   │   ├── users.ts               # Test user credentials (env-var backed)
-│   │   └── testConfig.ts          # All timeouts, thresholds, retry policies
+│   │   └── testConfig.ts          # Timeouts, thresholds, retry policies
 │   ├── unit-tests/
 │   │   ├── ai-platform.spec.ts    # Failure-analysis + healing + MCP contract coverage
 │   │   └── api.spec.ts
@@ -183,7 +184,6 @@ Playwright-AI-Agent-POM-MCP-Server/
 │   ├── ping-tests/
 │   ├── response-code-tests/
 │   ├── mobile.spec.ts
-│   ├── vibe.spec.ts
 │   └── wesendcv.spec.ts
 ├── tools/
 │   ├── ai-reporter.ts             # AI-parseable Playwright reporter
@@ -206,10 +206,19 @@ Playwright-AI-Agent-POM-MCP-Server/
 │   ├── chatmodes/                 # Chatmode prompts for LLM agents
 │   ├── skills/                    # GitHub Copilot Skills
 │   └── workflows/
-│       ├── ci.yml                 # GitHub Actions multi-OS pipeline
+│       ├── ci.yml                 # GitHub Actions pipeline
 │       └── code-quality.yml       # ESLint + Prettier quality gate
-└── .claude/
-    └── skills/playwright-cli/     # Playwright CLI agent references and guides
+├── .claude/
+│   └── skills/playwright-cli/     # Playwright CLI agent references and guides
+├── LICENSE                        # MIT license
+├── README.md                      # Project documentation
+├── .eslintrc.js                   # ESLint config
+├── eslint.config.js               # Flat ESLint config
+├── tsconfig.json                  # TypeScript config
+├── Dockerfile                     # Container image
+├── docker-compose.yml             # Compose entrypoint
+├── package-lock.json              # Locked dependency tree
+└── .gitignore                     # Local environment exclusions
 ```
 
 ---
@@ -596,43 +605,39 @@ await retry(action, TEST_CONFIG.retry.networkActions, TEST_CONFIG.retry.baseDela
 
 ---
 
-## Dev Server & Visual Diffs
+## Visual Diff Workflow
 
-If a `demo/` directory is present, start the local server for visual baseline testing:
+This repository does not currently include a committed `demo/` visual-baseline site or the `tools/dev-server.js` / `tools/compare.js` helpers referenced in some legacy docs. The active project focuses on Playwright POM, AI reporter, and MCP tooling instead of pixel diff baselines.
+
+If you add a visual baseline workflow later, the standard pattern is:
 
 ```bash
+# optional: serve a demo page locally
 node tools/dev-server.js
-# Open http://127.0.0.1:3000
-```
 
-### Perceptual diff workflow
-
-```bash
-# First run — creates baseline
+# compare against a baseline image
 node tools/compare.js demo/baseline.png artifacts/current.png artifacts/diff.png --threshold=0.03
-
-# Subsequent runs — compares against baseline; exits non-zero if diff > 3%
-node tools/compare.js demo/baseline.png artifacts/current.png artifacts/diff.png
 ```
-
-Commit `demo/baseline.png` after visual approval.
 
 ---
 
 ## CI/CD Pipeline
 
-`.github/workflows/ci.yml` runs on every push to `main` / `develop` and on all PRs:
+`.github/workflows/ci.yml` runs on pushes to `main` / `develop`, PRs, and manual dispatch:
 
 | Job | What it does |
 |-----|-------------|
-| `test` | Runs full suite on Ubuntu + Windows × Node 18/20 |
+| `lint` | ESLint + Prettier checks |
+| `critical-tests` | Unit + integration + smoke runs on Ubuntu |
+| `extended-tests` | Validation, mock, interop, performance, and security suites |
 | `security-audit` | `npm audit --audit-level=high` |
-| `secrets-scan` | TruffleHog secret scan |
+| `secret-scan` | TruffleHog secret scan |
+| `quality-gate` | Final gate after blocking jobs pass |
 
 **Artifacts uploaded on every run:**
-- `playwright-report-*` — HTML report (30-day retention)
-- `playwright-traces-*` — trace.zip files (30-day retention)
-- JUnit results published directly to PR checks via `EnricoMi/publish-unit-test-result-action`
+- `playwright-report/` — HTML report (30-day retention)
+- `test-results/` — traces, screenshots, and JSON/JUnit output (30-day retention)
+- JUnit report published directly to PR checks via `EnricoMi/publish-unit-test-result-action`
 
 ---
 
@@ -778,7 +783,7 @@ The repo also ships Playwright CLI training docs for session management, storage
 - **Use `TEST_CONFIG` constants** — never hard-code timeouts or thresholds
 - **Prefer role/data-testid locators** over CSS class selectors for resilience
 - **Avoid `page.waitForTimeout`** — use `locator.waitFor()`, `expect(locator).toBeVisible()`, or `page.waitForResponse()`
-- **Commit baselines** (`demo/baseline.png`) after visual approval; never commit auto-generated diff images
+- **Keep POM logic in page objects** and keep specs focused on scenario flow and assertions
 
 ---
 
