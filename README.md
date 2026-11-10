@@ -5,7 +5,7 @@
 
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/padmarajnidagundi/Playwright-AI-Agent-POM-MCP-Server/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
-[![Playwright](https://img.shields.io/badge/Playwright-1.61+-45ba4b)](https://playwright.dev)
+[![Playwright](https://img.shields.io/badge/Playwright-1.65.0-45ba4b)](https://playwright.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178c6)](https://www.typescriptlang.org)
 [![Node](https://img.shields.io/badge/Node.js-20+-green)](https://nodejs.org)
 [![Tests](https://img.shields.io/badge/tests-14%20categories-success)](tests/)
@@ -249,9 +249,9 @@ Playwright-AI-Agent-POM-MCP-Server/
 |---|---|---|---|
 | Language | TypeScript | 5.0+ | All test files, config, and tooling |
 | Runtime | Node.js | 20+ | Recommended for warning-free install |
-| Testing Framework | Playwright | 1.61+ | Browser automation and assertions |
+| Testing Framework | Playwright | 1.65.0 | Browser automation and assertions |
 | Package Manager | npm | 10+ | Dependency management |
-| `@playwright/test` | Playwright Test | 1.61.1 | Test runner, fixtures, reporters |
+| `@playwright/test` | Playwright Test | 1.65.0 | Test runner, fixtures, reporters |
 | `@pact-foundation/pact` | Pact | 17.0.1 | Consumer-driven contract testing |
 | `axe-playwright` | Axe | 2.2.2 | Accessibility audits |
 | `@typescript-eslint/*` | ESLint | 8+ | TypeScript linting |
