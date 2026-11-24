@@ -14,7 +14,7 @@ test.describe('Mock Tests - API Mocking & Stubbing', () => {
     });
 
     // Navigate to page that may call APIs
-    const response = await page.goto(URLS.wesendcv.base, {
+    const response = await page.goto(URLS.indiaRealtime.base, {
       waitUntil: 'domcontentloaded',
     });
 
@@ -30,11 +30,11 @@ test.describe('Mock Tests - API Mocking & Stubbing', () => {
     });
 
     const startTime = Date.now();
-    await page.goto(URLS.wesendcv.base);
+    await page.goto(URLS.indiaRealtime.base);
     const loadTime = Date.now() - startTime;
 
     // Verify page still loads despite delays
-    expect(page.url()).toContain('wesendcv.com');
+    expect(page.url()).toContain('indiarealtime.com');
     expect(loadTime).toBeGreaterThan(1000);
   });
 
@@ -50,7 +50,7 @@ test.describe('Mock Tests - API Mocking & Stubbing', () => {
       });
     });
 
-    await page.goto(URLS.wesendcv.base);
+    await page.goto(URLS.indiaRealtime.base);
 
     // Core page should still be functional
     const bodyVisible = await page.locator('body').isVisible();
@@ -75,7 +75,7 @@ test.describe('Mock Tests - API Mocking & Stubbing', () => {
   });
 
   test('should mock POST requests with a custom response', async ({ page }) => {
-    await page.goto(URLS.wesendcv.base, { waitUntil: 'domcontentloaded' });
+    await page.goto(URLS.indiaRealtime.base, { waitUntil: 'domcontentloaded' });
 
     await page.route('**/api/submit', async (route) => {
       const request = route.request();
@@ -120,7 +120,7 @@ test.describe('Mock Tests - API Mocking & Stubbing', () => {
     });
 
     // Navigate to the site which may call the API
-    await page.goto(URLS.wesendcv.base, { waitUntil: 'domcontentloaded' });
+    await page.goto(URLS.indiaRealtime.base, { waitUntil: 'domcontentloaded' });
 
     // The site should handle the server error gracefully. Accept either:
     // - a visible error/alert message, or
@@ -153,7 +153,7 @@ test.describe('Mock Tests - API Mocking & Stubbing', () => {
       });
     });
 
-    await page.goto(URLS.wesendcv.base);
+    await page.goto(URLS.indiaRealtime.base);
 
     // App should handle 404 gracefully, e.g., show error or keep core UI visible
     const showsError = await page
@@ -179,7 +179,7 @@ test.describe('Mock Tests - API Mocking & Stubbing', () => {
       });
     });
 
-    await page.goto(URLS.wesendcv.base);
+    await page.goto(URLS.indiaRealtime.base);
 
     // App should handle redirect gracefully, e.g., follow it or show appropriate handling
     // For simplicity, check if page remains functional or redirect is processed
@@ -203,7 +203,7 @@ test.describe('Mock Tests - API Mocking & Stubbing', () => {
     });
 
     // Navigate to the site which may attempt authenticated API calls
-    await page.goto(URLS.wesendcv.base, { waitUntil: 'domcontentloaded' });
+    await page.goto(URLS.indiaRealtime.base, { waitUntil: 'domcontentloaded' });
 
     // The site should handle authentication failure gracefully. Accept either:
     // - a visible login prompt or error message, or

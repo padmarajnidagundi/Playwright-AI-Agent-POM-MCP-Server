@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { WeSendCVPage } from '../pages/WeSendCVPage';
+import { IndiaRealTimePage } from '../pages/IndiaRealTimePage';
 
 /**
  * Performance Tests: Response Times & Load Metrics
@@ -7,23 +7,23 @@ import { WeSendCVPage } from '../pages/WeSendCVPage';
  */
 
 test.describe('Performance Tests - Load Time & Metrics', () => {
-  let wesendcvPage: WeSendCVPage;
+  let indiaRealtimePage: IndiaRealTimePage;
 
   test.beforeEach(async ({ page }) => {
-    wesendcvPage = new WeSendCVPage(page);
+    indiaRealtimePage = new IndiaRealTimePage(page);
   });
 
   test('should load homepage within acceptable time', async () => {
     const startTime = Date.now();
-    const response = await wesendcvPage.gotoHomepage();
+    const response = await indiaRealtimePage.gotoHomepage();
     const loadTime = Date.now() - startTime;
     expect(loadTime).toBeLessThan(5000);
     expect(response?.ok()).toBeTruthy();
   });
 
   test('should measure First Contentful Paint (FCP)', async () => {
-    await wesendcvPage.gotoHomepage();
-    const metrics = await wesendcvPage.page.evaluate(() => {
+    await indiaRealtimePage.gotoHomepage();
+    const metrics = await indiaRealtimePage.page.evaluate(() => {
       const navTiming = performance.getEntriesByType(
         'navigation'
       )[0] as PerformanceNavigationTiming;
@@ -40,22 +40,22 @@ test.describe('Performance Tests - Load Time & Metrics', () => {
 
   test('should load resources efficiently', async () => {
     let resourceCount = 0;
-    wesendcvPage.page.on('response', () => {
+    indiaRealtimePage.page.on('response', () => {
       resourceCount++;
     });
-    await wesendcvPage.gotoHomepage();
+    await indiaRealtimePage.gotoHomepage();
     expect(resourceCount).toBeGreaterThan(0);
     expect(resourceCount).toBeLessThan(100); // Reasonable resource limit
   });
 
   test('negative: should handle page timeout gracefully', async () => {
-    await wesendcvPage.page.route('**/*.{css,js}', async (route) => {
+    await indiaRealtimePage.page.route('**/*.{css,js}', async (route) => {
       await new Promise((resolve) => setTimeout(resolve, 8000));
       await route.continue().catch(() => {});
     });
     try {
-      await wesendcvPage.page
-        .goto(wesendcvPage.url, {
+      await indiaRealtimePage.page
+        .goto(indiaRealtimePage.url, {
           waitUntil: 'domcontentloaded',
           timeout: 3000,
         })
@@ -63,7 +63,7 @@ test.describe('Performance Tests - Load Time & Metrics', () => {
     } catch (error) {
       expect(error).toBeDefined();
     }
-    const bodyExists = await wesendcvPage.bodyElement
+    const bodyExists = await indiaRealtimePage.bodyElement
       .isVisible()
       .catch(() => false);
     expect(bodyExists || true).toBeTruthy();

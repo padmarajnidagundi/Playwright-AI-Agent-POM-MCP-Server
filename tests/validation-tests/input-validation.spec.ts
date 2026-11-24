@@ -34,7 +34,7 @@ test.describe('Validation Tests - Input Validation', () => {
   });
 
   test('should validate URLs correctly', () => {
-    expect(validateInput.url('https://wesendcv.com')).toBeTruthy();
+    expect(validateInput.url('https://indiarealtime.com')).toBeTruthy();
     expect(validateInput.url('http://example.com/path')).toBeTruthy();
     expect(validateInput.url('not a url')).toBeFalsy();
   });

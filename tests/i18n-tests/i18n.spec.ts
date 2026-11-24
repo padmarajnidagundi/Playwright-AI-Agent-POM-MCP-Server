@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test';
-import { WeSendCVPage } from '../pages/WeSendCVPage';
+import { IndiaRealTimePage } from '../pages/IndiaRealTimePage';
 
-test('WeSendCV page has correct language attributes and basic translations', async ({
+test('IndiaRealTime page has correct language attributes and basic translations', async ({
   page,
 }) => {
-  const weSend = new WeSendCVPage(page);
+  const weSend = new IndiaRealTimePage(page);
   await weSend.gotoHomepage();
 
   // Check that the document has a lang attribute (e.g., 'en' for English)
@@ -15,13 +15,13 @@ test('WeSendCV page has correct language attributes and basic translations', asy
   await expect(page.locator('text=/We Send Your Resume/i')).toBeVisible();
 
   // If the site supports multiple languages, you could add URL param tests here
-  // e.g., await page.goto('https://wesendcv.com?lang=es'); and check Spanish text
+  // e.g., await page.goto('https://indiarealtime.com?lang=es'); and check Spanish text
 });
 
-test('WeSendCV page switches to Spanish and displays correct translation', async ({
+test('IndiaRealTime page switches to Spanish and displays correct translation', async ({
   page,
 }) => {
-  const weSend = new WeSendCVPage(page);
+  const weSend = new IndiaRealTimePage(page);
   await weSend.gotoHomepage('?lang=es');
 
   // Check that the document has a lang attribute for Spanish

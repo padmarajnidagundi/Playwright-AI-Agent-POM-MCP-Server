@@ -108,7 +108,7 @@ export function runValidationRerun(args: {
   const specs =
     args.impactedSpecs.length > 0
       ? args.impactedSpecs
-      : ['tests/wesendcv.spec.ts'];
+      : ['tests/indiaRealtime.spec.ts'];
   const projectArgs = args.project ? ['--project', args.project] : [];
   const cmdArgs = [
     'playwright',

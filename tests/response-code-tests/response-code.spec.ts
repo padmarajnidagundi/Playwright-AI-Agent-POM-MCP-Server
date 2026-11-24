@@ -1,26 +1,28 @@
 import { test, expect } from '@playwright/test';
-import { WeSendCVPage } from '../pages/WeSendCVPage';
+import { IndiaRealTimePage } from '../pages/IndiaRealTimePage';
 import { URLS } from '../data/urls';
 
 test.describe('Response Code Tests', () => {
-  let wesendcvPage: WeSendCVPage;
+  let indiaRealtimePage: IndiaRealTimePage;
 
   test.beforeEach(async ({ page }) => {
-    wesendcvPage = new WeSendCVPage(page);
+    indiaRealtimePage = new IndiaRealTimePage(page);
   });
 
   test('homepage returns 200 OK', async () => {
-    const resp = await wesendcvPage.gotoHomepage();
+    const resp = await indiaRealtimePage.gotoHomepage();
     expect(resp?.status()).toBe(200);
   });
 
   test('invalid page returns 404 Not Found', async () => {
-    const resp = await wesendcvPage.gotoInvalidPage(URLS.wesendcv.invalidPage);
+    const resp = await indiaRealtimePage.gotoInvalidPage(
+      URLS.indiaRealtime.invalidPage
+    );
     expect(resp?.status()).toBe(404);
   });
 
   test('API posts endpoint returns 200 OK', async ({ request }) => {
-    const resp = await request.get(URLS.wesendcv.api.posts);
+    const resp = await request.get(URLS.indiaRealtime.api.posts);
     expect(resp.status()).toBe(200);
   });
 });

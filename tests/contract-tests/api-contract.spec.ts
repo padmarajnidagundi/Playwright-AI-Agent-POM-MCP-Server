@@ -4,8 +4,8 @@ import path from 'path';
 
 test('API contract test for user data endpoint', async ({ page }) => {
   const pact = new PactV4({
-    consumer: 'WeSendCV Frontend',
-    provider: 'WeSendCV API',
+    consumer: 'IndiaRealTime Frontend',
+    provider: 'IndiaRealTime API',
     port: 1234,
     dir: path.resolve(process.cwd(), 'pacts'),
     logLevel: 'warn',
@@ -36,8 +36,8 @@ test('API contract test for user data endpoint', async ({ page }) => {
 
 test('API contract test for user list endpoint', async ({ page }) => {
   const pact = new PactV4({
-    consumer: 'WeSendCV Frontend',
-    provider: 'WeSendCV API',
+    consumer: 'IndiaRealTime Frontend',
+    provider: 'IndiaRealTime API',
     port: 1235,
     dir: path.resolve(process.cwd(), 'pacts'),
     logLevel: 'warn',

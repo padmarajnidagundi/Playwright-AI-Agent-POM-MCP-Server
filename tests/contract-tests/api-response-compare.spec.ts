@@ -10,7 +10,7 @@ test.describe('API Response Compare Tests', () => {
   test('should fetch and validate WordPress posts API response', async ({
     request,
   }) => {
-    const response = await request.get(URLS.wesendcv.api.posts);
+    const response = await request.get(URLS.indiaRealtime.api.posts);
     expect(response.status()).toBe(200);
 
     const posts = await response.json();
@@ -55,7 +55,7 @@ test.describe('API Response Compare Tests', () => {
   });
 
   test('negative: should handle invalid API endpoint', async ({ request }) => {
-    const invalidUrl = `${URLS.wesendcv.base}/wp-json/wp/v2/invalid-endpoint`;
+    const invalidUrl = `${URLS.indiaRealtime.base}/wp-json/wp/v2/invalid-endpoint`;
     const response = await request.get(invalidUrl);
     expect(response.status()).toBe(404);
   });

@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
-import { WeSendCVPage } from '../pages/WeSendCVPage';
+import { IndiaRealTimePage } from '../pages/IndiaRealTimePage';
 
 test('critical path: homepage to job page', async ({ page }) => {
-  const weSend = new WeSendCVPage(page);
+  const weSend = new IndiaRealTimePage(page);
   await weSend.gotoHomepage();
   await weSend.verifyHomepageLoaded();
 
@@ -15,7 +15,7 @@ test('critical path: homepage to job page', async ({ page }) => {
 });
 
 test('404 error handling', async ({ page }) => {
-  const weSend = new WeSendCVPage(page);
+  const weSend = new IndiaRealTimePage(page);
   await weSend.gotoInvalidPage('/non-existent-page');
   await weSend.verify404ErrorDisplayed();
 });

@@ -9,7 +9,7 @@ import { URLS } from '../data/urls';
 test.describe('Ping Tests - Endpoint Availability', () => {
   test('should ping base URL successfully', async ({ page }) => {
     // Navigate to the base URL
-    const response = await page.goto(URLS.wesendcv.base, {
+    const response = await page.goto(URLS.indiaRealtime.base, {
       waitUntil: 'domcontentloaded',
       timeout: 60000,
     });
@@ -20,7 +20,7 @@ test.describe('Ping Tests - Endpoint Availability', () => {
 
   test('should ping homepage endpoint', async ({ page }) => {
     // Navigate to the homepage
-    const response = await page.goto(URLS.wesendcv.home, {
+    const response = await page.goto(URLS.indiaRealtime.home, {
       waitUntil: 'domcontentloaded',
       timeout: 60000,
     });
@@ -32,7 +32,7 @@ test.describe('Ping Tests - Endpoint Availability', () => {
   test('negative: invalid endpoint should return 404', async ({ page }) => {
     // Navigate to an invalid endpoint
     const response = await page.goto(
-      `${URLS.wesendcv.base}${URLS.wesendcv.invalidPage}`,
+      `${URLS.indiaRealtime.base}${URLS.indiaRealtime.invalidPage}`,
       {
         waitUntil: 'domcontentloaded',
         timeout: 60000,

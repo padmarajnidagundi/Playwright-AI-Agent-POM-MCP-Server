@@ -1,8 +1,8 @@
 import { test, expect, Page } from '@playwright/test';
 import { URLS } from '../data/urls';
 
-test.describe('WeSendCV - Broken Links Validation', () => {
-  const baseURL = URLS.wesendcv.base;
+test.describe('IndiaRealTime - Broken Links Validation', () => {
+  const baseURL = URLS.indiaRealtime.base;
   const visitedLinks = new Set<string>();
   const brokenLinks: Array<{
     url: string;

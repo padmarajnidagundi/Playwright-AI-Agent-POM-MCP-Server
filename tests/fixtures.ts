@@ -18,7 +18,7 @@ export type CustomFixtures = {
 export const test = base.extend<CustomFixtures>({
   // ── apiContext fixture ────────────────────────────────────────────────────
   apiContext: async ({}, use) => {
-    const baseURL = process.env.E2E_BASE_URL || 'https://wesendcv.com';
+    const baseURL = process.env.E2E_BASE_URL || 'https://indiarealtime.com';
     const headers: Record<string, string> = { Accept: 'application/json' };
     if (process.env.E2E_API_TOKEN) {
       headers['Authorization'] = 'Bearer ' + process.env.E2E_API_TOKEN;

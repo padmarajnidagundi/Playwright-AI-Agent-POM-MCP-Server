@@ -11,7 +11,7 @@ test.describe('Interop Tests - Cross-Browser Compatibility', () => {
     page,
     browserName,
   }) => {
-    await page.goto(URLS.wesendcv.base);
+    await page.goto(URLS.indiaRealtime.base);
 
     // Verify core elements render in all browsers
     const mainContent = await page.locator('main, [role="main"]').first();
@@ -21,7 +21,7 @@ test.describe('Interop Tests - Cross-Browser Compatibility', () => {
   });
 
   test('should support CSS Grid layout', async ({ page }) => {
-    await page.goto(URLS.wesendcv.base);
+    await page.goto(URLS.indiaRealtime.base);
 
     const supportsGrid = await page.evaluate(() => {
       const element = document.createElement('div');
@@ -32,7 +32,7 @@ test.describe('Interop Tests - Cross-Browser Compatibility', () => {
   });
 
   test('should support ES6 features', async ({ page }) => {
-    await page.goto(URLS.wesendcv.base);
+    await page.goto(URLS.indiaRealtime.base);
 
     const supportsES6 = await page.evaluate(() => {
       try {
@@ -48,7 +48,7 @@ test.describe('Interop Tests - Cross-Browser Compatibility', () => {
   });
 
   test('should handle touch events gracefully', async ({ page }) => {
-    await page.goto(URLS.wesendcv.base);
+    await page.goto(URLS.indiaRealtime.base);
 
     // Check if touch events are supported (but don't assert on it)
     await page.evaluate(() => {
@@ -61,7 +61,7 @@ test.describe('Interop Tests - Cross-Browser Compatibility', () => {
   });
 
   test('should respect user viewport preferences', async ({ page }) => {
-    await page.goto(URLS.wesendcv.base);
+    await page.goto(URLS.indiaRealtime.base);
 
     // Check viewport meta tag
     const viewportMeta = await page
@@ -78,9 +78,12 @@ test.describe('Interop Tests - Cross-Browser Compatibility', () => {
   }) => {
     // Use a clearly invalid path to verify the site responds with an error
     const invalidPath = '/invalid-page-that-does-not-exist-for-negative-test';
-    const response = await page.goto(`${URLS.wesendcv.base}${invalidPath}`, {
-      waitUntil: 'domcontentloaded',
-    });
+    const response = await page.goto(
+      `${URLS.indiaRealtime.base}${invalidPath}`,
+      {
+        waitUntil: 'domcontentloaded',
+      }
+    );
 
     const status = response?.status() ?? 0;
 

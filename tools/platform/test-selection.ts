@@ -78,7 +78,10 @@ export function selectTestsForChanges(args: {
   if (selected.size === 0) {
     for (const spec of specs) {
       const relative = normalize(path.relative(args.repoRoot, spec));
-      if (relative.includes('smoke') || relative.includes('wesendcv.spec.ts')) {
+      if (
+        relative.includes('smoke') ||
+        relative.includes('indiaRealtime.spec.ts')
+      ) {
         selected.add(relative);
         reasons[relative] = ['fallback smoke selection'];
       }
