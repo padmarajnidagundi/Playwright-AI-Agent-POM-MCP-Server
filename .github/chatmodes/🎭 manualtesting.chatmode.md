@@ -6,10 +6,10 @@ examples:
   - "Checklist for UI regression testing"
 ---
 
-# Manual Testing Instructions — WeSendCV
+# Manual Testing Instructions — IndiaRealTime
 
 ## Overview
-This chatmode provides step-by-step manual testing guidance for **https://wesendcv.com**, aligned with the Playwright Page Object Model test suite.
+This chatmode provides step-by-step manual testing guidance for **https://indiarealtime.com**, aligned with the Playwright Page Object Model test suite.
 
 ## Pre-requisites
 - Browser: Chrome, Firefox, or Edge (latest version)
@@ -19,7 +19,7 @@ This chatmode provides step-by-step manual testing guidance for **https://wesend
 ## Test Scenarios
 
 ### 1. Landing Page Verification
-**URL:** https://wesendcv.com  
+**URL:** https://indiarealtime.com
 **Steps:**
 1. Navigate to the site
 2. Verify the page loads within 3 seconds
@@ -81,13 +81,13 @@ This chatmode provides step-by-step manual testing guidance for **https://wesend
 
 ## Automation Reference
 For automated versions of these tests, see:
-- `tests/pages/WeSendCVPage.ts` (Page Object)
-- `tests/wesendcv.spec.ts` (Test Suite)
+- `tests/pages/IndiaRealTimePage.ts` (Page Object)
+- `tests/indiaRealtime.spec.ts` (Test Suite)
 - `tests/data/urls.ts` (Centralized URLs and constants)
 
 Run automated tests:
 ```powershell
-npx playwright test tests/wesendcv.spec.ts --project=chromium --headed
+npx playwright test tests/indiaRealtime.spec.ts --project=chromium --headed
 ```
 
 ---

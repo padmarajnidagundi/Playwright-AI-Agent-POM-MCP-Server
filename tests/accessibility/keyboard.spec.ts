@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
-import { WeSendCVPage } from '../pages/WeSendCVPage';
+import { IndiaRealTimePage } from '../pages/IndiaRealTimePage';
 
-test('WeSendCV page keyboard navigation works', async ({ page }) => {
-  const weSend = new WeSendCVPage(page);
+test('IndiaRealTime page keyboard navigation works', async ({ page }) => {
+  const weSend = new IndiaRealTimePage(page);
   await weSend.gotoHomepage();
 
   // Focus on the first focusable element (assuming there's a link or button)

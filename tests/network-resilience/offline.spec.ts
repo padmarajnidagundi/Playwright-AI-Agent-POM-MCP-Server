@@ -1,11 +1,11 @@
 import { test, expect, type Route } from '@playwright/test';
-import { WeSendCVPage } from '../pages/WeSendCVPage';
+import { IndiaRealTimePage } from '../pages/IndiaRealTimePage';
 
 test('page handles offline/network failure gracefully', async ({ page }) => {
   // Simulate offline by aborting all network requests
   await page.route('**/*', (route) => route.abort());
 
-  const weSend = new WeSendCVPage(page);
+  const weSend = new IndiaRealTimePage(page);
 
   // Attempt to navigate; expect it to fail or show error
   try {
@@ -26,7 +26,7 @@ test('page recovers when network is restored', async ({ page }) => {
   const abortAllRequests = (route: Route) => route.abort();
   await page.route('**/*', abortAllRequests);
 
-  const weSend = new WeSendCVPage(page);
+  const weSend = new IndiaRealTimePage(page);
 
   // First navigation should fail while offline.
   await expect(weSend.gotoHomepage()).rejects.toThrow(/ERR_FAILED|net::ERR/i);

@@ -1,15 +1,20 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const baseURL = process.env.E2E_BASE_URL || 'https://wesendcv.com';
+const baseURL = process.env.E2E_BASE_URL || 'https://indiarealtime.com';
 const isCI = Boolean(process.env.CI);
 
 export default defineConfig({
   testDir: './tests',
-  timeout: 30_000,
-  expect: { timeout: 5_000 },
+  timeout: Number(process.env.E2E_TEST_TIMEOUT_MS) || 30_000,
+  expect: { timeout: Number(process.env.E2E_EXPECT_TIMEOUT_MS) || 5_000 },
   fullyParallel: true,
+  forbidOnly: isCI,
   retries: isCI ? 1 : 0,
-  workers: isCI ? 2 : undefined,
+  workers: process.env.E2E_WORKERS
+    ? Number(process.env.E2E_WORKERS)
+    : isCI
+      ? 2
+      : undefined,
   reporter: [
     ['html'],
     ['json', { outputFile: 'test-results/results.json' }],

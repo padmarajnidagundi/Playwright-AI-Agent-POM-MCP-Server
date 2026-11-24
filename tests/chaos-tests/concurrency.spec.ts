@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { WeSendCVPage } from '../pages/WeSendCVPage';
+import { IndiaRealTimePage } from '../pages/IndiaRealTimePage';
 
 test('simulate concurrent users accessing homepage', async ({ browser }) => {
   // Create multiple contexts to simulate concurrent users
@@ -14,7 +14,7 @@ test('simulate concurrent users accessing homepage', async ({ browser }) => {
 
   // Simulate concurrent navigation
   const navigations = pages.map(async (page) => {
-    const weSend = new WeSendCVPage(page);
+    const weSend = new IndiaRealTimePage(page);
     await weSend.gotoHomepage();
     await weSend.verifyHomepageLoaded();
     return page.title();
@@ -22,7 +22,7 @@ test('simulate concurrent users accessing homepage', async ({ browser }) => {
 
   // Wait for all to complete
   const titles = await Promise.all(navigations);
-  titles.forEach((title) => expect(title).toContain('WeSendCV'));
+  titles.forEach((title) => expect(title).toContain('IndiaRealTime'));
 
   // Clean up
   await Promise.all(contexts.map((ctx) => ctx.close()));

@@ -8,7 +8,7 @@ import { URLS } from '../data/urls';
 
 test.describe('Security Tests - Auth & Access Control', () => {
   test('should enforce HTTPS protocol', async ({ page }) => {
-    const response = await page.goto(URLS.wesendcv.base);
+    const response = await page.goto(URLS.indiaRealtime.base);
     const url = page.url();
 
     // Verify HTTPS is used
@@ -17,7 +17,7 @@ test.describe('Security Tests - Auth & Access Control', () => {
   });
 
   test('should not expose sensitive headers', async ({ page }) => {
-    const response = await page.goto(URLS.wesendcv.base);
+    const response = await page.goto(URLS.indiaRealtime.base);
     const headers = await response?.allHeaders();
 
     if (headers) {
@@ -29,7 +29,7 @@ test.describe('Security Tests - Auth & Access Control', () => {
 
   test('should handle unauthorized access gracefully', async ({ page }) => {
     // Attempt to access a protected/non-existent resource
-    const response = await page.goto(URLS.wesendcv.base + '/admin', {
+    const response = await page.goto(URLS.indiaRealtime.base + '/admin', {
       waitUntil: 'networkidle',
     });
 
@@ -38,7 +38,7 @@ test.describe('Security Tests - Auth & Access Control', () => {
   });
 
   test('should prevent XSS injection in page content', async ({ page }) => {
-    await page.goto(URLS.wesendcv.base);
+    await page.goto(URLS.indiaRealtime.base);
 
     // Verify page content doesn't contain unescaped script tags
     const bodyHTML = await page.content();
@@ -51,7 +51,7 @@ test.describe('Security Tests - Auth & Access Control', () => {
     const badToken = 'Bearer invalid.token.value';
 
     const apiResponse = await page.request
-      .get(`${URLS.wesendcv.base}/admin`, {
+      .get(`${URLS.indiaRealtime.base}/admin`, {
         headers: {
           Authorization: badToken,
         },

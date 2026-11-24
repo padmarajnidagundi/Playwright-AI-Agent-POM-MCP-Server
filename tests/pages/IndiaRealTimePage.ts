@@ -2,9 +2,9 @@ import { expect, Page } from '@playwright/test';
 import { URLS } from '../data/urls';
 import { BasePage } from './BasePage';
 
-export class WeSendCVPage extends BasePage {
-  readonly url = URLS.wesendcv.base;
-  readonly baseUrl = URLS.wesendcv.base;
+export class IndiaRealTimePage extends BasePage {
+  readonly url = URLS.indiaRealtime.base;
+  readonly baseUrl = URLS.indiaRealtime.base;
 
   constructor(page: Page) {
     super(page);

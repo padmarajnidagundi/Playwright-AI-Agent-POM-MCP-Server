@@ -1,5 +1,5 @@
 import { test } from '@playwright/test';
-import { WeSendCVPage } from '../pages/WeSendCVPage';
+import { IndiaRealTimePage } from '../pages/IndiaRealTimePage';
 
 test('page still loads when image or stylesheet assets fail', async ({
   page,
@@ -9,7 +9,7 @@ test('page still loads when image or stylesheet assets fail', async ({
     route.fulfill({ status: 500, body: 'asset error' })
   );
 
-  const weSend = new WeSendCVPage(page);
+  const weSend = new IndiaRealTimePage(page);
   await weSend.gotoHomepage();
 
   // The POM verifies main content/body visibility

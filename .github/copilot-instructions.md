@@ -6,7 +6,7 @@ Purpose
 
 Quick architecture summary
 - Tests live under `tests/` and are organized by category (unit-, integration-, performance-, security-, validation-, mock-, interop-). See the `tests/` tree in `README.md`.
-- Page Objects are in `tests/pages/` (example: `WeSendCVPage.ts`) and always import centralized data from `tests/data/` (example: `urls.ts`).
+- Page Objects are in `tests/pages/` (example: `IndiaRealTimePage.ts`) and always import centralized data from `tests/data/` (example: `urls.ts`).
 - Playwright configuration is `playwright.config.ts`: multi-project (chromium, firefox, webkit), reporters write `html`, `json`, `junit`, and `list`. Artifacts and results are stored under `playwright-report/` and `test-results/`.
 - Visual baseline tooling is not part of the current repository. Do not reference missing `demo/`, `tools/dev-server.js`, or `tools/compare.js` files.
 - Chatmode / MCP hints are present (examples: `test.chatmode.md`, `.github/chatmodes/`, and `.vscode/mcp.json`) to allow programmatic assistant interaction when an MCP server is available.
@@ -23,7 +23,7 @@ Essential developer workflows (commands)
   ```
 - Run a specific spec (headed for debugging):
   ```powershell
-  npx playwright test tests/wesendcv.spec.ts --project=chromium --headed
+  npx playwright test tests/indiaRealtime.spec.ts --project=chromium --headed
   ```
 - Show the HTML report:
   ```powershell
@@ -32,7 +32,7 @@ Essential developer workflows (commands)
   ```
 
 Project-specific patterns and conventions (do not deviate)
-- Page Object Model (POM): create `tests/pages/<Name>Page.ts` with class methods for actions and assertions. Tests instantiate page objects and assert behaviors (see `tests/wesendcv.spec.ts`).
+- Page Object Model (POM): create `tests/pages/<Name>Page.ts` with class methods for actions and assertions. Tests instantiate page objects and assert behaviors (see `tests/indiaRealtime.spec.ts`).
 - Centralized data: keep URLs, users, and test constants in `tests/data/` (example: `urls.ts`). Tests and page objects import from these modules rather than hard-coding values.
 - Test file placement: use the category folders under `tests/` — CI and reporters assume this layout.
 - Reporters & artifacts: `playwright.config.ts` writes `json` to `test-results/results.json` and `junit.xml` at repo root; artifacts (screenshots/traces/videos) are uploaded by CI when failures occur. Keep artifact-reading tools pointed at these paths.
@@ -51,8 +51,8 @@ When making code changes, follow these micro-rules
 - If you change baseline images, explain the reason in the PR and commit only after visual approval.
 
 Files to inspect for concrete examples
-- `tests/pages/WeSendCVPage.ts` — canonical POM example
-- `tests/wesendcv.spec.ts` — smoke and negative-tests using POM + data
+- `tests/pages/IndiaRealTimePage.ts` — canonical POM example
+- `tests/indiaRealtime.spec.ts` — smoke and negative-tests using POM + data
 - `playwright.config.ts` — timeouts, projects, reporters, and `use` settings
 - `package.json` — available npm scripts (`test`, `test:headed`, `test:report`)
 

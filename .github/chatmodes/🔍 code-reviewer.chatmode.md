@@ -54,9 +54,9 @@ After reviewing, produce a report in this exact format:
 
 | Severity | File | Issue | Recommendation |
 |----------|------|-------|----------------|
-| 🔴 Critical | tests/wesendcv.spec.ts | Selector hardcoded in spec | Move to WeSendCVPage.ts |
-| 🟡 Warning  | tests/pages/WeSendCVPage.ts | waitForTimeout(2000) used | Replace with expect(locator).toBeVisible() |
-| 🔵 Suggestion | tests/wesendcv.spec.ts | No negative test for 500 response | Add mock test for server error |
+| 🔴 Critical | tests/indiaRealtime.spec.ts | Selector hardcoded in spec | Move to IndiaRealTimePage.ts |
+| 🟡 Warning  | tests/pages/IndiaRealTimePage.ts | waitForTimeout(2000) used | Replace with expect(locator).toBeVisible() |
+| 🔵 Suggestion | tests/indiaRealtime.spec.ts | No negative test for 500 response | Add mock test for server error |
 
 ### Summary
 - X Critical issues (must fix before merge)
@@ -77,8 +77,8 @@ After reviewing, produce a report in this exact format:
 
 <example>
   Context: Developer has written a new spec and wants it reviewed before merging.
-  user: 'Review tests/wesendcv.spec.ts for code quality'
-  assistant: 'I will use the code reviewer agent to audit tests/wesendcv.spec.ts against POM compliance, best practices, and security rules.'
+  user: 'Review tests/indiaRealtime.spec.ts for code quality'
+  assistant: 'I will use the code reviewer agent to audit tests/indiaRealtime.spec.ts against POM compliance, best practices, and security rules.'
   <commentary>
     The user wants a structured code review of a specific test file — exactly what this agent is designed for.
   </commentary>

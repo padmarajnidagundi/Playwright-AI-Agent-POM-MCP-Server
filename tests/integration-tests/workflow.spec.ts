@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { WeSendCVPage } from '../pages/WeSendCVPage';
+import { IndiaRealTimePage } from '../pages/IndiaRealTimePage';
 
 /**
  * Integration Tests: End-to-End Workflows
@@ -7,19 +7,19 @@ import { WeSendCVPage } from '../pages/WeSendCVPage';
  */
 
 test.describe('Integration Tests - E2E Workflows', () => {
-  let wesendcvPage: WeSendCVPage;
+  let indiaRealtimePage: IndiaRealTimePage;
 
   test.beforeEach(async ({ page }) => {
-    wesendcvPage = new WeSendCVPage(page);
+    indiaRealtimePage = new IndiaRealTimePage(page);
   });
 
   test('should complete full homepage visit workflow', async ({ page }) => {
     // Navigate to homepage
-    const response = await wesendcvPage.gotoHomepage();
+    const response = await indiaRealtimePage.gotoHomepage();
     expect(response?.ok()).toBeTruthy();
 
     // Verify page loaded with expected content
-    await wesendcvPage.verifyHomepageLoaded();
+    await indiaRealtimePage.verifyHomepageLoaded();
 
     // Check page title
     const title = await page.title();
@@ -32,9 +32,9 @@ test.describe('Integration Tests - E2E Workflows', () => {
 
   test('should handle multi-step navigation workflow', async ({ page }) => {
     // Step 1: Load homepage
-    await wesendcvPage.gotoHomepage();
+    await indiaRealtimePage.gotoHomepage();
     const currentUrl = page.url();
-    expect(currentUrl).toContain('wesendcv.com');
+    expect(currentUrl).toContain('indiarealtime.com');
 
     // Step 2: Verify content presence
     const bodyContent = await page.locator('body').textContent();
@@ -47,7 +47,7 @@ test.describe('Integration Tests - E2E Workflows', () => {
 
   test('should handle invalid page navigation gracefully', async () => {
     // Attempt to navigate to non-existent page
-    const response = await wesendcvPage.gotoInvalidPage(
+    const response = await indiaRealtimePage.gotoInvalidPage(
       '/invalid-page-that-does-not-exist'
     );
 
@@ -58,6 +58,6 @@ test.describe('Integration Tests - E2E Workflows', () => {
     expect(response?.ok()).toBeFalsy();
 
     // Verify 404 error indication is present (if page displays it)
-    await wesendcvPage.verify404ErrorDisplayed();
+    await indiaRealtimePage.verify404ErrorDisplayed();
   });
 });

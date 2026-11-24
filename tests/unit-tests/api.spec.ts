@@ -7,9 +7,9 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Unit Tests - API Operations', () => {
   test('should parse URL correctly', () => {
-    const url = 'https://wesendcv.com/profile';
+    const url = 'https://indiarealtime.com/profile';
     const parsed = new URL(url);
-    expect(parsed.hostname).toBe('wesendcv.com');
+    expect(parsed.hostname).toBe('indiarealtime.com');
     expect(parsed.pathname).toBe('/profile');
   });
 

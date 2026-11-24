@@ -47,6 +47,9 @@ npm run test:smoke
 | `npm run test:unit` | Run platform and utility unit tests |
 | `npm run test:integration` | Run integration tests |
 | `npm run test:smoke` | Run the smoke suite in Chromium |
+| `npm run test:a11y` | Run accessibility and keyboard checks |
+| `npm run test:security` | Run security-focused Playwright specs |
+| `npm run test:mobile` | Run mobile-project coverage |
 | `npm run test:chromium` | Run the full suite in Chromium |
 | `npm run test:headed` | Run in headed mode |
 | `npm run test:report` | Open the HTML report |
@@ -57,9 +60,9 @@ npm run test:smoke
 To run one spec or category:
 
 ```bash
-npx playwright test tests/wesendcv.spec.ts --project=chromium
+npx playwright test tests/indiaRealtime.spec.ts --project=chromium
 npx playwright test tests/security-tests/ --project=chromium
-npx playwright test tests/wesendcv.spec.ts --project=chromium --headed
+npx playwright test tests/indiaRealtime.spec.ts --project=chromium --headed
 ```
 
 ## Architecture
@@ -94,7 +97,7 @@ tests/
   data/                   Centralized URLs, users, thresholds
   pages/                  Page Objects and shared BasePage
   fixtures.ts             Shared Playwright fixtures
-  wesendcv.spec.ts        Main smoke coverage
+  indiaRealtime.spec.ts        Main smoke coverage
   unit-tests/             Fast platform tests
   integration-tests/      Multi-step workflows
   accessibility/          Axe and keyboard checks
@@ -183,11 +186,36 @@ For AI-assisted debugging:
 
 Healing tools are intentionally POM-only. Applying locator changes may require approval according to risk, and validation should compare the rerun before and after.
 
+### Playwright agents
+
+The repository provides three modern custom agents in `.github/agents/`:
+
+- **playwright-planner**: explores a journey and produces a risk-based test plan.
+- **playwright-generator**: converts a plan into POM-aligned Playwright specs.
+- **playwright-healer**: reproduces failures and repairs the smallest root cause.
+
+Agent example: select **playwright-generator** and enter:
+
+```text
+Generate a deterministic Chromium smoke spec for https://indiarealtime.com.
+Verify the homepage, capture accessibility basics, and open the first article.
+Put UI locators in tests/pages/IndiaRealTimePage.ts and use tests/data/urls.ts.
+Run npm run test:smoke after generation.
+```
+
+The same agent workflow supports 2026/2027 maintenance:
+
+1. Plan new journeys and classify regression risk.
+2. Generate independent, project-compatible specs.
+3. Run focused browser checks in Chromium, Firefox, WebKit, and mobile projects.
+4. Heal only reproduced failures and validate the affected suite.
+5. Consume the AI report and trace before changing assertions or locators.
+
 ## Configuration
 
 | Variable | Default | Purpose |
 |---|---|---|
-| `E2E_BASE_URL` | `https://wesendcv.com` | Base URL for browser and API fixtures |
+| `E2E_BASE_URL` | `https://indiarealtime.com` | Base URL for browser and API fixtures |
 | `E2E_API_TOKEN` | unset | Optional bearer token for API requests |
 | `CI` | unset | Enables CI retries and worker limits |
 
@@ -252,7 +280,7 @@ CI artifacts include HTML reports, JSON/JUnit results, traces, screenshots, and 
 Debug a single spec:
 
 ```bash
-npx playwright test tests/wesendcv.spec.ts --project=chromium --headed --debug
+npx playwright test tests/indiaRealtime.spec.ts --project=chromium --headed --debug
 npx playwright show-trace test-results/<test-name>/trace.zip
 npx playwright show-report
 ```

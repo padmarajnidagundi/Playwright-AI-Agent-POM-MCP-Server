@@ -67,7 +67,7 @@ test('applies low-risk healing and persists record', async () => {
     locatorName: 'button',
     currentSelector: '.old-btn',
     candidateSelectors: ['[data-testid="primary-button"]'],
-    impactedSpecs: ['tests/wesendcv.spec.ts'],
+    impactedSpecs: ['tests/indiaRealtime.spec.ts'],
   });
 
   const apply = applyLocatorRepairWithApproval({
@@ -85,7 +85,7 @@ test('applies low-risk healing and persists record', async () => {
     proposal,
     approval: { required: false },
     validation: {
-      runCommand: 'npx playwright test tests/wesendcv.spec.ts',
+      runCommand: 'npx playwright test tests/indiaRealtime.spec.ts',
       passed: true,
       output: 'ok',
     },
@@ -95,11 +95,11 @@ test('applies low-risk healing and persists record', async () => {
 
 test('blocks non-POM healing edits', async () => {
   const proposal = buildLocatorRepairProposal({
-    file: 'tests/wesendcv.spec.ts',
+    file: 'tests/indiaRealtime.spec.ts',
     locatorName: 'bad',
     currentSelector: '.old',
     candidateSelectors: ['[data-testid="new"]'],
-    impactedSpecs: ['tests/wesendcv.spec.ts'],
+    impactedSpecs: ['tests/indiaRealtime.spec.ts'],
   });
 
   expect(() =>

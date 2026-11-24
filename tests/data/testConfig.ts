@@ -52,7 +52,7 @@ export const TEST_CONFIG = {
 
   // ── Environment ─────────────────────────────────────────────────────────────
   env: {
-    baseURL: process.env.E2E_BASE_URL || 'https://wesendcv.com',
+    baseURL: process.env.E2E_BASE_URL || 'https://indiarealtime.com',
     apiToken: process.env.E2E_API_TOKEN || '',
     isCI: Boolean(process.env.CI),
   },

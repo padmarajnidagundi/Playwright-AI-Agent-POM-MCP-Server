@@ -5,7 +5,7 @@ test.describe('Negative tests - invalid routes', () => {
   test('non-existent path should return 404 or show Not Found', async ({
     page,
   }) => {
-    const target = `${URLS.wesendcv.base}${URLS.wesendcv.invalidPage}`;
+    const target = `${URLS.indiaRealtime.base}${URLS.indiaRealtime.invalidPage}`;
     const resp = await page.goto(target);
 
     // If server returns a network response, assert 404 status.

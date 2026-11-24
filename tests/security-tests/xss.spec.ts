@@ -3,7 +3,7 @@ import { URLS } from '../data/urls';
 
 test.describe('XSS Protection', () => {
   test('should not execute injected script in input', async ({ page }) => {
-    await page.goto(URLS.wesendcv.base);
+    await page.goto(URLS.indiaRealtime.base);
     await page.fill('input[name="search"]', '<img src=x onerror=alert(1) />');
     await page.click('button[type="submit"]');
     // Check that no alert is shown
