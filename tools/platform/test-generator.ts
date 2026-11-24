@@ -1,4 +1,8 @@
-import { AI_REPORT_SCHEMA_VERSION, TestGenerationPreview, TestGenerationRequest } from './schemas';
+import {
+  AI_REPORT_SCHEMA_VERSION,
+  TestGenerationPreview,
+  TestGenerationRequest,
+} from './schemas';
 
 function titleFromPrompt(prompt: string): string {
   const cleaned = prompt.trim().replace(/\s+/g, ' ');
@@ -9,18 +13,30 @@ function inferAssertions(prompt: string): string[] {
   const p = prompt.toLowerCase();
   const assertions: string[] = [];
 
-  if (p.includes('login')) assertions.push('user can submit login form and see authenticated landing state');
-  if (p.includes('search')) assertions.push('search results appear and contain relevant result cards');
-  if (p.includes('error') || p.includes('invalid')) assertions.push('validation error state is visible for invalid input');
-  if (assertions.length === 0) assertions.push('target page state is visible and navigation expectations are met');
+  if (p.includes('login'))
+    assertions.push(
+      'user can submit login form and see authenticated landing state'
+    );
+  if (p.includes('search'))
+    assertions.push('search results appear and contain relevant result cards');
+  if (p.includes('error') || p.includes('invalid'))
+    assertions.push('validation error state is visible for invalid input');
+  if (assertions.length === 0)
+    assertions.push(
+      'target page state is visible and navigation expectations are met'
+    );
 
   return assertions;
 }
 
-export function generateTestPreview(request: TestGenerationRequest): TestGenerationPreview {
+export function generateTestPreview(
+  request: TestGenerationRequest
+): TestGenerationPreview {
   const testCases = inferAssertions(request.prompt);
   const describeTitle = titleFromPrompt(request.prompt);
-  const constraintComment = request.constraints?.length ? `Constraints: ${request.constraints.join('; ')}` : 'Constraints: none';
+  const constraintComment = request.constraints?.length
+    ? `Constraints: ${request.constraints.join('; ')}`
+    : 'Constraints: none';
 
   return {
     schemaVersion: AI_REPORT_SCHEMA_VERSION,

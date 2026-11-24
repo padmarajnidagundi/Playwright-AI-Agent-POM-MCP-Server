@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Route } from '@playwright/test';
 import { WeSendCVPage } from '../pages/WeSendCVPage';
 
 test('page handles offline/network failure gracefully', async ({ page }) => {
@@ -16,12 +16,14 @@ test('page handles offline/network failure gracefully', async ({ page }) => {
     ).toBeVisible({ timeout: 5000 });
   } catch (error) {
     // Navigation failed, which is expected in offline mode
-    expect(error.message).toContain('net::ERR_FAILED');
+    expect(error instanceof Error ? error.message : String(error)).toContain(
+      'net::ERR_FAILED'
+    );
   }
 });
 
 test('page recovers when network is restored', async ({ page }) => {
-  const abortAllRequests = (route) => route.abort();
+  const abortAllRequests = (route: Route) => route.abort();
   await page.route('**/*', abortAllRequests);
 
   const weSend = new WeSendCVPage(page);

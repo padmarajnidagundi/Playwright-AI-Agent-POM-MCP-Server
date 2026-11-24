@@ -46,8 +46,8 @@ export abstract class BasePage {
    * Return a plain-object summary suitable for an LLM prompt or AI reporter.
    */
   getAISummary(): object {
-    const failures = this.actionLogs.filter(l => l.status === 'failure');
-    const retries = this.actionLogs.filter(l => l.status === 'retry');
+    const failures = this.actionLogs.filter((l) => l.status === 'failure');
+    const retries = this.actionLogs.filter((l) => l.status === 'retry');
     return {
       totalActions: this.actionLogs.length,
       failures: failures.length,
@@ -82,7 +82,9 @@ export abstract class BasePage {
         lastError = err as Error;
         if (attempt < maxAttempts) {
           this.log(label, 'retry', { error: lastError.message });
-          await this.page.waitForTimeout(baseDelayMs * Math.pow(2, attempt - 1));
+          await this.page.waitForTimeout(
+            baseDelayMs * Math.pow(2, attempt - 1)
+          );
         }
       }
     }
@@ -115,7 +117,10 @@ export abstract class BasePage {
   /**
    * Navigate to a URL and wait for the DOM to be ready.
    */
-  async goto(url: string, waitUntil: 'load' | 'domcontentloaded' | 'networkidle' = 'domcontentloaded') {
+  async goto(
+    url: string,
+    waitUntil: 'load' | 'domcontentloaded' | 'networkidle' = 'domcontentloaded'
+  ) {
     return this.measureAction(
       () => this.page.goto(url, { waitUntil, timeout: 60_000 }),
       `goto(${url})`
@@ -152,7 +157,11 @@ export abstract class BasePage {
   /**
    * Fill an input with automatic retry and logging.
    */
-  async safeFill(locator: Locator, value: string, label: string): Promise<void> {
+  async safeFill(
+    locator: Locator,
+    value: string,
+    label: string
+  ): Promise<void> {
     await this.retryAction(async () => {
       await locator.waitFor({ state: 'visible', timeout: 10_000 });
       await locator.fill(value);

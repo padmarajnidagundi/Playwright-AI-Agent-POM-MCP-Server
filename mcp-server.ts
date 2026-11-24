@@ -44,14 +44,19 @@ const ANALYTICS_DIR = path.join(REPO_ROOT, 'test-results', 'analytics');
 const HISTORY_DIR = path.join(REPO_ROOT, 'test-results', 'history');
 
 const KNOWN_PROJECTS = new Set([
-  'chromium', 'firefox', 'webkit', 'Mobile Chrome', 'Mobile Safari',
+  'chromium',
+  'firefox',
+  'webkit',
+  'Mobile Chrome',
+  'Mobile Safari',
 ]);
 const SAFE_PATH_RE = /^[\w./-]+$/;
 
 const TOOLS = [
   {
     name: 'run_tests',
-    description: 'Run Playwright tests with optional filter/project and optional shard list for parallel deterministic execution.',
+    description:
+      'Run Playwright tests with optional filter/project and optional shard list for parallel deterministic execution.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -63,7 +68,8 @@ const TOOLS = [
   },
   {
     name: 'get_test_results',
-    description: 'Read test-results/ai-report.json with normalized failure analysis and artifact links.',
+    description:
+      'Read test-results/ai-report.json with normalized failure analysis and artifact links.',
     inputSchema: { type: 'object', properties: {} },
   },
   {
@@ -73,12 +79,14 @@ const TOOLS = [
   },
   {
     name: 'analyze_failures',
-    description: 'Summarize failures by category and probable root causes from AI report.',
+    description:
+      'Summarize failures by category and probable root causes from AI report.',
     inputSchema: { type: 'object', properties: {} },
   },
   {
     name: 'get_trace_summary',
-    description: 'Return trace summary for all failed tests or a specific test title.',
+    description:
+      'Return trace summary for all failed tests or a specific test title.',
     inputSchema: {
       type: 'object',
       properties: { title: { type: 'string' } },
@@ -86,7 +94,8 @@ const TOOLS = [
   },
   {
     name: 'generate_test_preview',
-    description: 'Generate natural-language test preview with POM update contract.',
+    description:
+      'Generate natural-language test preview with POM update contract.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -100,7 +109,8 @@ const TOOLS = [
   },
   {
     name: 'propose_locator_repair',
-    description: 'Generate locator repair proposal with confidence and blast radius.',
+    description:
+      'Generate locator repair proposal with confidence and blast radius.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -110,12 +120,18 @@ const TOOLS = [
         candidateSelectors: { type: 'array', items: { type: 'string' } },
         impactedSpecs: { type: 'array', items: { type: 'string' } },
       },
-      required: ['file', 'locatorName', 'currentSelector', 'candidateSelectors'],
+      required: [
+        'file',
+        'locatorName',
+        'currentSelector',
+        'candidateSelectors',
+      ],
     },
   },
   {
     name: 'apply_locator_repair',
-    description: 'Apply approved locator proposal with guardrails and persist healing record.',
+    description:
+      'Apply approved locator proposal with guardrails and persist healing record.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -127,7 +143,8 @@ const TOOLS = [
   },
   {
     name: 'validate_healing_rerun',
-    description: 'Run validation rerun for impacted specs only and return comparison signal.',
+    description:
+      'Run validation rerun for impacted specs only and return comparison signal.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -138,15 +155,19 @@ const TOOLS = [
   },
   {
     name: 'get_dashboard_metrics',
-    description: 'Build dashboard-ready historical QA metrics from archived reports.',
+    description:
+      'Build dashboard-ready historical QA metrics from archived reports.',
     inputSchema: { type: 'object', properties: {} },
   },
   {
     name: 'select_tests_for_changes',
-    description: 'Select impacted tests from changed file paths with explainable reasons.',
+    description:
+      'Select impacted tests from changed file paths with explainable reasons.',
     inputSchema: {
       type: 'object',
-      properties: { changedFiles: { type: 'array', items: { type: 'string' } } },
+      properties: {
+        changedFiles: { type: 'array', items: { type: 'string' } },
+      },
       required: ['changedFiles'],
     },
   },
@@ -178,10 +199,19 @@ function parseArrayStrings(value: unknown): string[] {
 function parseHealingProposal(value: unknown): HealingProposal {
   const proposal = value as Partial<HealingProposal> | undefined;
   if (!proposal) throw new Error('proposal is required.');
-  if (!proposal.id || !proposal.file || !proposal.locatorName || !proposal.currentSelector || !proposal.proposedSelector) {
+  if (
+    !proposal.id ||
+    !proposal.file ||
+    !proposal.locatorName ||
+    !proposal.currentSelector ||
+    !proposal.proposedSelector
+  ) {
     throw new Error('proposal is missing required fields.');
   }
-  if (!proposal.blastRadius || !Array.isArray(proposal.blastRadius.impactedSpecs)) {
+  if (
+    !proposal.blastRadius ||
+    !Array.isArray(proposal.blastRadius.impactedSpecs)
+  ) {
     throw new Error('proposal blastRadius.impactedSpecs must be an array.');
   }
   if (!proposal.risk || !['low', 'medium', 'high'].includes(proposal.risk)) {
@@ -195,7 +225,8 @@ function listSpecFiles(dir: string): string[] {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) files.push(...listSpecFiles(full));
-    else if (/\.spec\.(ts|js)$/.test(entry.name)) files.push(path.relative(REPO_ROOT, full).replace(/\\/g, '/'));
+    else if (/\.spec\.(ts|js)$/.test(entry.name))
+      files.push(path.relative(REPO_ROOT, full).replace(/\\/g, '/'));
   }
   return files.sort((a, b) => a.localeCompare(b));
 }
@@ -203,7 +234,12 @@ function listSpecFiles(dir: string): string[] {
 function assertToolAuthorized(name: string): void {
   const raw = process.env.MCP_ALLOWED_TOOLS;
   if (!raw || raw.trim() === '') return;
-  const allow = new Set(raw.split(',').map(x => x.trim()).filter(Boolean));
+  const allow = new Set(
+    raw
+      .split(',')
+      .map((x) => x.trim())
+      .filter(Boolean)
+  );
   if (!allow.has(name)) {
     throw new Error(`Tool not authorized by policy: ${name}`);
   }
@@ -219,7 +255,7 @@ function readAiReport(): JsonObject {
 function handleRunTests(params: JsonObject): unknown {
   const rawFilter = typeof params.filter === 'string' ? params.filter : '';
   const rawProject = typeof params.project === 'string' ? params.project : '';
-  const shards = parseArrayStrings(params.shards).map(s => sanitizePath(s));
+  const shards = parseArrayStrings(params.shards).map((s) => sanitizePath(s));
 
   const filter = rawFilter ? sanitizePath(rawFilter) : '';
   const project = rawProject ? sanitizeProject(rawProject) : '';
@@ -240,22 +276,30 @@ function handleRunTests(params: JsonObject): unknown {
   };
 
   if (shards.length > 0) {
-    return runInParallel(shards, async shard => redactSecrets(await runOne(shard)));
+    return runInParallel(shards, async (shard) =>
+      redactSecrets(await runOne(shard))
+    );
   }
 
-  return redactSecrets(execFileSync('npx', [
-    'playwright',
-    'test',
-    ...(filter ? [filter] : []),
-    ...(project ? ['--project', project] : []),
-    '--reporter=list',
-  ], {
-    cwd: REPO_ROOT,
-    encoding: 'utf8',
-    timeout: 300_000,
-    env: sanitizeEnv(process.env),
-    stdio: ['pipe', 'pipe', 'pipe'],
-  }));
+  return redactSecrets(
+    execFileSync(
+      'npx',
+      [
+        'playwright',
+        'test',
+        ...(filter ? [filter] : []),
+        ...(project ? ['--project', project] : []),
+        '--reporter=list',
+      ],
+      {
+        cwd: REPO_ROOT,
+        encoding: 'utf8',
+        timeout: 300_000,
+        env: sanitizeEnv(process.env),
+        stdio: ['pipe', 'pipe', 'pipe'],
+      }
+    )
+  );
 }
 
 function handleGetTestResults(): unknown {
@@ -264,18 +308,25 @@ function handleGetTestResults(): unknown {
 
 function handleAnalyzeFailures(): unknown {
   const report = readAiReport();
-  const tests = Array.isArray(report.tests) ? (report.tests as JsonObject[]) : [];
-  const failed = tests.filter(t => {
+  const tests = Array.isArray(report.tests)
+    ? (report.tests as JsonObject[])
+    : [];
+  const failed = tests.filter((t) => {
     const status = typeof t.status === 'string' ? t.status : '';
     return status === 'failed' || status === 'timedOut';
   });
 
   const byCategory = new Map<string, number>();
-  const details = failed.map(t => {
-    const errorMessage = ((t.error as JsonObject | undefined)?.message as string | undefined) ?? '';
+  const details = failed.map((t) => {
+    const errorMessage =
+      ((t.error as JsonObject | undefined)?.message as string | undefined) ??
+      '';
     const status = (t.status as string | undefined) ?? 'failed';
     const assessment = analyzeFailure(errorMessage, status);
-    byCategory.set(assessment.category, (byCategory.get(assessment.category) ?? 0) + 1);
+    byCategory.set(
+      assessment.category,
+      (byCategory.get(assessment.category) ?? 0) + 1
+    );
     return {
       title: t.title,
       file: t.file,
@@ -297,23 +348,31 @@ function handleAnalyzeFailures(): unknown {
 function handleGetTraceSummary(params: JsonObject): unknown {
   const title = typeof params.title === 'string' ? params.title : '';
   const report = readAiReport();
-  const tests = Array.isArray(report.tests) ? (report.tests as JsonObject[]) : [];
+  const tests = Array.isArray(report.tests)
+    ? (report.tests as JsonObject[])
+    : [];
 
-  const targets = tests.filter(t => {
+  const targets = tests.filter((t) => {
     const status = typeof t.status === 'string' ? t.status : '';
     const testTitle = typeof t.title === 'string' ? t.title : '';
     if (title) return testTitle === title;
     return status === 'failed' || status === 'timedOut';
   });
 
-  return targets.map(t => {
+  return targets.map((t) => {
     const artifacts = (t.artifacts as JsonObject | undefined) ?? {};
     const errorInfo = (t.error as JsonObject | undefined) ?? {};
     const summary = summarizeTraceArtifacts({
-      tracePath: typeof artifacts.trace === 'string' ? artifacts.trace : undefined,
-      screenshotPath: typeof artifacts.screenshot === 'string' ? artifacts.screenshot : undefined,
-      videoPath: typeof artifacts.video === 'string' ? artifacts.video : undefined,
-      errorMessage: typeof errorInfo.message === 'string' ? errorInfo.message : undefined,
+      tracePath:
+        typeof artifacts.trace === 'string' ? artifacts.trace : undefined,
+      screenshotPath:
+        typeof artifacts.screenshot === 'string'
+          ? artifacts.screenshot
+          : undefined,
+      videoPath:
+        typeof artifacts.video === 'string' ? artifacts.video : undefined,
+      errorMessage:
+        typeof errorInfo.message === 'string' ? errorInfo.message : undefined,
     });
 
     return {
@@ -325,8 +384,14 @@ function handleGetTraceSummary(params: JsonObject): unknown {
 }
 
 function handleGenerateTestPreview(params: JsonObject): unknown {
-  if (typeof params.prompt !== 'string' || typeof params.targetPageObject !== 'string' || typeof params.targetSpec !== 'string') {
-    throw new Error('prompt, targetPageObject, and targetSpec are required strings.');
+  if (
+    typeof params.prompt !== 'string' ||
+    typeof params.targetPageObject !== 'string' ||
+    typeof params.targetSpec !== 'string'
+  ) {
+    throw new Error(
+      'prompt, targetPageObject, and targetSpec are required strings.'
+    );
   }
 
   const request = {
@@ -340,14 +405,26 @@ function handleGenerateTestPreview(params: JsonObject): unknown {
 }
 
 function handleProposeLocatorRepair(params: JsonObject): unknown {
-  const file = typeof params.file === 'string' ? sanitizePath(params.file, true) : '';
-  const locatorName = typeof params.locatorName === 'string' ? params.locatorName : '';
-  const currentSelector = typeof params.currentSelector === 'string' ? params.currentSelector : '';
+  const file =
+    typeof params.file === 'string' ? sanitizePath(params.file, true) : '';
+  const locatorName =
+    typeof params.locatorName === 'string' ? params.locatorName : '';
+  const currentSelector =
+    typeof params.currentSelector === 'string' ? params.currentSelector : '';
   const candidateSelectors = parseArrayStrings(params.candidateSelectors);
-  const impactedSpecs = parseArrayStrings(params.impactedSpecs).map(spec => sanitizePath(spec));
+  const impactedSpecs = parseArrayStrings(params.impactedSpecs).map((spec) =>
+    sanitizePath(spec)
+  );
 
-  if (!file || !locatorName || !currentSelector || candidateSelectors.length === 0) {
-    throw new Error('file, locatorName, currentSelector and candidateSelectors are required.');
+  if (
+    !file ||
+    !locatorName ||
+    !currentSelector ||
+    candidateSelectors.length === 0
+  ) {
+    throw new Error(
+      'file, locatorName, currentSelector and candidateSelectors are required.'
+    );
   }
 
   const proposal = buildLocatorRepairProposal({
@@ -370,14 +447,17 @@ function handleProposeLocatorRepair(params: JsonObject): unknown {
 function handleApplyLocatorRepair(params: JsonObject): unknown {
   const proposal = parseHealingProposal(params.proposal);
 
-  const approvedBy = typeof params.approvedBy === 'string' ? params.approvedBy : undefined;
+  const approvedBy =
+    typeof params.approvedBy === 'string' ? params.approvedBy : undefined;
   const apply = applyLocatorRepairWithApproval({
     repoRoot: REPO_ROOT,
     proposal,
     approvedBy,
   });
 
-  const impactedSpecs = proposal.blastRadius.impactedSpecs.map(spec => sanitizePath(spec));
+  const impactedSpecs = proposal.blastRadius.impactedSpecs.map((spec) =>
+    sanitizePath(spec)
+  );
   const validation = runValidationRerun({ cwd: REPO_ROOT, impactedSpecs });
 
   const approvalRequired = proposal.risk !== 'low';
@@ -410,8 +490,13 @@ function handleApplyLocatorRepair(params: JsonObject): unknown {
 }
 
 function handleValidateHealingRerun(params: JsonObject): unknown {
-  const impactedSpecs = parseArrayStrings(params.impactedSpecs).map(spec => sanitizePath(spec));
-  const project = typeof params.project === 'string' ? sanitizeProject(params.project) : undefined;
+  const impactedSpecs = parseArrayStrings(params.impactedSpecs).map((spec) =>
+    sanitizePath(spec)
+  );
+  const project =
+    typeof params.project === 'string'
+      ? sanitizeProject(params.project)
+      : undefined;
   return runValidationRerun({ cwd: REPO_ROOT, impactedSpecs, project });
 }
 
@@ -420,8 +505,11 @@ function handleDashboardMetrics(): unknown {
 }
 
 function handleSelectTestsForChanges(params: JsonObject): unknown {
-  const changedFiles = parseArrayStrings(params.changedFiles).map(file => sanitizePath(file, true));
-  if (changedFiles.length === 0) throw new Error('changedFiles must include at least one file.');
+  const changedFiles = parseArrayStrings(params.changedFiles).map((file) =>
+    sanitizePath(file, true)
+  );
+  if (changedFiles.length === 0)
+    throw new Error('changedFiles must include at least one file.');
   return selectTestsForChanges({ repoRoot: REPO_ROOT, changedFiles });
 }
 
@@ -459,28 +547,37 @@ export async function dispatch(req: MCPRequest): Promise<MCPResponse> {
 
       if (name === 'run_tests') result = await handleRunTests(args);
       else if (name === 'get_test_results') result = handleGetTestResults();
-      else if (name === 'list_test_files') result = listSpecFiles(path.join(REPO_ROOT, 'tests'));
+      else if (name === 'list_test_files')
+        result = listSpecFiles(path.join(REPO_ROOT, 'tests'));
       else if (name === 'analyze_failures') {
-        if (!flags.analysisEnabled) throw new Error('analysis feature is disabled by flag.');
+        if (!flags.analysisEnabled)
+          throw new Error('analysis feature is disabled by flag.');
         result = handleAnalyzeFailures();
       } else if (name === 'get_trace_summary') {
-        if (!flags.analysisEnabled) throw new Error('analysis feature is disabled by flag.');
+        if (!flags.analysisEnabled)
+          throw new Error('analysis feature is disabled by flag.');
         result = handleGetTraceSummary(args);
-      } else if (name === 'generate_test_preview') result = handleGenerateTestPreview(args);
+      } else if (name === 'generate_test_preview')
+        result = handleGenerateTestPreview(args);
       else if (name === 'propose_locator_repair') {
-        if (!flags.healingEnabled) throw new Error('healing feature is disabled by flag.');
+        if (!flags.healingEnabled)
+          throw new Error('healing feature is disabled by flag.');
         result = handleProposeLocatorRepair(args);
       } else if (name === 'apply_locator_repair') {
-        if (!flags.healingEnabled) throw new Error('healing feature is disabled by flag.');
+        if (!flags.healingEnabled)
+          throw new Error('healing feature is disabled by flag.');
         result = handleApplyLocatorRepair(args);
       } else if (name === 'validate_healing_rerun') {
-        if (!flags.healingEnabled) throw new Error('healing feature is disabled by flag.');
+        if (!flags.healingEnabled)
+          throw new Error('healing feature is disabled by flag.');
         result = handleValidateHealingRerun(args);
       } else if (name === 'get_dashboard_metrics') {
-        if (!flags.dashboardEnabled) throw new Error('dashboard feature is disabled by flag.');
+        if (!flags.dashboardEnabled)
+          throw new Error('dashboard feature is disabled by flag.');
         result = handleDashboardMetrics();
       } else if (name === 'select_tests_for_changes') {
-        if (!flags.testSelectionEnabled) throw new Error('test selection feature is disabled by flag.');
+        if (!flags.testSelectionEnabled)
+          throw new Error('test selection feature is disabled by flag.');
         result = handleSelectTestsForChanges(args);
       } else {
         throw new Error(`Unknown tool: ${name}`);
@@ -489,7 +586,14 @@ export async function dispatch(req: MCPRequest): Promise<MCPResponse> {
       return {
         jsonrpc: '2.0',
         id: req.id,
-        result: { content: [{ type: 'text', text: redactSecrets(JSON.stringify(result, null, 2)) }] },
+        result: {
+          content: [
+            {
+              type: 'text',
+              text: redactSecrets(JSON.stringify(result, null, 2)),
+            },
+          ],
+        },
       };
     } catch (err) {
       return {

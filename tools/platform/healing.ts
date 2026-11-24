@@ -10,7 +10,10 @@ import { redactSecrets } from './secret-redaction';
 
 const SELECTOR_LINE_RE = /locator\((['\"`])(.+?)\1\)/;
 
-export function inferRisk(confidence: number, impactedSpecs: string[]): 'low' | 'medium' | 'high' {
+export function inferRisk(
+  confidence: number,
+  impactedSpecs: string[]
+): 'low' | 'medium' | 'high' {
   if (confidence >= 0.85 && impactedSpecs.length <= 2) return 'low';
   if (confidence >= 0.65 && impactedSpecs.length <= 5) return 'medium';
   return 'high';
@@ -47,8 +50,13 @@ export function buildLocatorRepairProposal(args: {
 
 export function assertPomGuardrails(filePath: string): void {
   const normalized = filePath.replace(/\\/g, '/');
-  if (!normalized.includes('/tests/pages/') && !normalized.startsWith('tests/pages/')) {
-    throw new Error('Guardrail violation: locator edits are only allowed in tests/pages/* files.');
+  if (
+    !normalized.includes('/tests/pages/') &&
+    !normalized.startsWith('tests/pages/')
+  ) {
+    throw new Error(
+      'Guardrail violation: locator edits are only allowed in tests/pages/* files.'
+    );
   }
 }
 
@@ -61,7 +69,10 @@ export function applyLocatorRepairWithApproval(args: {
 
   const needsApproval = args.proposal.risk !== 'low';
   if (needsApproval && !args.approvedBy) {
-    return { applied: false, reason: 'Approval required for medium/high risk proposal.' };
+    return {
+      applied: false,
+      reason: 'Approval required for medium/high risk proposal.',
+    };
   }
 
   const absolute = path.resolve(args.repoRoot, args.proposal.file);
@@ -76,11 +87,17 @@ export function applyLocatorRepairWithApproval(args: {
   });
 
   if (updated === source) {
-    return { applied: false, reason: 'No matching locator usage found for replacement.' };
+    return {
+      applied: false,
+      reason: 'No matching locator usage found for replacement.',
+    };
   }
 
   fs.writeFileSync(absolute, updated, 'utf8');
-  return { applied: true, reason: 'Locator replacement applied to page object.' };
+  return {
+    applied: true,
+    reason: 'Locator replacement applied to page object.',
+  };
 }
 
 export function runValidationRerun(args: {
@@ -88,9 +105,18 @@ export function runValidationRerun(args: {
   impactedSpecs: string[];
   project?: string;
 }): { passed: boolean; command: string; output: string } {
-  const specs = args.impactedSpecs.length > 0 ? args.impactedSpecs : ['tests/wesendcv.spec.ts'];
+  const specs =
+    args.impactedSpecs.length > 0
+      ? args.impactedSpecs
+      : ['tests/wesendcv.spec.ts'];
   const projectArgs = args.project ? ['--project', args.project] : [];
-  const cmdArgs = ['playwright', 'test', ...specs, ...projectArgs, '--reporter=list'];
+  const cmdArgs = [
+    'playwright',
+    'test',
+    ...specs,
+    ...projectArgs,
+    '--reporter=list',
+  ];
   const command = `npx ${cmdArgs.join(' ')}`;
 
   const result = spawnSync('npx', cmdArgs, {
@@ -99,7 +125,9 @@ export function runValidationRerun(args: {
     timeout: 180_000,
   });
 
-  const output = redactSecrets((result.stdout ?? '') + '\n' + (result.stderr ?? '')).trim();
+  const output = redactSecrets(
+    (result.stdout ?? '') + '\n' + (result.stderr ?? '')
+  ).trim();
   return {
     passed: result.status === 0,
     command,
@@ -121,7 +149,8 @@ export function persistHealingRecord(args: {
     validation: args.validation,
   };
 
-  if (!fs.existsSync(args.outputDir)) fs.mkdirSync(args.outputDir, { recursive: true });
+  if (!fs.existsSync(args.outputDir))
+    fs.mkdirSync(args.outputDir, { recursive: true });
   const file = path.join(args.outputDir, `${record.proposal.id}.json`);
   fs.writeFileSync(file, JSON.stringify(record, null, 2), 'utf8');
   return record;

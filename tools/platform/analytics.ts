@@ -14,8 +14,12 @@ export function writeAnalyticsEvent(args: {
     metadata: args.metadata,
   };
 
-  if (!fs.existsSync(args.outputDir)) fs.mkdirSync(args.outputDir, { recursive: true });
-  const file = path.join(args.outputDir, `${event.timestamp.replace(/[:.]/g, '-')}-${event.eventType}.json`);
+  if (!fs.existsSync(args.outputDir))
+    fs.mkdirSync(args.outputDir, { recursive: true });
+  const file = path.join(
+    args.outputDir,
+    `${event.timestamp.replace(/[:.]/g, '-')}-${event.eventType}.json`
+  );
   fs.writeFileSync(file, JSON.stringify(event, null, 2), 'utf8');
   return event;
 }

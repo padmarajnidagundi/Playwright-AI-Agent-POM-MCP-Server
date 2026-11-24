@@ -24,7 +24,7 @@ export interface DashboardMetrics {
 
 export function buildDashboardMetrics(historyDir: string): DashboardMetrics {
   const files = readReportFiles(historyDir);
-  const reports: SimpleReport[] = files.map(file => {
+  const reports: SimpleReport[] = files.map((file) => {
     try {
       return JSON.parse(fs.readFileSync(file, 'utf8')) as SimpleReport;
     } catch {
@@ -33,13 +33,25 @@ export function buildDashboardMetrics(historyDir: string): DashboardMetrics {
   });
 
   const runs = reports.length;
-  const totalTests = reports.reduce((sum, r) => sum + (r.summary?.total ?? 0), 0);
-  const totalFailures = reports.reduce((sum, r) => sum + (r.summary?.failed ?? 0), 0);
-  const totalDuration = reports.reduce((sum, r) => sum + (r.summary?.durationMs ?? 0), 0);
+  const totalTests = reports.reduce(
+    (sum, r) => sum + (r.summary?.total ?? 0),
+    0
+  );
+  const totalFailures = reports.reduce(
+    (sum, r) => sum + (r.summary?.failed ?? 0),
+    0
+  );
+  const totalDuration = reports.reduce(
+    (sum, r) => sum + (r.summary?.durationMs ?? 0),
+    0
+  );
   const retries = reports.reduce(
     (sum, r) =>
       sum +
-      (r.tests ?? []).reduce((inner, test) => inner + ((test.retries ?? 0) > 0 ? 1 : 0), 0),
+      (r.tests ?? []).reduce(
+        (inner, test) => inner + ((test.retries ?? 0) > 0 ? 1 : 0),
+        0
+      ),
     0
   );
 
@@ -47,7 +59,10 @@ export function buildDashboardMetrics(historyDir: string): DashboardMetrics {
   for (const report of reports) {
     for (const test of report.tests ?? []) {
       if (!test.category) continue;
-      categoryCount.set(test.category, (categoryCount.get(test.category) ?? 0) + 1);
+      categoryCount.set(
+        test.category,
+        (categoryCount.get(test.category) ?? 0) + 1
+      );
     }
   }
 

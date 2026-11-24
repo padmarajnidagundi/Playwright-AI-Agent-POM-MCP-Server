@@ -3,12 +3,17 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "test": "npx playwright test",
-    "test:headed": "npx playwright test --headed",
+    "test": "playwright test",
+    "test:unit": "playwright test tests/unit-tests",
+    "test:integration": "playwright test tests/integration-tests",
+    "test:smoke": "playwright test tests/wesendcv.spec.ts --project=chromium",
+    "test:chromium": "playwright test --project=chromium",
+    "test:headed": "playwright test --headed",
     "test:report": "npx playwright show-report",
-    "auth:generate": "node ./scripts/generate-auth.js",
-    "mcp:server": "npx ts-node mcp-server.ts",
-    "format": "prettier --write tests/ tools/ *.ts"
+    "mcp:server": "tsx mcp-server.ts",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write tests/ tools/ *.ts",
+    "format:check": "prettier --check tests/ tools/ *.ts"
   },
   "devDependencies": {
     "@pact-foundation/pact": "17.0.1",
@@ -16,6 +21,8 @@
     "@types/node": "^26.2.0",
     "axe-playwright": "^2.2.2",
     "playwright": "^1.65.1",
-    "prettier": "^3.9.6"
+    "prettier": "^3.9.6",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
   }
 }

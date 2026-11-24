@@ -1,12 +1,15 @@
 import { defineConfig, devices } from '@playwright/test';
 
+const baseURL = process.env.E2E_BASE_URL || 'https://wesendcv.com';
+const isCI = Boolean(process.env.CI);
+
 export default defineConfig({
   testDir: './tests',
   timeout: 30_000,
   expect: { timeout: 5_000 },
   fullyParallel: true,
-  retries: process.env.CI ? 1 : 0,
-  workers: process.env.CI ? 2 : undefined,
+  retries: isCI ? 1 : 0,
+  workers: isCI ? 2 : undefined,
   reporter: [
     ['html'],
     ['json', { outputFile: 'test-results/results.json' }],
@@ -15,13 +18,12 @@ export default defineConfig({
     ['./tools/ai-reporter.ts'],
   ],
   use: {
-    baseURL: 'https://www.wesendcv.com',
+    baseURL,
     headless: true,
     actionTimeout: 10_000,
     screenshot: 'only-on-failure',
     trace: 'on-first-retry',
-    retries: 1,
-    // storageState: 'auth.user.json', // optional, documented in README
+    video: 'retain-on-failure',
   },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },

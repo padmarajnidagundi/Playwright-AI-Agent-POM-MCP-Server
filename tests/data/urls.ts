@@ -1,10 +1,12 @@
+const baseURL = process.env.E2E_BASE_URL || 'https://wesendcv.com';
+
 export const URLS = {
   wesendcv: {
-    base: 'https://wesendcv.com',
-    home: 'https://wesendcv.com',
+    base: baseURL,
+    home: baseURL,
     invalidPage: '/invalid-page-that-does-not-exist',
     api: {
-      posts: 'https://wesendcv.com/wp-json/wp/v2/posts',
+      posts: `${baseURL}/wp-json/wp/v2/posts`,
     },
   },
 };

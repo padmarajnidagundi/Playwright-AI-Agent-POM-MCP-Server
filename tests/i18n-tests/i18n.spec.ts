@@ -8,7 +8,7 @@ test('WeSendCV page has correct language attributes and basic translations', asy
   await weSend.gotoHomepage();
 
   // Check that the document has a lang attribute (e.g., 'en' for English)
-  const lang = await page.getAttribute('html', 'lang');
+  const lang = await page.locator('html').getAttribute('lang');
   expect(lang).toBe('en-US'); // Site uses 'en-US'
 
   // Verify some key text is present (basic translation check)
@@ -18,12 +18,14 @@ test('WeSendCV page has correct language attributes and basic translations', asy
   // e.g., await page.goto('https://wesendcv.com?lang=es'); and check Spanish text
 });
 
-test('WeSendCV page switches to Spanish and displays correct translation', async ({ page }) => {
+test('WeSendCV page switches to Spanish and displays correct translation', async ({
+  page,
+}) => {
   const weSend = new WeSendCVPage(page);
   await weSend.gotoHomepage('?lang=es');
 
   // Check that the document has a lang attribute for Spanish
-  const lang = await page.getAttribute('html', 'lang');
+  const lang = await page.locator('html').getAttribute('lang');
   expect(lang).toBe('es-ES');
 
   // Verify Spanish translation is visible

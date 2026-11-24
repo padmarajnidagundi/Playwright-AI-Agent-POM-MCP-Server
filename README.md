@@ -1,869 +1,262 @@
-# Playwright AI Agent — Page Object Model + MCP Server
+# Playwright AI Agent POM MCP Framework
 
-> **Enterprise-grade Playwright test automation framework** by **Padmaraj Nidagundi**
-> Senior QA Automation Engineer · 8+ years of experience in test automation architecture
+A practical Playwright, Page Object Model (POM), and AI-agent testing framework for web, API, accessibility, security, resilience, and mobile checks.
 
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/padmarajnidagundi/Playwright-AI-Agent-POM-MCP-Server/actions)
-[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![CI](https://github.com/padmarajnidagundi/Playwright-AI-Agent-POM-MCP-Server/actions/workflows/ci.yml/badge.svg)](https://github.com/padmarajnidagundi/Playwright-AI-Agent-POM-MCP-Server/actions)
 [![Playwright](https://img.shields.io/badge/Playwright-1.65.1-45ba4b)](https://playwright.dev)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178c6)](https://www.typescriptlang.org)
-[![Node](https://img.shields.io/badge/Node.js-20+-green)](https://nodejs.org)
-[![Tests](https://img.shields.io/badge/tests-14%20categories-success)](tests/)
-[![MCP](https://img.shields.io/badge/MCP-server%20included-purple)](mcp-server.ts)
-[![AI Reporter](https://img.shields.io/badge/AI%20Reporter-structured%20JSON-orange)](tools/ai-reporter.ts)
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/padmarajnidagundi/Playwright-AI-Agent-POM-MCP-Server)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5+-3178c6)](https://www.typescriptlang.org)
+[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-<center>
-  <a href="https://ibb.co/mFRDJLFY">
-    <img src="https://i.ibb.co/mFRDJLFY/Padmaraj-nidagundi-Playwright-AI-Agent-POM-MCP-Server.jpg"
-         alt="Playwright AI Agent POM MCP Server" border="0">
-  </a>
-</center>
+## Quick start
 
----
-
-## Table of Contents
-
-- [What Makes This Repo Advanced](#what-makes-this-repo-advanced)
-- [Architecture Overview](#architecture-overview)
-- [Repository Layout](#repository-layout)
-- [Key Files Reference](#key-files-reference)
-- [Tech Stack](#tech-stack)
-- [Installation](#installation)
-- [Docker](#docker)
-- [Running Tests](#running-tests)
-- [Mobile Testing](#mobile-testing)
-- [MCP Server — AI Integration](#mcp-server--ai-integration)
-- [AI Reporter](#ai-reporter)
-- [BasePage — Smart Base Class](#basepage--smart-base-class)
-- [Custom Fixtures](#custom-fixtures)
-- [Test Data & Configuration](#test-data--configuration)
-- [Dev Server & Visual Diffs](#dev-server--visual-diffs)
-- [CI/CD Pipeline](#cicd-pipeline)
-- [Test Coverage](#test-coverage)
-- [Types of Tests](#types-of-tests)
-- [Architecture: Page Object Model](#architecture-page-object-model)
-- [AI Agents — Chatmodes & Skills](#ai-agents--chatmodes--skills)
-- [Best Practices](#best-practices)
-- [How to Extend](#how-to-extend)
-- [Common Commands](#common-commands)
-- [Troubleshooting](#troubleshooting)
-- [License & Attribution](#license--attribution)
-
----
-
-## What Makes This Repo Advanced
-
-This is **not a tutorial project**. Every pattern here is drawn from real enterprise QA deployments:
-
-| Feature | Description |
-|---|---|
-| 🧠 **MCP Server** | A standards-compliant Model Context Protocol server (`mcp-server.ts`) that lets any AI assistant run tests, fetch results, list specs, and orchestrate healing workflows via JSON-RPC tools |
-| 📊 **AI Reporter** | Custom Playwright reporter (`tools/ai-reporter.ts`) that emits structured JSON consumed by LLMs — includes per-test `aiHint`, `rootCause`, and `traceSummary` fields with auto-generated fix guidance |
-| 🧠 **Failure Intelligence** | `tools/platform/failure-analysis.ts` + `trace-summary.ts` normalize failures by category, estimate the probable cause, and convert trace/screenshot artifacts into actionable triage steps |
-| 🛠️ **Guarded Healing** | `tools/platform/healing.ts` enforces POM-only edits, computes risk-aware locator repair proposals, requires approval for medium/high risk changes, and records validation outcomes |
-| 📈 **AI QA Analytics** | `tools/platform/dashboard.ts`, `report-history.ts`, and `analytics.ts` aggregate historical runs into pass-rate, failure-category, and flaky-test metrics |
-| 🏗️ **BasePage** | Abstract base class (`tests/pages/BasePage.ts`) with smart retries (exponential back-off), structured action logs, performance timing, soft assertions, and stable-element waits |
-| 🔌 **Custom Fixtures** | `tests/fixtures.ts` extends Playwright with `apiContext` (pre-authenticated REST context) and automatic trace capture on failure |
-| ⚙️ **Centralized Config** | `tests/data/testConfig.ts` — single source of truth for all timeouts, thresholds, retry policies, and environment variables |
-| 🛡️ **14 Test Categories** | Unit → Chaos engineering, covering functional, security, a11y, i18n, performance, contract, and resilience |
-| 🔍 **Chatmode Prompts** | `.github/chatmodes/` — custom prompt files feed LLMs with test context for AI-assisted debugging and healing |
-| 🐳 **Docker Support** | `Dockerfile` + `docker-compose.yml` for zero-configuration containerized test runs |
-| 📱 **Mobile-First** | Device emulation profiles for Pixel 5, iPhone 12, and more |
-
-### Real-World Impact
-
-- ✅ Reduced regression testing time by **70%** (6 hours → 90 minutes)
-- ✅ Caught **95%** of visual bugs before production
-- ✅ Zero false positives in CI after optimization
-- ✅ Successfully deployed in **15+ enterprise projects**
-
----
-
-## Architecture Overview
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                    AI / LLM Client                              │
-│  (GitHub Copilot, Claude, GPT, Chatmode prompts)               │
-└────────────────────────┬────────────────────────────────────────┘
-                         │  JSON-RPC (MCP protocol)
-                         ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                    mcp-server.ts                                │
-│  Tools: run_tests · get_test_results · analyze_failures         │
-│  propose_locator_repair · get_dashboard_metrics                 │
-└────────────────────────┬────────────────────────────────────────┘
-                         │  spawns / reads / writes
-                         ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                Playwright Test Runner                           │
-│  playwright.config.ts  →  multi-browser projects               │
-│                         →  AI Reporter (tools/ai-reporter.ts)  │
-│                         →  Failure analysis + trace summaries   │
-└────────────┬───────────────────────────────────────────────────┘
-             │
-   ┌─────────▼──────────┐    ┌──────────────────────────────────┐
-   │   Test Specs        │    │   Page Objects (tests/pages/)    │
-   │   tests/**/*.spec.ts│───▶│   BasePage.ts (base class)       │
-   │   14 categories     │    │   WeSendCVPage.ts                │
-   └─────────────────────┘    └──────────────────────────────────┘
-             │
-   ┌─────────▼──────────┐    ┌──────────────────────────────────┐
-   │   Failure platform  │    │   Healing + analytics           │
-   │   tools/platform/   │    │   tools/platform/healing.ts     │
-   │   failure-analysis  │    │   dashboard.ts                  │
-   │   trace-summary     │    │   feature-flags.ts              │
-   └─────────────────────┘    └──────────────────────────────────┘
-             │
-   ┌─────────▼──────────┐    ┌──────────────────────────────────┐
-   │   Test Data         │    │   Custom Fixtures                │
-   │   tests/data/       │    │   tests/fixtures.ts              │
-   │   urls · users ·    │    │   apiContext · auto-trace        │
-   │   testConfig        │    └──────────────────────────────────┘
-   └─────────────────────┘
-```
-
----
-
-## Repository Layout
-
-```
-Playwright-AI-Agent-POM-MCP-Server/
-├── mcp-server.ts                  # MCP server — AI tool integration + healing orchestration
-├── playwright.config.ts           # Multi-browser config + JSON/JUnit/HTML reporters
-├── package.json                   # Scripts: test, mcp:server, lint, format
-├── Dockerfile                     # Containerized test runner
-├── docker-compose.yml             # One-command compose run
-├── seed.spec.ts                   # Lightweight seed/spec scaffold used by AI workflows
-├── tests/
-│   ├── fixtures.ts                # Custom Playwright fixtures (apiContext, auto-trace)
-│   ├── utils.ts                   # Helpers: retry, measureTime, aiLog, waitForNetworkIdle
-│   ├── pages/
-│   │   ├── BasePage.ts            # Abstract base: retries, logging, perf timing
-│   │   └── WeSendCVPage.ts        # WeSendCV page object (extends BasePage)
-│   ├── data/
-│   │   ├── urls.ts                # Centralized URL constants
-│   │   ├── users.ts               # Test user credentials (env-var backed)
-│   │   └── testConfig.ts          # Timeouts, thresholds, retry policies
-│   ├── unit-tests/
-│   │   ├── ai-platform.spec.ts    # Failure-analysis + healing + MCP contract coverage
-│   │   └── api.spec.ts
-│   ├── integration-tests/
-│   │   └── workflow.spec.ts
-│   ├── performance-tests/
-│   │   └── load-time.spec.ts
-│   ├── security-tests/
-│   │   ├── auth.spec.ts
-│   │   └── xss.spec.ts
-│   ├── validation-tests/
-│   │   ├── broken-links.spec.ts
-│   │   ├── input-validation.spec.ts
-│   │   └── invalid-route.spec.ts
-│   ├── mock-tests/
-│   │   └── api-mocking.spec.ts
-│   ├── interop-tests/
-│   │   └── compatibility.spec.ts
-│   ├── accessibility/
-│   │   ├── a11y.spec.ts
-│   │   └── keyboard.spec.ts
-│   ├── resilience/
-│   │   └── resource-failure.spec.ts
-│   ├── network-resilience/
-│   │   ├── offline.spec.ts
-│   │   └── example-network-resilience.spec.ts
-│   ├── i18n-tests/
-│   │   └── i18n.spec.ts
-│   ├── e2e/
-│   │   └── e2e.spec.ts
-│   ├── chaos-tests/
-│   │   └── concurrency.spec.ts
-│   ├── contract-tests/
-│   │   ├── api-contract.spec.ts
-│   │   └── api-response-compare.spec.ts
-│   ├── ping-tests/
-│   ├── response-code-tests/
-│   ├── mobile.spec.ts
-│   └── wesendcv.spec.ts
-├── tools/
-│   ├── ai-reporter.ts             # AI-parseable Playwright reporter
-│   └── platform/
-│       ├── failure-analysis.ts    # Failure categorization and root-cause scoring
-│       ├── trace-summary.ts       # Trace/screenshot/video triage summaries
-│       ├── healing.ts             # POM-only locator repairs + validation hooks
-│       ├── dashboard.ts           # Historical metrics aggregation
-│       ├── analytics.ts           # Event recording for AI QA telemetry
-│       ├── feature-flags.ts       # Feature-flag access helpers
-│       ├── parallel-executor.ts   # Deterministic parallel sharding runner
-│       ├── report-history.ts      # Report archive access helpers
-│       ├── schemas.ts             # Shared AI QA schemas
-│       ├── secret-redaction.ts    # Secret sanitization for logs
-│       ├── test-generator.ts      # Natural-language test preview generation
-│       ├── test-selection.ts      # Impact analysis for changed files
-│       └── ...
-├── .github/
-│   ├── copilot-instructions.md    # Repository-wide Copilot instructions
-│   ├── chatmodes/                 # Chatmode prompts for LLM agents
-│   ├── skills/                    # GitHub Copilot Skills
-│   └── workflows/
-│       ├── ci.yml                 # GitHub Actions pipeline
-│       └── code-quality.yml       # Prettier quality gate
-├── .claude/
-│   └── skills/playwright-cli/     # Playwright CLI agent references and guides
-├── LICENSE                        # MIT license
-├── README.md                      # Project documentation
-├── tsconfig.json                  # TypeScript config
-├── Dockerfile                     # Container image
-├── docker-compose.yml             # Compose entrypoint
-├── package-lock.json              # Locked dependency tree
-└── .gitignore                     # Local environment exclusions
-```
-
----
-
-## Key Files Reference
-
-| File | Purpose |
-|------|---------|
-| `mcp-server.ts` | MCP-compliant JSON-RPC server exposing test execution, failure analysis, healing, and dashboard tools |
-| `tools/ai-reporter.ts` | Custom Playwright reporter — writes `test-results/ai-report.json` with AI hints, root causes, and trace summaries |
-| `tools/platform/failure-analysis.ts` | Normalizes failure categories and probable root causes from Playwright errors |
-| `tools/platform/trace-summary.ts` | Summarizes trace, screenshot, and video artifacts into remediation actions |
-| `tools/platform/healing.ts` | Guarded POM repair proposals, approval checks, validation reruns, and persisted healing records |
-| `tools/platform/dashboard.ts` | Aggregates historical run metrics for QA dashboards and trend analysis |
-| `tests/pages/BasePage.ts` | Abstract POM base class: smart retry, structured logging, perf timing, soft asserts |
-| `tests/pages/WeSendCVPage.ts` | Concrete page object extending `BasePage` |
-| `tests/fixtures.ts` | Extended `test` export with `apiContext` fixture and automatic trace-on-failure |
-| `tests/data/testConfig.ts` | Single source of truth for timeouts, thresholds, retry policies, env vars |
-| `tests/data/urls.ts` | URL constants |
-| `tests/utils.ts` | Utility helpers: `retry`, `measureTime`, `aiLog`, `waitForNetworkIdle` |
-| `playwright.config.ts` | Multi-browser projects, reporters (including AI reporter), trace settings |
-
----
-
-## Tech Stack
-
-| Category | Technology | Version | Purpose |
-|---|---|---|---|
-| Language | TypeScript | 5.0+ | All test files, config, and tooling |
-| Runtime | Node.js | 20+ | Recommended for warning-free install |
-| Testing Framework | Playwright | 1.65.1 | Browser automation and assertions |
-| Package Manager | npm | 10+ | Dependency management |
-| `@playwright/test` | Playwright Test | 1.65.1 | Test runner, fixtures, reporters |
-| `@pact-foundation/pact` | Pact | 17.0.1 | Consumer-driven contract testing |
-| `axe-playwright` | Axe | 2.2.2 | Accessibility audits |
-| `prettier` | Prettier | 3.9+ | Code formatting |
-| CI/CD | GitHub Actions | — | Cross-platform pipeline (Ubuntu + Windows) |
-| Containerisation | Docker | — | Reproducible test environments |
-| MCP | Custom server | — | AI tool integration via JSON-RPC |
-
----
-
-## Installation
-
-### Prerequisites
-
-- Node.js 20+ and npm 10+
-- (Optional) Docker for containerised runs
-
-### macOS / Linux
+Requirements: Node.js 20+.
 
 ```bash
-cd Playwright-AI-Agent-POM-MCP-Server
 npm ci
 npx playwright install --with-deps
+npm run test:smoke
 ```
 
-### Windows PowerShell
+Use Chromium for the fastest local feedback:
+
+```bash
+npm run test:chromium
+npm run test:headed
+npm run test:report
+```
+
+Set a target application with an environment variable:
+
+```bash
+E2E_BASE_URL=https://your-app.example npm run test:smoke
+E2E_API_TOKEN=your-token npm run test:chromium
+```
+
+PowerShell:
 
 ```powershell
-cd C:\Playwright-AI-Agent-POM-MCP-Server
-npm ci
-npx playwright install --with-deps
-npx playwright test --version
+$env:E2E_BASE_URL="https://your-app.example"
+npm run test:smoke
 ```
 
-### Optional: Check dependency health
+## Common commands
+
+| Command | Purpose |
+|---|---|
+| `npm test` | Run the complete configured suite |
+| `npm run test:unit` | Run platform and utility unit tests |
+| `npm run test:integration` | Run integration tests |
+| `npm run test:smoke` | Run the smoke suite in Chromium |
+| `npm run test:chromium` | Run the full suite in Chromium |
+| `npm run test:headed` | Run in headed mode |
+| `npm run test:report` | Open the HTML report |
+| `npm run typecheck` | Check TypeScript types |
+| `npm run format:check` | Check formatting |
+| `npm run mcp:server` | Start the JSON-RPC/MCP server |
+
+To run one spec or category:
 
 ```bash
-npm outdated
-npm audit
+npx playwright test tests/wesendcv.spec.ts --project=chromium
+npx playwright test tests/security-tests/ --project=chromium
+npx playwright test tests/wesendcv.spec.ts --project=chromium --headed
 ```
 
----
+## Architecture
+
+```text
+AI agent / MCP client
+        |
+        v
+mcp-server.ts  ── test selection, failure analysis, reporting, guarded healing
+        |
+        v
+Playwright runner
+        |
+        +-- tests/*.spec.ts
+        +-- tests/pages/*Page.ts
+        +-- tests/data/*.ts
+        +-- tools/ai-reporter.ts
+        +-- tools/platform/*
+```
+
+- **Specs** orchestrate scenarios and assertions.
+- **Page Objects** own selectors and UI actions. Keep selectors out of spec files.
+- **Test data** belongs in `tests/data/`; configure URLs and tokens through environment variables.
+- **Fixtures** provide API contexts and failure tracing.
+- **Reporter** creates an AI-readable failure report.
+- **MCP server** lets compatible agents run tests and inspect results without bypassing framework guardrails.
+
+## Repository layout
+
+```text
+tests/
+  data/                   Centralized URLs, users, thresholds
+  pages/                  Page Objects and shared BasePage
+  fixtures.ts             Shared Playwright fixtures
+  wesendcv.spec.ts        Main smoke coverage
+  unit-tests/             Fast platform tests
+  integration-tests/      Multi-step workflows
+  accessibility/          Axe and keyboard checks
+  security-tests/         Authentication and XSS checks
+  validation-tests/       Broken links and invalid inputs/routes
+  network-resilience/     Offline/network scenarios
+  contract-tests/         API contract checks
+  ...
+tools/
+  ai-reporter.ts          Structured run output
+  platform/               Failure analysis, trace summaries, healing,
+                          test selection, metrics, and redaction
+mcp-server.ts             MCP/JSON-RPC entrypoint
+playwright.config.ts      Browser projects and reporters
+```
+
+## Writing tests
+
+Create a Page Object for UI selectors and actions:
+
+```typescript
+import { Page, expect } from '@playwright/test';
+import { BasePage } from './BasePage';
+
+export class LoginPage extends BasePage {
+  readonly url = '/login';
+
+  constructor(page: Page) {
+    super(page);
+  }
+
+  async open() {
+    await this.goto(this.url);
+  }
+
+  async submit(username: string) {
+    await this.safeFill(this.page.getByLabel('Username'), username, 'username');
+  }
+
+  async expectReady() {
+    await expect(this.page.getByRole('heading', { name: 'Login' })).toBeVisible();
+  }
+}
+```
+
+Keep the spec focused on behavior:
+
+```typescript
+import { test, expect } from '@playwright/test';
+import { LoginPage } from './pages/LoginPage';
+
+test('shows login form', async ({ page }) => {
+  const login = new LoginPage(page);
+  await login.open();
+  await login.expectReady();
+});
+```
+
+Prefer role, label, and `data-testid` locators. Use Playwright waits and assertions instead of fixed sleeps.
+
+## AI-agent workflow
+
+After a run, AI tools can consume:
+
+- `test-results/ai-report.json` — normalized test status and root-cause hints
+- `test-results/results.json` — standard Playwright JSON
+- `junit.xml` — CI/JUnit output
+- `playwright-report/` — visual HTML report
+- `test-results/<test>/trace.zip` — Playwright trace
+
+The MCP server exposes tools for listing specs, running tests, reading results, analyzing failures, generating test previews, selecting impacted tests, and proposing/validating guarded locator repairs.
+
+Start it locally:
+
+```bash
+npm run mcp:server
+```
+
+For AI-assisted debugging:
+
+1. Run the smallest failing spec.
+2. Read `test-results/ai-report.json`.
+3. Open the trace or screenshot when available.
+4. Update the locator in the relevant `tests/pages/*Page.ts`.
+5. Re-run the spec and the smallest related suite.
+
+Healing tools are intentionally POM-only. Applying locator changes may require approval according to risk, and validation should compare the rerun before and after.
+
+## Configuration
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `E2E_BASE_URL` | `https://wesendcv.com` | Base URL for browser and API fixtures |
+| `E2E_API_TOKEN` | unset | Optional bearer token for API requests |
+| `CI` | unset | Enables CI retries and worker limits |
+
+Authentication and sensitive values should remain in environment variables or CI secrets. The framework redacts secrets in AI report output and healing records.
+
+## Browser and device coverage
+
+The default configuration includes Chromium, Firefox, WebKit, Mobile Chrome (Pixel 5), and Mobile Safari (iPhone 12).
+
+```bash
+npx playwright test --project=chromium
+npx playwright test --project=firefox
+npx playwright test --project=webkit
+npx playwright test tests/mobile.spec.ts --project="Mobile Chrome"
+npx playwright test tests/mobile.spec.ts --project="Mobile Safari"
+```
+
+Install all browsers once with:
+
+```bash
+npx playwright install --with-deps
+```
 
 ## Docker
 
 ```bash
-# Build image
-docker build -t playwright-ai-agent-tests:local .
-
-# Run all tests
-docker run --rm -it playwright-ai-agent-tests:local
-
-# Persist reports locally
-docker run --rm -it \
-  -v ${PWD}/playwright-report:/app/playwright-report \
-  -v ${PWD}/test-results:/app/test-results \
-  playwright-ai-agent-tests:local
-
-# One-command compose run
-docker compose up --build
-docker compose down
+docker-compose up --build tests
 ```
 
----
+Override the target by updating `docker-compose.yml` or passing `E2E_BASE_URL` in the local environment. Docker output is written to mounted Playwright and test-result directories.
 
-## Running Tests
+## CI/CD
 
-```bash
-# Full suite (all browsers, all categories)
-npm test
+GitHub Actions runs formatting, unit, integration, smoke, security/audit, and secret-scanning checks. Unit and integration suites remain blocking; extended suites are clearly separated for faster feedback.
 
-# Specific file
-npx playwright test tests/wesendcv.spec.ts
+CI artifacts include HTML reports, JSON/JUnit results, traces, screenshots, and videos.
 
-# Specific category
-npx playwright test tests/performance-tests/
-npx playwright test tests/security-tests/
+## Test coverage areas
 
-# Headed mode for debugging
-npx playwright test tests/wesendcv.spec.ts --headed --project=chromium
-
-# Interactive debugger
-npx playwright test --debug
-
-# Show HTML report after run
-npm run test:report
-```
-
----
-
-## Mobile Testing
-
-```bash
-# Pixel 5 (Android Chrome)
-npx playwright test tests/mobile.spec.ts --project="Mobile Chrome"
-
-# iPhone 12 (Safari)
-npx playwright test tests/mobile.spec.ts --project="Mobile Safari"
-
-# Both mobile projects
-npx playwright test tests/mobile.spec.ts \
-  --project="Mobile Chrome" --project="Mobile Safari"
-```
-
----
-
-## MCP Server — AI Integration
-
-The `mcp-server.ts` implements the **Model Context Protocol** so that any compatible AI client (GitHub Copilot, Claude Desktop, custom LLM agents) can interact with your test suite programmatically.
-
-### Start the server
-
-```bash
-npm run mcp:server
-# or
-npx ts-node mcp-server.ts
-```
-
-### Available MCP tools
-
-| Tool | Description |
-|------|-------------|
-| `run_tests` | Execute Playwright tests with optional `filter`, `project`, and deterministic `shards` parallel execution |
-| `get_test_results` | Read `test-results/ai-report.json` — returns summary, per-test status, root-cause analysis, and artifact links |
-| `list_test_files` | List all `*.spec.ts` files in the `tests/` directory |
-| `analyze_failures` | Aggregate failed tests by normalized category with probable root cause and confidence |
-| `get_trace_summary` | Summarize trace/screenshot/video artifacts into actionable triage steps |
-| `generate_test_preview` | Generate natural-language test plan output with POM page-object/spec update contract |
-| `propose_locator_repair` | Produce locator repair proposal with confidence, risk, and blast-radius metadata |
-| `apply_locator_repair` | Apply approved locator proposal with POM guardrails and healing audit record |
-| `validate_healing_rerun` | Run impacted-spec validation reruns after healing proposals |
-| `get_dashboard_metrics` | Build historical QA dashboard metrics from archived AI reports |
-| `select_tests_for_changes` | Select impacted tests from changed files with explainable reasons |
-
-### AI QA platform capabilities
-
-Beyond running tests, the MCP layer exposes the repository’s failure-analysis workflow:
-
-- `analyze_failures` classifies failures such as locator, timeout, network, assertion, navigation, and environment issues.
-- `get_trace_summary` converts trace, screenshot, and video artifacts into concise, prioritized remediation guidance.
-- `propose_locator_repair` generates a low/medium/high risk fix plan that stays inside `tests/pages/*` files only.
-- `apply_locator_repair` enforces Page Object Model guardrails and records the healing decision.
-- `get_dashboard_metrics` surfaces historical trends from archived report JSON for dashboard and trend reporting.
-
-### VS Code integration
-
-Add to `.vscode/mcp.json`:
-
-```json
-{
-  "servers": {
-    "playwright-ai": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["ts-node", "mcp-server.ts"],
-      "cwd": "${workspaceFolder}"
-    }
-  }
-}
-```
-
-### Example MCP call (JSON-RPC)
-
-```json
-{
-  "jsonrpc": "2.0",
-  "id": 1,
-  "method": "tools/call",
-  "params": {
-    "name": "run_tests",
-    "arguments": {
-      "filter": "tests/unit-tests/",
-      "project": "chromium"
-    }
-  }
-}
-```
-
----
-
-## AI Reporter
-
-`tools/ai-reporter.ts` is a custom Playwright reporter that writes structured JSON to `test-results/ai-report.json` after every run.
-
-### Output schema
-
-```json
-{
-  "schemaVersion": "2.0.0",
-  "runId": "2026-09-27T09:00:00.000Z",
-  "generatedAt": "2026-09-27T09:00:01.000Z",
-  "summary": {
-    "passed": 42,
-    "failed": 2,
-    "skipped": 1,
-    "timedOut": 0,
-    "total": 45,
-    "durationMs": 123456
-  },
-  "tests": [
-    {
-      "title": "WeSendCV smoke checks > homepage loads",
-      "file": "/tests/wesendcv.spec.ts",
-      "project": "chromium",
-      "status": "passed",
-      "durationMs": 3210,
-      "retries": 0,
-      "error": null,
-      "aiHint": null
-    },
-    {
-      "title": "WeSendCV smoke checks > first job link has href",
-      "file": "/tests/wesendcv.spec.ts",
-      "project": "chromium",
-      "status": "failed",
-      "durationMs": 10001,
-      "retries": 1,
-      "category": "locator",
-      "rootCause": {
-        "probableCause": "Locator likely stale or too brittle for current DOM.",
-        "confidence": 0.88,
-        "category": "locator"
-      },
-      "artifacts": {
-        "trace": "test-results/.../trace.zip",
-        "screenshot": "test-results/.../test-failed-1.png"
-      },
-      "traceSummary": {
-        "available": true,
-        "summary": "Collected 2 artifact signal(s) for failure triage.",
-        "actionableSteps": [
-          "Inspect DOM at failure point in trace and update page-object locator to role/data-testid strategy.",
-          "Validate updated locator with targeted rerun on impacted spec only."
-        ],
-        "evidence": ["Trace: trace.zip", "Screenshot: test-failed-1.png"]
-      },
-      "error": {
-        "message": "locator('.tpg-post-link') not found",
-        "location": "tests/pages/WeSendCVPage.ts:72"
-      },
-      "aiHint": "Selector not found. Verify the locator in the Page Object matches current DOM. Use role or data-testid attributes for resilience."
-    }
-  ]
-}
-```
-
-The `aiHint`, `rootCause`, and `traceSummary` fields are generated automatically from the failure signal and artifact metadata; the platform also keeps a schema version for compatibility and historical analysis.
-
----
-
-## BasePage — Smart Base Class
-
-`tests/pages/BasePage.ts` is the abstract base all Page Objects extend. It provides:
-
-### Smart retry with exponential back-off
-
-```typescript
-// Retry up to 3 times, delays: 500ms → 1000ms → 2000ms
-await this.retryAction(
-  () => this.page.click('.submit-btn'),
-  'click submit',
-  3,
-  500
-);
-```
-
-### Performance measurement
-
-```typescript
-const response = await this.measureAction(
-  () => this.page.goto('https://wesendcv.com'),
-  'goto homepage'
-);
-// Logs { action: 'goto homepage', status: 'success', durationMs: 1234 }
-```
-
-### Structured action log for AI consumption
-
-```typescript
-// Every action is logged; retrieve at end of test:
-const summary = page.getAISummary();
-// { totalActions: 12, failures: 0, retries: 1, logs: [...] }
-```
-
-### Soft assertions (non-throwing)
-
-```typescript
-const visible = await this.softAssertVisible(locator, 'header');
-// Returns false on failure instead of throwing — test continues
-```
-
-### Stable element wait
-
-```typescript
-// Waits for visible AND positionally stable (no layout shifts)
-await this.waitForStable(locator);
-```
-
----
-
-## Custom Fixtures
-
-`tests/fixtures.ts` re-exports an extended `test` object. Import it in specs instead of `@playwright/test`:
-
-```typescript
-import { test, expect } from '../fixtures';
-
-test('API returns valid posts', async ({ apiContext }) => {
-  const resp = await apiContext.get('/wp-json/wp/v2/posts');
-  expect(resp.status()).toBe(200);
-});
-```
-
-### Available fixtures
-
-| Fixture | Type | Description |
-|---------|------|-------------|
-| `apiContext` | `APIRequestContext` | Pre-configured REST context with `E2E_BASE_URL` and optional `E2E_API_TOKEN` |
-| `page` | `Page` | Standard Playwright page with **auto-trace-on-failure** — trace.zip is attached to failing test results automatically |
-
----
-
-## Test Data & Configuration
-
-### `tests/data/testConfig.ts`
-
-Single source of truth — never hard-code magic numbers in test files:
-
-```typescript
-import { TEST_CONFIG } from './data/testConfig';
-
-// Use timeouts
-await page.goto(url, { timeout: TEST_CONFIG.timeouts.navigation });
-
-// Use performance thresholds
-expect(loadTime).toBeLessThan(TEST_CONFIG.performance.maxLoadTimeMs);
-
-// Use retry policy
-await retry(action, TEST_CONFIG.retry.networkActions, TEST_CONFIG.retry.baseDelayMs);
-```
-
-### Environment variables
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `E2E_BASE_URL` | `https://wesendcv.com` | Target base URL |
-| `E2E_API_TOKEN` | *(empty)* | ****** for API requests |
-| `E2E_USER` | `standard_user` | Test user username |
-| `E2E_PASS` | `secret_sauce` | Test user password |
-| `CI` | *(unset)* | Set by GitHub Actions; enables retries and adjusts workers |
-
----
-
-## Visual Diff Workflow
-
-This repository does not currently include a committed `demo/` visual-baseline site or the `tools/dev-server.js` / `tools/compare.js` helpers referenced in some legacy docs. The active project focuses on Playwright POM, AI reporter, and MCP tooling instead of pixel diff baselines.
-
-If you add a visual baseline workflow later, the standard pattern is:
-
-```bash
-# optional: serve a demo page locally
-node tools/dev-server.js
-
-# compare against a baseline image
-node tools/compare.js demo/baseline.png artifacts/current.png artifacts/diff.png --threshold=0.03
-```
-
----
-
-## CI/CD Pipeline
-
-`.github/workflows/ci.yml` runs on pushes to `main` / `develop`, PRs, and manual dispatch:
-
-| Job | What it does |
-|-----|-------------|
-| `critical-tests` | Unit + integration + smoke runs on Ubuntu |
-| `extended-tests` | Validation, mock, interop, performance, and security suites |
-| `security-audit` | `npm audit --audit-level=high` |
-| `secret-scan` | TruffleHog secret scan |
-| `quality-gate` | Final gate after blocking jobs pass |
-
-**Artifacts uploaded on every run:**
-- `playwright-report/` — HTML report (30-day retention)
-- `test-results/` — traces, screenshots, and JSON/JUnit output (30-day retention)
-- JUnit report published directly to PR checks via `EnricoMi/publish-unit-test-result-action`
-
----
-
-## Test Coverage
-
-| Category | Type | Location |
-|---|---|---|
-| Unit Tests | Positive | `tests/unit-tests/` |
-| Integration Tests | Positive | `tests/integration-tests/` |
-| Performance Tests | Positive | `tests/performance-tests/` |
-| Security Tests | Mixed | `tests/security-tests/` |
-| Validation Tests | Mixed | `tests/validation-tests/` |
-| Mock Tests | Mixed | `tests/mock-tests/` |
-| Interop Tests | Positive | `tests/interop-tests/` |
-| Accessibility Tests | Positive | `tests/accessibility/` |
-| Resilience Tests | Mixed | `tests/resilience/` |
-| Network Resilience | Negative | `tests/network-resilience/` |
-| i18n Tests | Positive | `tests/i18n-tests/` |
-| E2E Tests | Positive | `tests/e2e/` |
-| Chaos Tests | Negative | `tests/chaos-tests/` |
-| Contract Tests | Positive | `tests/contract-tests/` |
-
----
-
-## Types of Tests
-
-<details>
-<summary>Click to expand all 14 categories</summary>
-
-### 1. Unit Tests (`tests/unit-tests/`)
-Individual functions and API utility parsing in isolation.
-
-### 2. Integration Tests (`tests/integration-tests/`)
-Multi-step navigation and complete user journeys across components.
-
-### 3. Performance Tests (`tests/performance-tests/`)
-Page load time, First Contentful Paint (FCP), Time to First Byte (TTFB), resource counts.
-
-### 4. Security Tests (`tests/security-tests/`)
-HTTPS enforcement, XSS prevention, auth validation, secure header checks.
-
-### 5. Validation Tests (`tests/validation-tests/`)
-Input formats, broken links, invalid route handling, data integrity.
-
-### 6. Mock Tests (`tests/mock-tests/`)
-API failure simulation, slow network stubs, unavailable service handling.
-
-### 7. Interop Tests (`tests/interop-tests/`)
-Cross-browser CSS/JS feature compatibility, touch events, viewport preferences.
-
-### 8. Accessibility Tests (`tests/accessibility/`)
-Axe WCAG 2.1 AA scans, keyboard-only navigation, focus order, ARIA attributes.
-
-### 9. Resilience Tests (`tests/resilience/`)
-Asset loading failures, partial outages, degraded-state UI validation.
-
-### 10. Network Resilience Tests (`tests/network-resilience/`)
-Offline simulation, connection drops, slow 3G emulation.
-
-### 11. i18n Tests (`tests/i18n-tests/`)
-Language attributes, RTL layouts, pluralization edge cases.
-
-### 12. E2E Tests (`tests/e2e/`)
-Critical-path user flows using Page Objects — signup, search, upload.
-
-### 13. Chaos Tests (`tests/chaos-tests/`)
-Concurrent user simulation, race conditions, random delay injection.
-
-### 14. Contract Tests (`tests/contract-tests/`)
-Pact consumer-driven contract validation ensuring frontend/backend API compatibility.
-
-</details>
-
----
-
-## Architecture: Page Object Model
-
-```
-tests/pages/
-├── BasePage.ts          ← Abstract base (retry, logging, timing, soft assert)
-└── WeSendCVPage.ts      ← Concrete POM (extends BasePage)
-
-tests/data/
-├── urls.ts              ← URL constants
-├── users.ts             ← User credentials (env-var backed)
-└── testConfig.ts        ← Timeouts, thresholds, retry policy
-```
-
-### Creating a new Page Object
-
-```typescript
-import { BasePage } from './BasePage';
-import { URLS } from '../data/urls';
-
-export class MyPage extends BasePage {
-  readonly url = URLS.myPage.base;
-
-  get searchBox() {
-    return this.page.locator('[data-testid="search"]');
-  }
-
-  async search(query: string): Promise<void> {
-    await this.safeFill(this.searchBox, query, 'search box');
-    await this.safeClick(this.page.locator('[type="submit"]'), 'search submit');
-  }
-}
-```
-
----
-
-## AI Agents — Chatmodes & Skills
-
-### Chatmode prompts (`.github/chatmodes/`)
-
-Pre-written prompt files that give LLM agents rich context about this framework and the AI QA workflow:
-
-| File | Purpose |
-|------|---------|
-| `🎭 healer.chatmode.md` | Auto-heal failing tests by suggesting selector, timeout, or trace-driven fixes |
-| `🎭 planner.chatmode.md` | Plan new test categories or page objects from a feature description |
-| `🎭 generator.chatmode.md` | Generate new Playwright specs and page-object scaffolds aligned to repo conventions |
-| `🎭 api-testing.chatmode.md` | Focused API testing and contract coverage playbooks |
-| `🔍 code-reviewer.chatmode.md` | Review changes for POM compliance, resilience, and security correctness |
-
-### GitHub Copilot Skills (`.github/skills/`)
-
-| Skill | Trigger | Effect |
-|-------|---------|--------|
-| `playwright-test-debugging` | Debugging failing tests | Loads systematic Playwright debugging guide |
-| `code-review` | Reviewing test code | Enforces POM compliance, Playwright best practices, security rules |
-
-### Claude CLI references (`.claude/skills/playwright-cli/`)
-
-The repo also ships Playwright CLI training docs for session management, storage state, tracing, video capture, and code execution — useful when pairing the MCP server with agentic browser workflows.
-
----
-
-## Best Practices
-
-- **Never put raw selectors in test specs** — only in Page Object files
-- **Use `BasePage` helpers** (`safeClick`, `safeFill`, `retryAction`) instead of raw Playwright calls in page objects
-- **Import from `tests/fixtures.ts`** instead of `@playwright/test` when you need `apiContext` or auto-tracing
-- **Use `TEST_CONFIG` constants** — never hard-code timeouts or thresholds
-- **Prefer role/data-testid locators** over CSS class selectors for resilience
-- **Avoid `page.waitForTimeout`** — use `locator.waitFor()`, `expect(locator).toBeVisible()`, or `page.waitForResponse()`
-- **Keep POM logic in page objects** and keep specs focused on scenario flow and assertions
-
----
-
-## How to Extend
-
-### Add a new page object
-
-1. Create `tests/pages/MyPage.ts` extending `BasePage`
-2. Add URL to `tests/data/urls.ts`
-3. Write tests in the appropriate category folder
-4. Import your page object and use centralized data
-
-### Add a new test category
-
-1. Create `tests/<category>/` folder
-2. Add spec files following the existing naming convention
-3. Add the folder to the CI workflow step list in `.github/workflows/ci.yml`
-
-### Add a new MCP tool
-
-1. Add a tool definition to the `TOOLS` array in `mcp-server.ts`
-2. Implement the handler in the platform layer or the server dispatch path
-3. Add the corresponding validation test under `tests/unit-tests/`
-4. Dispatch it in the `dispatch()` function and document it in this README
-
----
-
-## Common Commands
-
-```bash
-# Run all tests
-npm test
-
-# Run specific category
-npx playwright test tests/security-tests/
-
-# Run with specific browser
-npx playwright test --project=chromium
-
-# Start AI/MCP server
-npm run mcp:server
-
-# Lint all TypeScript
-npm run lint
-
-# Format all files
-npm run format
-
-# Show HTML report
-npm run test:report
-
-# Open interactive trace viewer
-npx playwright show-trace test-results/<test>/trace.zip
-
-# Show Playwright codegen
-npx playwright codegen https://wesendcv.com
-```
-
----
+- End-to-end smoke flows
+- API operations and contract checks
+- Authentication and XSS checks
+- Accessibility and keyboard behavior
+- Broken links, invalid routes, and input validation
+- Mobile and internationalization behavior
+- Network/offline resilience
+- Performance load-time checks
+- Interoperability and mock scenarios
+- Chaos/concurrency and resource failure checks
 
 ## Troubleshooting
 
-| Symptom | Solution |
-|---------|----------|
-| `ECONNREFUSED` in API tests | Check `E2E_BASE_URL` env var and network connectivity |
-| Selector not found | Open the trace (`npx playwright show-trace`), inspect DOM, update the locator in the Page Object |
-| Test times out | Increase `TEST_CONFIG.timeouts.navigation` or check for slow network conditions |
-| Visual diff fails | Delete stale baseline and re-run to regenerate; commit after visual approval |
-| MCP server not responding | Ensure `ts-node` is available: `npm install -g ts-node` |
-| Playwright browsers missing | Run `npx playwright install --with-deps` |
-| Windows path issues | Use PowerShell and run `npm ci` (not `npm install`) for deterministic installs |
+| Problem | Fix |
+|---|---|
+| Browsers missing | `npx playwright install --with-deps` |
+| Locator changed | Inspect `test-results/error-context.md` or the trace, then update the POM |
+| Target unavailable | Set `E2E_BASE_URL` and verify network/DNS access |
+| MCP server unavailable | Run `npm ci && npm run mcp:server` |
+| Formatting fails | `npm run format` |
+| Type failures | `npm run typecheck` |
 
----
+Debug a single spec:
 
-## License & Attribution
+```bash
+npx playwright test tests/wesendcv.spec.ts --project=chromium --headed --debug
+npx playwright show-trace test-results/<test-name>/trace.zip
+npx playwright show-report
+```
 
-**MIT License** — see [LICENSE](LICENSE) for details.
+## License
 
-Built and maintained by **Padmaraj Nidagundi**  
-Senior QA Automation Engineer  
-[GitHub](https://github.com/padmarajnidagundi) · [LinkedIn](https://linkedin.com/in/padmarajnidagundi)
-
-If this framework saved you time, consider ⭐ starring the repo and sharing it with your QA team!
-
----
-
-> *Questions or feedback? Open an issue or start a discussion — contributions are welcome!*
+MIT. See [LICENSE](LICENSE).

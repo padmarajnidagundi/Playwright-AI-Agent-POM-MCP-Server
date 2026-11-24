@@ -30,8 +30,9 @@ export class WeSendCVPage extends BasePage {
   /**
    * Navigate to the homepage
    */
-  async gotoHomepage() {
-    const resp = await this.page.goto(this.url, {
+  async gotoHomepage(path = '') {
+    const target = path ? `${this.url}${path}` : this.url;
+    const resp = await this.page.goto(target, {
       waitUntil: 'domcontentloaded',
       timeout: 60000,
     });

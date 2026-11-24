@@ -1,13 +1,20 @@
 import { FailureCategory, RootCauseAssessment } from './schemas';
 
-export function normalizeFailureCategory(message: string, status: string): FailureCategory {
+export function normalizeFailureCategory(
+  message: string,
+  status: string
+): FailureCategory {
   const msg = message.toLowerCase();
   if (status === 'timedOut' || /timeout|timed out/.test(msg)) return 'timeout';
-  if (/locator|selector|not found|strict mode violation/.test(msg)) return 'locator';
-  if (/net::|econnrefused|enotfound|dns|connection/i.test(message)) return 'network';
+  if (/locator|selector|not found|strict mode violation/.test(msg))
+    return 'locator';
+  if (/net::|econnrefused|enotfound|dns|connection/i.test(message))
+    return 'network';
   if (/expect|assert|received|toequal|tobe/i.test(message)) return 'assertion';
-  if (/navigation|tohaveurl|waitforurl|redirect/i.test(message)) return 'navigation';
-  if (/browser has been closed|context closed|target page/.test(msg)) return 'environment';
+  if (/navigation|tohaveurl|waitforurl|redirect/i.test(message))
+    return 'navigation';
+  if (/browser has been closed|context closed|target page/.test(msg))
+    return 'environment';
   return 'unknown';
 }
 
@@ -49,7 +56,10 @@ function probableCauseFor(category: FailureCategory): string {
   }
 }
 
-export function analyzeFailure(message: string, status: string): RootCauseAssessment {
+export function analyzeFailure(
+  message: string,
+  status: string
+): RootCauseAssessment {
   const category = normalizeFailureCategory(message, status);
   return {
     category,

@@ -2,13 +2,13 @@
 # Copilot instructions — Playwright AI Agent POM MCP Server
 
 Purpose
-- Help an AI coding assistant be immediately productive in this repo: tests are Playwright-based, follow a Page Object Model, include visual-diff tooling, and provide optional MCP/chatmode integrations for assisted debugging.
+- Help AI coding assistants and QA engineers work productively in this repo. Tests use Playwright, Page Object Model, centralized data, structured AI reports, and an MCP server.
 
 Quick architecture summary
 - Tests live under `tests/` and are organized by category (unit-, integration-, performance-, security-, validation-, mock-, interop-). See the `tests/` tree in `README.md`.
 - Page Objects are in `tests/pages/` (example: `WeSendCVPage.ts`) and always import centralized data from `tests/data/` (example: `urls.ts`).
 - Playwright configuration is `playwright.config.ts`: multi-project (chromium, firefox, webkit), reporters write `html`, `json`, `junit`, and `list`. Artifacts and results are stored under `playwright-report/` and `test-results/`.
-- A small demo site and baseline images live in `demo/` and are served by `tools/dev-server.js` for visual tests using `tools/compare.js` (pixelmatch).
+- Visual baseline tooling is not part of the current repository. Do not reference missing `demo/`, `tools/dev-server.js`, or `tools/compare.js` files.
 - Chatmode / MCP hints are present (examples: `test.chatmode.md`, `.github/chatmodes/`, and `.vscode/mcp.json`) to allow programmatic assistant interaction when an MCP server is available.
 
 Essential developer workflows (commands)
@@ -30,27 +30,18 @@ Essential developer workflows (commands)
   npm run test:report
   npx playwright show-report
   ```
-- Start the local demo server for visual tests:
-  ```powershell
-  node tools/dev-server.js
-  # open http://127.0.0.1:3000
-  ```
-- Run perceptual diff tool (creates baseline if missing):
-  ```powershell
-  node tools/compare.js demo/baseline.png artifacts/current.png artifacts/diff.png --threshold=0.03
-  ```
 
 Project-specific patterns and conventions (do not deviate)
 - Page Object Model (POM): create `tests/pages/<Name>Page.ts` with class methods for actions and assertions. Tests instantiate page objects and assert behaviors (see `tests/wesendcv.spec.ts`).
 - Centralized data: keep URLs, users, and test constants in `tests/data/` (example: `urls.ts`). Tests and page objects import from these modules rather than hard-coding values.
 - Test file placement: use the category folders under `tests/` — CI and reporters assume this layout.
 - Reporters & artifacts: `playwright.config.ts` writes `json` to `test-results/results.json` and `junit.xml` at repo root; artifacts (screenshots/traces/videos) are uploaded by CI when failures occur. Keep artifact-reading tools pointed at these paths.
-- Visual diffs: use `tools/compare.js` to produce/validate baselines. If a baseline is approved, commit `demo/baseline.png` to the repo.
+- Keep external configuration in `tests/data/` or environment variables. Do not hard-code environment-specific URLs in specs.
 - Avoid sleep-based waits: prefer Playwright waits (`waitForSelector`, `expect(locator).toBeVisible()`, `page.waitForResponse`) as the project expects stable, idempotent tests.
 
 Integration points and external deps
 - Playwright: `@playwright/test` (see `package.json`). CLI commands use `npx playwright`.
-- Pixelmatch-based comparator: `tools/compare.js` (relies on `pixelmatch`) — visual baseline flow is part of tests (see `README.md`).
+- Optional visual tooling is not currently included.
 - MCP / chatmode: the repo provides chatmode prompts and a `.vscode/mcp.json` entrypoint. To enable programmatic AI-assisted debugging, try `npx playwright run-test-mcp-server` (may depend on Playwright version) or add an npm script to expose the command.
 
 When making code changes, follow these micro-rules
@@ -62,8 +53,6 @@ When making code changes, follow these micro-rules
 Files to inspect for concrete examples
 - `tests/pages/WeSendCVPage.ts` — canonical POM example
 - `tests/wesendcv.spec.ts` — smoke and negative-tests using POM + data
-- `tests/vibe.spec.ts` — animation timing + visual diff example
-- `tools/compare.js` and `tools/dev-server.js` — visual diff and demo server
 - `playwright.config.ts` — timeouts, projects, reporters, and `use` settings
 - `package.json` — available npm scripts (`test`, `test:headed`, `test:report`)
 
