@@ -60,7 +60,7 @@ jobs:
         run: npx playwright test tests/integration-tests/
 
       - name: Run smoke tests
-        run: npx playwright test tests/wesendcv.spec.ts tests/vibe.spec.ts
+        run: npm run test:smoke
 
       - name: Verify report artifacts
         run: |

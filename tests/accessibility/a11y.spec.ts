@@ -4,7 +4,7 @@ import { WeSendCVPage } from '../pages/WeSendCVPage';
 test.describe('Accessibility Tests', () => {
   test('should not have detectable a11y violations', async ({ page }) => {
     const wesendcvPage = new WeSendCVPage(page);
-    await wesendcvPage.navigate();
+    await wesendcvPage.gotoHomepage();
 
     // Check for basic accessibility properties
     await expect(page).toHaveTitle(/WeSendCV/i);

@@ -23,7 +23,10 @@ export const test = base.extend<CustomFixtures>({
     if (process.env.E2E_API_TOKEN) {
       headers['Authorization'] = 'Bearer ' + process.env.E2E_API_TOKEN;
     }
-    const ctx = await request.newContext({ baseURL, extraHTTPHeaders: headers });
+    const ctx = await request.newContext({
+      baseURL,
+      extraHTTPHeaders: headers,
+    });
     await use(ctx);
     await ctx.dispose();
   },

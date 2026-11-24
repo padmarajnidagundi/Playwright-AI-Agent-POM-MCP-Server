@@ -3,7 +3,9 @@ import { test, expect } from '@playwright/test';
 // Example: Network resilience test - verifies app behavior when network is offline
 
 test.describe('Network Resilience', () => {
-  test('should display offline message when network is disconnected', async ({ page }) => {
+  test('should display offline message when network is disconnected', async ({
+    page,
+  }) => {
     await page.goto('https://example.com'); // Replace with actual URL or import from tests/data/urls.ts
     // Simulate offline mode
     await page.context().setOffline(true);

@@ -38,25 +38,39 @@ export function selectTestsForChanges(args: {
 
       if (
         relativeSpec.includes('unit-tests') &&
-        (file.includes('/tools/') || file.startsWith('tools/') || file.endsWith('mcp-server.ts'))
+        (file.includes('/tools/') ||
+          file.startsWith('tools/') ||
+          file.endsWith('mcp-server.ts'))
       ) {
         selected.add(relativeSpec);
-        reasons[relativeSpec] = [...(reasons[relativeSpec] ?? []), `unit scope for changed tool file: ${file}`];
+        reasons[relativeSpec] = [
+          ...(reasons[relativeSpec] ?? []),
+          `unit scope for changed tool file: ${file}`,
+        ];
       }
 
       if (pageHint && content.includes(base.replace('.ts', '').toLowerCase())) {
         selected.add(relativeSpec);
-        reasons[relativeSpec] = [...(reasons[relativeSpec] ?? []), `references changed page object: ${base}`];
+        reasons[relativeSpec] = [
+          ...(reasons[relativeSpec] ?? []),
+          `references changed page object: ${base}`,
+        ];
       }
 
       if (dataHint && content.includes('/data/')) {
         selected.add(relativeSpec);
-        reasons[relativeSpec] = [...(reasons[relativeSpec] ?? []), `imports shared test data: ${base}`];
+        reasons[relativeSpec] = [
+          ...(reasons[relativeSpec] ?? []),
+          `imports shared test data: ${base}`,
+        ];
       }
 
       if (relativeSpec === file) {
         selected.add(relativeSpec);
-        reasons[relativeSpec] = [...(reasons[relativeSpec] ?? []), 'changed file is a spec itself'];
+        reasons[relativeSpec] = [
+          ...(reasons[relativeSpec] ?? []),
+          'changed file is a spec itself',
+        ];
       }
     }
   }

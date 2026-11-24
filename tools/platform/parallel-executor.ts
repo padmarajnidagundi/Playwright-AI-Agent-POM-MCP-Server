@@ -10,7 +10,7 @@ export async function runInParallel<T>(
 ): Promise<ParallelResult<T>[]> {
   const sortedShards = [...shards].sort((a, b) => a.localeCompare(b));
   const results = await Promise.all(
-    sortedShards.map(async shard => {
+    sortedShards.map(async (shard) => {
       try {
         const output = await worker(shard);
         return { shard, success: true, output } as ParallelResult<T>;

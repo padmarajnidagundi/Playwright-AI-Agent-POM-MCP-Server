@@ -24,9 +24,13 @@ test.describe('Performance Tests - Load Time & Metrics', () => {
   test('should measure First Contentful Paint (FCP)', async () => {
     await wesendcvPage.gotoHomepage();
     const metrics = await wesendcvPage.page.evaluate(() => {
-      const navTiming = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+      const navTiming = performance.getEntriesByType(
+        'navigation'
+      )[0] as PerformanceNavigationTiming;
       return {
-        domContentLoaded: navTiming.domContentLoadedEventEnd - navTiming.domContentLoadedEventStart,
+        domContentLoaded:
+          navTiming.domContentLoadedEventEnd -
+          navTiming.domContentLoadedEventStart,
         loadComplete: navTiming.loadEventEnd - navTiming.loadEventStart,
       };
     });
@@ -50,14 +54,18 @@ test.describe('Performance Tests - Load Time & Metrics', () => {
       await route.continue().catch(() => {});
     });
     try {
-      await wesendcvPage.page.goto(wesendcvPage.url, {
-        waitUntil: 'domcontentloaded',
-        timeout: 3000,
-      }).catch(() => {});
+      await wesendcvPage.page
+        .goto(wesendcvPage.url, {
+          waitUntil: 'domcontentloaded',
+          timeout: 3000,
+        })
+        .catch(() => {});
     } catch (error) {
       expect(error).toBeDefined();
     }
-    const bodyExists = await wesendcvPage.bodyElement.isVisible().catch(() => false);
+    const bodyExists = await wesendcvPage.bodyElement
+      .isVisible()
+      .catch(() => false);
     expect(bodyExists || true).toBeTruthy();
   });
 });

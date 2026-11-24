@@ -76,13 +76,19 @@ test('applies low-risk healing and persists record', async () => {
   });
 
   expect(apply.applied).toBeTruthy();
-  expect(fs.readFileSync(pageFile, 'utf8')).toContain('[data-testid="primary-button"]');
+  expect(fs.readFileSync(pageFile, 'utf8')).toContain(
+    '[data-testid="primary-button"]'
+  );
 
   const record = persistHealingRecord({
     outputDir: path.join(tmpRoot, 'test-results', 'healing'),
     proposal,
     approval: { required: false },
-    validation: { runCommand: 'npx playwright test tests/wesendcv.spec.ts', passed: true, output: 'ok' },
+    validation: {
+      runCommand: 'npx playwright test tests/wesendcv.spec.ts',
+      passed: true,
+      output: 'ok',
+    },
   });
   expect(record.schemaVersion).toBe('1.0.0');
 });
@@ -128,7 +134,9 @@ test('selects impacted specs from changed files', async () => {
     changedFiles: ['tools/platform/failure-analysis.ts'],
   });
 
-  expect(selection.selectedSpecs.some(spec => spec.includes('unit-tests'))).toBeTruthy();
+  expect(
+    selection.selectedSpecs.some((spec) => spec.includes('unit-tests'))
+  ).toBeTruthy();
 });
 
 test('MCP contract exposes new tool list', async () => {
@@ -138,7 +146,9 @@ test('MCP contract exposes new tool list', async () => {
     method: 'tools/list',
   });
 
-  const tools = ((response.result as { tools: Array<{ name: string }> }).tools ?? []).map(t => t.name);
+  const tools = (
+    (response.result as { tools: Array<{ name: string }> }).tools ?? []
+  ).map((t) => t.name);
   expect(tools).toContain('analyze_failures');
   expect(tools).toContain('generate_test_preview');
   expect(tools).toContain('select_tests_for_changes');

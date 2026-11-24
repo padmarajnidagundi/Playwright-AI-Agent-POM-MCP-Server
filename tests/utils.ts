@@ -34,7 +34,7 @@ export async function retry<T>(
     } catch (err) {
       lastError = err as Error;
       if (attempt < maxAttempts) {
-        await new Promise(resolve => setTimeout(resolve, delayMs * attempt));
+        await new Promise((resolve) => setTimeout(resolve, delayMs * attempt));
       }
     }
   }
@@ -71,9 +71,13 @@ export function aiLog(
  * Falls back silently if the timeout is exceeded (avoids flaky failures on
  * pages that keep polling the network).
  */
-export async function waitForNetworkIdle(page: Page, timeoutMs = 5_000): Promise<void> {
+export async function waitForNetworkIdle(
+  page: Page,
+  timeoutMs = 5_000
+): Promise<void> {
   await page
     .waitForLoadState('networkidle', { timeout: timeoutMs })
-    .catch(() => {/* non-fatal */});
+    .catch(() => {
+      /* non-fatal */
+    });
 }
-

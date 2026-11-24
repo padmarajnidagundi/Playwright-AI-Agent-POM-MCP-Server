@@ -74,7 +74,9 @@ function toErrorInfo(error: TestError | undefined): {
   };
 }
 
-function buildAIHint(entry: Pick<AITestEntry, 'status' | 'error' | 'category'>): string | null {
+function buildAIHint(
+  entry: Pick<AITestEntry, 'status' | 'error' | 'category'>
+): string | null {
   if (entry.status === 'passed' || entry.status === 'skipped') return null;
 
   const msg = entry.error?.message ?? '';
@@ -116,10 +118,14 @@ function collectArtifacts(result: TestResult): {
     const filePath = attachment.path;
     if (!filePath) continue;
 
-    if (name.includes('trace') || filePath.endsWith('.zip')) artifacts.trace = filePath;
-    else if (name.includes('screenshot') || filePath.endsWith('.png')) artifacts.screenshot = filePath;
-    else if (name.includes('video') || filePath.endsWith('.webm')) artifacts.video = filePath;
-    else if (name.includes('log') || filePath.endsWith('.log')) artifacts.log = filePath;
+    if (name.includes('trace') || filePath.endsWith('.zip'))
+      artifacts.trace = filePath;
+    else if (name.includes('screenshot') || filePath.endsWith('.png'))
+      artifacts.screenshot = filePath;
+    else if (name.includes('video') || filePath.endsWith('.webm'))
+      artifacts.video = filePath;
+    else if (name.includes('log') || filePath.endsWith('.log'))
+      artifacts.log = filePath;
   }
 
   return artifacts;
@@ -158,9 +164,13 @@ class AIReporter implements Reporter {
       retries: result.retry,
       error: errorInfo,
       category: assessment.category,
-      rootCause: result.status === 'passed' || result.status === 'skipped'
-        ? null
-        : { probableCause: assessment.probableCause, confidence: assessment.confidence },
+      rootCause:
+        result.status === 'passed' || result.status === 'skipped'
+          ? null
+          : {
+              probableCause: assessment.probableCause,
+              confidence: assessment.confidence,
+            },
       artifacts,
       traceSummary,
       aiHint: null,
@@ -172,10 +182,10 @@ class AIReporter implements Reporter {
 
   onEnd(): void {
     const summary = {
-      passed: this.tests.filter(t => t.status === 'passed').length,
-      failed: this.tests.filter(t => t.status === 'failed').length,
-      skipped: this.tests.filter(t => t.status === 'skipped').length,
-      timedOut: this.tests.filter(t => t.status === 'timedOut').length,
+      passed: this.tests.filter((t) => t.status === 'passed').length,
+      failed: this.tests.filter((t) => t.status === 'failed').length,
+      skipped: this.tests.filter((t) => t.status === 'skipped').length,
+      timedOut: this.tests.filter((t) => t.status === 'timedOut').length,
       total: this.tests.length,
       durationMs: Date.now() - this.startTime,
     };
@@ -192,7 +202,11 @@ class AIReporter implements Reporter {
       const dir = path.dirname(this.outputPath);
       if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
       archiveReportIfExists(this.outputPath, this.historyPath);
-      fs.writeFileSync(this.outputPath, JSON.stringify(report, null, 2), 'utf8');
+      fs.writeFileSync(
+        this.outputPath,
+        JSON.stringify(report, null, 2),
+        'utf8'
+      );
     } catch {
       // Non-fatal: reporter failure should never block CI
     }

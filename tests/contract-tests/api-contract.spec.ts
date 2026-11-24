@@ -1,120 +1,64 @@
 import { test, expect } from '@playwright/test';
-import { Pact } from '@pact-foundation/pact';
+import { PactV4 } from '@pact-foundation/pact';
 import path from 'path';
 
 test('API contract test for user data endpoint', async ({ page }) => {
-  const pact = new Pact({
+  const pact = new PactV4({
     consumer: 'WeSendCV Frontend',
     provider: 'WeSendCV API',
     port: 1234,
-    log: path.resolve(process.cwd(), 'logs', 'pact.log'),
     dir: path.resolve(process.cwd(), 'pacts'),
     logLevel: 'warn',
   });
 
-  await pact.setup();
-
-  // Define the expected interaction
-  await pact.addInteraction({
-    state: 'user exists',
-    uponReceiving: 'a request for user data',
-    withRequest: {
-      method: 'GET',
-      path: '/api/user/123',
-    },
-    willRespondWith: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: {
+  await pact
+    .addInteraction()
+    .given('user exists')
+    .uponReceiving('a request for user data')
+    .withRequest('GET', '/api/user/123')
+    .willRespondWith(200, (builder) =>
+      builder.headers({ 'Content-Type': 'application/json' }).jsonBody({
         id: 123,
         name: 'John Doe',
         email: 'john@example.com',
-      },
-    },
-  });
-
-  // Make the request using Playwright's API testing
-  const response = await page.request.get(
-    `${pact.mockService.baseUrl}/api/user/123`
-  );
-  expect(response.status()).toBe(200);
-  const data = await response.json();
-  expect(data).toEqual({
-    id: 123,
-    name: 'John Doe',
-    email: 'john@example.com',
-  });
-
-  // Verify the pact
-  await pact.verify();
-
-  await pact.finalize();
-
+      })
+    )
+    .executeTest(async (mockServer) => {
+      const response = await page.request.get(`${mockServer.url}/api/user/123`);
+      expect(response.status()).toBe(200);
+      expect(await response.json()).toEqual({
+        id: 123,
+        name: 'John Doe',
+        email: 'john@example.com',
+      });
+    });
 });
 
 test('API contract test for user list endpoint', async ({ page }) => {
-  const pact = new Pact({
+  const pact = new PactV4({
     consumer: 'WeSendCV Frontend',
     provider: 'WeSendCV API',
     port: 1235,
-    log: path.resolve(process.cwd(), 'logs', 'pact-user-list.log'),
     dir: path.resolve(process.cwd(), 'pacts'),
     logLevel: 'warn',
   });
 
-  await pact.setup();
-
-  // Define the expected interaction for user list
-  await pact.addInteraction({
-    state: 'multiple users exist',
-    uponReceiving: 'a request for user list',
-    withRequest: {
-      method: 'GET',
-      path: '/api/users',
-    },
-    willRespondWith: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: [
-        {
-          id: 123,
-          name: 'John Doe',
-          email: 'john@example.com',
-        },
-        {
-          id: 456,
-          name: 'Jane Smith',
-          email: 'jane@example.com',
-        },
-      ],
-    },
-  });
-
-  // Make the request using Playwright's API testing
-  const response = await page.request.get(
-    `${pact.mockService.baseUrl}/api/users`
-  );
-  expect(response.status()).toBe(200);
-  const data = await response.json();
-  expect(Array.isArray(data)).toBe(true);
-  expect(data.length).toBeGreaterThanOrEqual(2);
-  expect(data[0]).toEqual({
-    id: 123,
-    name: 'John Doe',
-    email: 'john@example.com',
-  });
-  expect(data[1]).toEqual({
-    id: 456,
-    name: 'Jane Smith',
-    email: 'jane@example.com',
-  });
-
-  // Verify the pact
-  await pact.verify();
-
-  await pact.finalize();
+  await pact
+    .addInteraction()
+    .given('multiple users exist')
+    .uponReceiving('a request for user list')
+    .withRequest('GET', '/api/users')
+    .willRespondWith(200, (builder) =>
+      builder.headers({ 'Content-Type': 'application/json' }).jsonBody([
+        { id: 123, name: 'John Doe', email: 'john@example.com' },
+        { id: 456, name: 'Jane Smith', email: 'jane@example.com' },
+      ])
+    )
+    .executeTest(async (mockServer) => {
+      const response = await page.request.get(`${mockServer.url}/api/users`);
+      expect(response.status()).toBe(200);
+      const data = await response.json();
+      expect(Array.isArray(data)).toBe(true);
+      expect(data.length).toBeGreaterThanOrEqual(2);
+    });
 });
