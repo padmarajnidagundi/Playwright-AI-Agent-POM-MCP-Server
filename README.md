@@ -5,7 +5,7 @@
 
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/padmarajnidagundi/Playwright-AI-Agent-POM-MCP-Server/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
-[![Playwright](https://img.shields.io/badge/Playwright-1.65.0-45ba4b)](https://playwright.dev)
+[![Playwright](https://img.shields.io/badge/Playwright-1.65.1-45ba4b)](https://playwright.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178c6)](https://www.typescriptlang.org)
 [![Node](https://img.shields.io/badge/Node.js-20+-green)](https://nodejs.org)
 [![Tests](https://img.shields.io/badge/tests-14%20categories-success)](tests/)
@@ -207,13 +207,11 @@ Playwright-AI-Agent-POM-MCP-Server/
 │   ├── skills/                    # GitHub Copilot Skills
 │   └── workflows/
 │       ├── ci.yml                 # GitHub Actions pipeline
-│       └── code-quality.yml       # ESLint + Prettier quality gate
+│       └── code-quality.yml       # Prettier quality gate
 ├── .claude/
 │   └── skills/playwright-cli/     # Playwright CLI agent references and guides
 ├── LICENSE                        # MIT license
 ├── README.md                      # Project documentation
-├── .eslintrc.js                   # ESLint config
-├── eslint.config.js               # Flat ESLint config
 ├── tsconfig.json                  # TypeScript config
 ├── Dockerfile                     # Container image
 ├── docker-compose.yml             # Compose entrypoint
@@ -249,12 +247,11 @@ Playwright-AI-Agent-POM-MCP-Server/
 |---|---|---|---|
 | Language | TypeScript | 5.0+ | All test files, config, and tooling |
 | Runtime | Node.js | 20+ | Recommended for warning-free install |
-| Testing Framework | Playwright | 1.65.0 | Browser automation and assertions |
+| Testing Framework | Playwright | 1.65.1 | Browser automation and assertions |
 | Package Manager | npm | 10+ | Dependency management |
-| `@playwright/test` | Playwright Test | 1.65.0 | Test runner, fixtures, reporters |
+| `@playwright/test` | Playwright Test | 1.65.1 | Test runner, fixtures, reporters |
 | `@pact-foundation/pact` | Pact | 17.0.1 | Consumer-driven contract testing |
 | `axe-playwright` | Axe | 2.2.2 | Accessibility audits |
-| `@typescript-eslint/*` | ESLint | 8+ | TypeScript linting |
 | `prettier` | Prettier | 3.9+ | Code formatting |
 | CI/CD | GitHub Actions | — | Cross-platform pipeline (Ubuntu + Windows) |
 | Containerisation | Docker | — | Reproducible test environments |
@@ -627,7 +624,6 @@ node tools/compare.js demo/baseline.png artifacts/current.png artifacts/diff.png
 
 | Job | What it does |
 |-----|-------------|
-| `lint` | ESLint + Prettier checks |
 | `critical-tests` | Unit + integration + smoke runs on Ubuntu |
 | `extended-tests` | Validation, mock, interop, performance, and security suites |
 | `security-audit` | `npm audit --audit-level=high` |
