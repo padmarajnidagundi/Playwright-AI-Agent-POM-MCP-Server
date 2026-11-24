@@ -63,7 +63,6 @@ export function aiLog(
   data?: Record<string, unknown>
 ): void {
   const entry = { ts: new Date().toISOString(), level, message, ...data };
-  // eslint-disable-next-line no-console
   console[level === 'error' ? 'error' : 'log'](JSON.stringify(entry));
 }
 

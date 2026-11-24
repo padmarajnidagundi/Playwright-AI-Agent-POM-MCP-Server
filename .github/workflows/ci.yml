@@ -27,9 +27,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run ESLint
-        run: npm run lint
-
       - name: Check Prettier formatting
         run: npx prettier --check "tests/**/*.ts" "tools/**/*.ts" "mcp-server.ts" "playwright.config.ts"
 

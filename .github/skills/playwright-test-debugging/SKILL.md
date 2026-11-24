@@ -40,7 +40,7 @@ When debugging failing Playwright tests in this repository, follow this systemat
 ## DevSecOps Guidance
 
 **Security Testing Integration:**
-- Run static analysis (SAST) with ESLint security plugins and `npm audit` in CI
+- Run static analysis (SAST) and `npm audit` in CI
 - Enable Dependabot for dependency updates and vulnerability alerts
 - Add secrets scanning (GitHub secret scanning or truffleHog) to CI
 
